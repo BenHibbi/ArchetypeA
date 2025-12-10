@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Check, Sparkles, Mail, Phone, Loader2, PartyPopper, ArrowLeft } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,6 +30,8 @@ interface ShowroomData {
 export default function ShowroomPage() {
   const params = useParams()
   const sessionId = params.sessionId as string
+  const t = useTranslations('showroom')
+  const tCommon = useTranslations('common')
 
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -57,13 +60,13 @@ export default function ShowroomPage() {
           .single()
 
         if (sessionError || !session) {
-          setError('Showroom introuvable.')
+          setError('notFound')
           setIsLoading(false)
           return
         }
 
         if (session.showroom_status !== 'sent') {
-          setError("Ce showroom n'est pas encore disponible.")
+          setError('notAvailable')
           setIsLoading(false)
           return
         }
@@ -81,7 +84,7 @@ export default function ShowroomPage() {
           .order('slot_number', { ascending: true })
 
         if (!designs || designs.length === 0) {
-          setError('Aucun design disponible.')
+          setError('noDesigns')
           setIsLoading(false)
           return
         }
@@ -105,7 +108,7 @@ export default function ShowroomPage() {
 
         setIsLoading(false)
       } catch (err) {
-        setError('Erreur de chargement')
+        setError('notFound')
         setIsLoading(false)
       }
     }
@@ -177,7 +180,7 @@ export default function ShowroomPage() {
         <div className="text-center">
           <Logo size="md" className="justify-center mb-6" />
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Oops!</h1>
-          <p className="text-slate-500">{error}</p>
+          <p className="text-slate-500">{t(error)}</p>
         </div>
       </div>
     )
@@ -193,13 +196,13 @@ export default function ShowroomPage() {
           <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <PartyPopper className="text-teal-600" size={40} />
           </div>
-          <h2 className="text-3xl font-black text-slate-900 mb-4">Merci !</h2>
+          <h2 className="text-3xl font-black text-slate-900 mb-4">{t('thankYou')}</h2>
           <p className="text-slate-600 text-lg mb-2">
             {data.existingSelection?.action_type === 'signed' || actionType === 'signed'
-              ? 'Votre commande a été confirmée.'
-              : 'Votre demande a bien été envoyée.'}
+              ? t('orderConfirmed')
+              : t('requestSent')}
           </p>
-          <p className="text-slate-400">Notre équipe vous recontactera très rapidement.</p>
+          <p className="text-slate-400">{t('teamWillContact')}</p>
         </div>
       </div>
     )
@@ -224,14 +227,14 @@ export default function ShowroomPage() {
               className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors"
             >
               <ArrowLeft size={16} />
-              Retour
+              {tCommon('back')}
             </button>
 
             <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
               {/* Summary Header */}
               <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-6">
                 <p className="text-slate-400 text-xs uppercase tracking-wider mb-2">
-                  Votre sélection
+                  {t('yourSelection')}
                 </p>
                 <div className="flex items-baseline gap-3">
                   {actionType === 'signed' && selectedDesign.price ? (
@@ -256,7 +259,7 @@ export default function ShowroomPage() {
               <div className="p-6 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                    Email <span className="text-orange-500">*</span>
+                    {t('email')} <span className="text-orange-500">*</span>
                   </label>
                   <div className="relative">
                     <Mail
@@ -269,14 +272,14 @@ export default function ShowroomPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="pl-10"
-                      placeholder="votre@email.com"
+                      placeholder="your@email.com"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                    Téléphone
+                    {t('phone')}
                   </label>
                   <div className="relative">
                     <Phone
@@ -288,20 +291,20 @@ export default function ShowroomPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="pl-10"
-                      placeholder="06 12 34 56 78"
+                      placeholder="+1 234 567 890"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                    Message <span className="text-slate-400">(optionnel)</span>
+                    {t('message')} <span className="text-slate-400">{t('messageOptional')}</span>
                   </label>
                   <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full border border-slate-200 rounded-lg p-3 text-sm resize-none h-24 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Des précisions sur votre projet..."
+                    placeholder={t('messagePlaceholder')}
                   />
                 </div>
 
@@ -315,12 +318,12 @@ export default function ShowroomPage() {
                   {isSubmitting ? (
                     <>
                       <Loader2 size={20} className="animate-spin mr-2" />
-                      Envoi en cours...
+                      {t('sending')}
                     </>
                   ) : actionType === 'signed' ? (
-                    'Confirmer ma commande'
+                    t('confirmOrder')
                   ) : (
-                    'Envoyer ma demande'
+                    t('sendRequest')
                   )}
                 </Button>
               </div>
@@ -349,10 +352,10 @@ export default function ShowroomPage() {
           {/* Hero - Compact */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-2">
-              Vos propositions
+              {t('title')}
             </h1>
             <p className="text-base text-slate-500">
-              Cliquez pour sélectionner le design qui vous correspond.
+              {t('subtitle')}
             </p>
           </div>
 
@@ -421,7 +424,7 @@ export default function ShowroomPage() {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                        <span className="text-slate-300 text-sm">Aperçu</span>
+                        <span className="text-slate-300 text-sm">Preview</span>
                       </div>
                     )}
                   </div>
@@ -450,7 +453,7 @@ export default function ShowroomPage() {
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse" />
-                  <span className="text-sm font-medium text-slate-600">Design sélectionné</span>
+                  <span className="text-sm font-medium text-slate-600">{t('designSelected')}</span>
                 </div>
                 {selectedDesign.price && (
                   <div className="text-2xl font-black text-slate-900">
@@ -467,7 +470,7 @@ export default function ShowroomPage() {
                   onClick={() => handleAction('quote_request')}
                   className="flex-1 md:flex-none"
                 >
-                  Je suis intéressé
+                  {t('interested')}
                 </Button>
 
                 <div className="relative">
@@ -488,7 +491,7 @@ export default function ShowroomPage() {
                     className="flex-1 md:flex-none gap-2"
                   >
                     <Sparkles size={16} />
-                    Signer (-15%)
+                    {t('signDiscount')}
                   </Button>
                 </div>
               </div>

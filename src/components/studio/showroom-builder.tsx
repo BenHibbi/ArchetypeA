@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { Upload, Code, X, Send, Loader2, Check, Euro, Image as ImageIcon, Copy, Link } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -29,6 +30,8 @@ export function ShowroomBuilder({
   showroomStatus,
   onShowroomSent,
 }: ShowroomBuilderProps) {
+  const t = useTranslations('studio.showroom')
+  const tCommon = useTranslations('common')
   const [designs, setDesigns] = useState<DesignSlot[]>(() => {
     // Initialize 3 slots
     const slots: DesignSlot[] = [1, 2, 3].map((num) => {
@@ -166,11 +169,11 @@ export function ShowroomBuilder({
       <div className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-6 py-4 flex items-center justify-between">
         <h3 className="font-bold text-lg flex items-center gap-2">
           <ImageIcon size={20} />
-          Showroom Designer
+          {t('title')}
         </h3>
         {showroomStatus === 'sent' && (
           <span className="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">
-            Envoyé
+            {t('sent')}
           </span>
         )}
       </div>
@@ -211,7 +214,7 @@ export function ShowroomBuilder({
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
               >
-                <Upload size={12} className="inline mr-1" /> Image
+                <Upload size={12} className="inline mr-1" /> {t('image')}
               </button>
               <button
                 onClick={() => setActiveTab((prev) => ({ ...prev, [design.slotNumber]: 'html' }))}
@@ -221,7 +224,7 @@ export function ShowroomBuilder({
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
               >
-                <Code size={12} className="inline mr-1" /> HTML
+                <Code size={12} className="inline mr-1" /> {t('html')}
               </button>
             </div>
 
@@ -244,7 +247,7 @@ export function ShowroomBuilder({
                 <label className="flex flex-col items-center justify-center h-full cursor-pointer hover:bg-slate-100 transition-colors">
                   <Upload size={24} className="text-slate-400 mb-2" />
                   <span className="text-xs text-slate-500">
-                    Glisser, coller ou cliquer
+                    {t('dragOrPaste')}
                   </span>
                   <input
                     ref={(el) => { fileInputRefs.current[design.slotNumber] = el }}
@@ -259,7 +262,7 @@ export function ShowroomBuilder({
                 </label>
               ) : (
                 <textarea
-                  placeholder="Coller le code HTML ici..."
+                  placeholder={t('pasteHtml')}
                   className="w-full h-full p-3 text-xs font-mono bg-transparent resize-none focus:outline-none"
                   onChange={(e) => updateSlot(design.slotNumber, { htmlCode: e.target.value, imageUrl: null })}
                 />
@@ -271,7 +274,7 @@ export function ShowroomBuilder({
               <Euro size={14} className="text-slate-400" />
               <Input
                 type="number"
-                placeholder="Prix"
+                placeholder={t('price')}
                 value={design.price || ''}
                 onChange={(e) => updateSlot(design.slotNumber, { price: parseFloat(e.target.value) || null })}
                 className="h-8 text-sm"
@@ -286,10 +289,10 @@ export function ShowroomBuilder({
         <div className="text-sm text-slate-500">
           {hasDesigns ? (
             <span>
-              {designs.filter((d) => d.imageUrl || d.htmlCode).length} design(s) configuré(s)
+              {designs.filter((d) => d.imageUrl || d.htmlCode).length} {t('designsConfigured')}
             </span>
           ) : (
-            <span>Ajoutez au moins 1 design pour envoyer le showroom</span>
+            <span>{t('addDesignPrompt')}</span>
           )}
         </div>
 
@@ -304,7 +307,7 @@ export function ShowroomBuilder({
             ) : saved ? (
               <Check size={16} className="mr-2 text-green-500" />
             ) : null}
-            {saved ? 'Sauvegardé' : 'Sauvegarder'}
+            {saved ? tCommon('saved') : tCommon('save')}
           </Button>
 
           <Button
@@ -317,7 +320,7 @@ export function ShowroomBuilder({
             ) : (
               <Send size={16} className="mr-2" />
             )}
-            Envoyer le Showroom
+            {t('sendShowroom')}
           </Button>
 
           <Button
@@ -329,7 +332,7 @@ export function ShowroomBuilder({
               setTimeout(() => setLinkCopied(false), 2000)
             }}
             className="relative"
-            title="Copier le lien du showroom"
+            title={t('showroomLink')}
           >
             {linkCopied ? (
               <Check size={16} className="text-green-500" />
@@ -344,7 +347,7 @@ export function ShowroomBuilder({
       {showroomStatus === 'sent' && (
         <div className="px-6 py-3 bg-amber-50 border-t border-amber-100">
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-amber-700 font-medium">Lien showroom :</span>
+            <span className="text-amber-700 font-medium">{t('showroomLink')}</span>
             <code className="bg-white px-2 py-1 rounded text-amber-800 font-mono text-xs">
               {showroomUrl}
             </code>
@@ -354,7 +357,7 @@ export function ShowroomBuilder({
               onClick={() => navigator.clipboard.writeText(showroomUrl)}
               className="text-amber-600 hover:text-amber-700"
             >
-              Copier
+              {tCommon('copy')}
             </Button>
           </div>
         </div>

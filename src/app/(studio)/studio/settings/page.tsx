@@ -1,26 +1,29 @@
+import { getTranslations } from 'next-intl/server'
 import { Header } from '@/components/studio'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const t = await getTranslations('studio.settings')
+
   return (
     <>
-      <Header title="Paramètres" subtitle="Configuration de votre espace" />
+      <Header title={t('title')} subtitle={t('subtitle')} />
 
       <div className="p-6 max-w-2xl space-y-6">
         {/* Profil */}
         <Card>
           <CardHeader>
-            <CardTitle>Profil</CardTitle>
+            <CardTitle>{t('profile')}</CardTitle>
             <CardDescription>
-              Informations de votre compte
+              {t('profileDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input id="email" type="email" disabled placeholder="admin@example.com" />
             </div>
           </CardContent>
@@ -29,25 +32,25 @@ export default function SettingsPage() {
         {/* Branding */}
         <Card>
           <CardHeader>
-            <CardTitle>Branding</CardTitle>
+            <CardTitle>{t('branding')}</CardTitle>
             <CardDescription>
-              Personnalisez l'apparence du questionnaire
+              {t('brandingDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-2">
-              <Label>Logo</Label>
+              <Label>{t('logo')}</Label>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300">
-                  <span className="text-xs text-slate-400">Logo</span>
+                  <span className="text-xs text-slate-400">{t('logo')}</span>
                 </div>
-                <Button variant="outline">Changer</Button>
+                <Button variant="outline">{t('change')}</Button>
               </div>
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="company">Nom de l'entreprise</Label>
-              <Input id="company" placeholder="Votre entreprise" />
+              <Label htmlFor="company">{t('companyName')}</Label>
+              <Input id="company" placeholder={t('companyPlaceholder')} />
             </div>
           </CardContent>
         </Card>
@@ -55,13 +58,13 @@ export default function SettingsPage() {
         {/* Danger Zone */}
         <Card className="border-red-200">
           <CardHeader>
-            <CardTitle className="text-red-600">Zone dangereuse</CardTitle>
+            <CardTitle className="text-red-600">{t('dangerZone')}</CardTitle>
             <CardDescription>
-              Actions irréversibles
+              {t('dangerZoneDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="destructive">Supprimer toutes les données</Button>
+            <Button variant="destructive">{t('deleteAllData')}</Button>
           </CardContent>
         </Card>
       </div>

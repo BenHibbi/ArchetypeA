@@ -1,6 +1,7 @@
 'use client'
 
 import { Check, Shield, Zap, Box, Star, Heart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Question, QuestionnaireAnswers } from '@/types'
 import { cn } from '@/lib/utils'
 import { VizAmbiance, VizStructure, VizRatio } from './visualizations'
@@ -44,8 +45,28 @@ export function QuestionScreen({
   currentAnswer,
   onAnswer,
 }: QuestionScreenProps) {
+  const t = useTranslations('questionnaire.questions')
+
   const handleSelect = (optionId: string) => {
     onAnswer(question.id, optionId)
+  }
+
+  // Get translated question text
+  const questionText = t(`${question.id}.question`)
+  const subtitleText = t(`${question.id}.subtitle`)
+
+  // Helper to get translated option label and desc
+  const getOptionTranslation = (optionId: string) => {
+    const key = `${question.id}.options.${optionId}`
+    try {
+      // Try to get label/desc if it's an object
+      const label = t(`${key}.label`)
+      const desc = t(`${key}.desc`)
+      return { label, desc }
+    } catch {
+      // Otherwise it's a simple string
+      return { label: t(key), desc: undefined }
+    }
   }
 
   return (
@@ -54,14 +75,15 @@ export function QuestionScreen({
         <span className="text-teal-600 font-bold text-xs tracking-widest uppercase mb-2 block">
           Step {questionIndex + 1} / 6
         </span>
-        <h2 className="text-4xl font-bold text-slate-900 mb-2">{question.question}</h2>
-        <p className="text-slate-500 text-lg">{question.subtitle}</p>
+        <h2 className="text-4xl font-bold text-slate-900 mb-2">{questionText}</h2>
+        <p className="text-slate-500 text-lg">{subtitleText}</p>
       </div>
 
       <div className={cn('grid gap-4', question.layout)}>
         {question.options.map((opt) => {
           const isSelected = currentAnswer === opt.id
           const icon = ICONS[opt.id]
+          const translation = getOptionTranslation(opt.id)
 
           return (
             <button
@@ -109,10 +131,10 @@ export function QuestionScreen({
 
               <div className="flex justify-between items-center w-full mt-auto">
                 <div>
-                  <span className="text-lg font-bold block text-slate-800">{opt.label}</span>
-                  {opt.desc && (
+                  <span className="text-lg font-bold block text-slate-800">{translation.label}</span>
+                  {translation.desc && (
                     <span className="text-sm opacity-60 font-normal text-slate-500">
-                      {opt.desc}
+                      {translation.desc}
                     </span>
                   )}
                 </div>

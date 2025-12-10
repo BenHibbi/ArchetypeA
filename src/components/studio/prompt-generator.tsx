@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Copy, Check, Sparkles, ChevronDown, ChevronRight, Loader2, RefreshCw } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 
 interface Response {
@@ -28,6 +29,8 @@ interface PromptGeneratorProps {
 }
 
 export function PromptGenerator({ client, response }: PromptGeneratorProps) {
+  const t = useTranslations('studio.prompt')
+  const tCommon = useTranslations('common')
   const [copied, setCopied] = useState(false)
   const [briefOpen, setBriefOpen] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -70,15 +73,15 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
       })
 
       if (!res.ok) {
-        throw new Error('Erreur lors de la génération')
+        throw new Error('Generation error')
       }
 
       const data = await res.json()
       setGeneratedBrief(data.brief)
       setBriefOpen(true)
     } catch (err) {
-      console.error('Erreur génération brief:', err)
-      setError('Une erreur est survenue lors de la génération du brief.')
+      console.error('Brief generation error:', err)
+      setError(t('errorGenerating'))
     } finally {
       setIsGenerating(false)
     }
@@ -113,7 +116,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
             <Sparkles size={20} />
           )}
           <h3 className="font-bold text-lg">
-            {isGenerating ? 'Génération du Prompt...' : 'Prompt Design'}
+            {isGenerating ? t('generating') : t('title')}
           </h3>
         </div>
         <div className="flex items-center gap-2">
@@ -141,9 +144,9 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
                 }}
               >
                 {copied ? (
-                  <><Check size={16} className="mr-2 text-green-200" /> Copié !</>
+                  <><Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}</>
                 ) : (
-                  <><Copy size={16} className="mr-2" /> Copier le prompt</>
+                  <><Copy size={16} className="mr-2" /> {t('copyPrompt')}</>
                 )}
               </Button>
             </>
@@ -156,15 +159,15 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
           {isGenerating ? (
             <div className="flex flex-col items-center justify-center py-12 text-slate-500">
               <Loader2 size={32} className="animate-spin mb-4 text-orange-500" />
-              <p className="text-sm">L'agent ANALYST génère votre prompt...</p>
-              <p className="text-xs text-slate-400 mt-1">Cela peut prendre quelques secondes</p>
+              <p className="text-sm">{t('agentGenerating')}</p>
+              <p className="text-xs text-slate-400 mt-1">{t('mayTakeMoment')}</p>
             </div>
           ) : error ? (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
               <p className="text-red-600 mb-3">{error}</p>
               <Button variant="outline" onClick={generateBrief}>
                 <RefreshCw size={16} className="mr-2" />
-                Réessayer
+                {tCommon('retry')}
               </Button>
             </div>
           ) : generatedBrief ? (

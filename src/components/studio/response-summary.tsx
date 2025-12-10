@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Copy, Check, ChevronDown, ChevronRight, Camera, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { QUESTIONS, SKELETONS } from '@/config'
 
@@ -27,13 +28,15 @@ interface ResponseSummaryProps {
 }
 
 export function ResponseSummary({ response }: ResponseSummaryProps) {
+  const t = useTranslations('studio.response')
+  const tCommon = useTranslations('common')
   const [copiedSection, setCopiedSection] = useState<string | null>(null)
   const [questionnaireOpen, setQuestionnaireOpen] = useState(false)
   const [voiceOpen, setVoiceOpen] = useState(false)
   const [screenshotCopied, setScreenshotCopied] = useState(false)
 
   const getOptionLabel = (questionId: string, optionId: string | null) => {
-    if (!optionId) return 'Non répondu'
+    if (!optionId) return t('notAnswered')
     const question = QUESTIONS.find((q) => q.id === questionId)
     const option = question?.options.find((o) => o.id === optionId)
     return option?.label || optionId
@@ -73,12 +76,12 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
   }
 
   const items = [
-    { label: 'Ambiance', value: getOptionLabel('ambiance', response.ambiance), id: response.ambiance },
-    { label: 'Valeur', value: getOptionLabel('valeurs', response.valeurs), id: response.valeurs },
-    { label: 'Structure', value: getOptionLabel('structure', response.structure), id: response.structure },
-    { label: 'Typographie', value: getOptionLabel('typo', response.typo), id: response.typo },
-    { label: 'Ratio', value: getOptionLabel('ratio', response.ratio), id: response.ratio },
-    { label: 'Palette', value: getOptionLabel('palette', response.palette), id: response.palette },
+    { label: t('ambiance'), value: getOptionLabel('ambiance', response.ambiance), id: response.ambiance },
+    { label: t('value'), value: getOptionLabel('valeurs', response.valeurs), id: response.valeurs },
+    { label: t('structure'), value: getOptionLabel('structure', response.structure), id: response.structure },
+    { label: t('typography'), value: getOptionLabel('typo', response.typo), id: response.typo },
+    { label: t('ratio'), value: getOptionLabel('ratio', response.ratio), id: response.ratio },
+    { label: t('palette'), value: getOptionLabel('palette', response.palette), id: response.palette },
   ]
 
   const copyScreenshot = async () => {
@@ -113,7 +116,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
           <div className="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3">
             <h3 className="font-bold text-white flex items-center gap-2">
               <Camera size={18} />
-              Informations Client
+              {t('clientInfo')}
             </h3>
           </div>
           <div className="p-6">
@@ -123,26 +126,26 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                 <button
                   onClick={copyScreenshot}
                   className="relative group flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden border-2 border-slate-200 hover:border-teal-500 transition-all shadow-sm hover:shadow-lg"
-                  title="Cliquer pour copier l'image"
+                  title={t('clickToCopyImage')}
                 >
                   <img
                     src={response.screenshot_url}
-                    alt="Screenshot du site"
+                    alt="Screenshot"
                     className="w-full h-full object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     {screenshotCopied ? (
                       <span className="text-white text-sm font-medium flex items-center gap-2">
-                        <Check size={16} /> Copié !
+                        <Check size={16} /> {tCommon('copied')}
                       </span>
                     ) : (
                       <span className="text-white text-sm font-medium flex items-center gap-2">
-                        <Copy size={16} /> Copier l'image
+                        <Copy size={16} /> {t('copyImage')}
                       </span>
                     )}
                   </div>
                   <div className="absolute top-2 right-2 bg-teal-600/90 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
-                    <Camera size={12} /> Screenshot
+                    <Camera size={12} /> {t('screenshot')}
                   </div>
                 </button>
               )}
@@ -151,7 +154,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               <div className="flex-1">
                 {response.business_name && (
                   <div className="mb-3">
-                    <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">Nom du business</span>
+                    <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">{t('businessName')}</span>
                     <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
                   </div>
                 )}
@@ -180,7 +183,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
         >
           <div className="flex items-center gap-3">
             {questionnaireOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-            <h3 className="font-bold text-lg">Réponses Questionnaire</h3>
+            <h3 className="font-bold text-lg">{t('questionnaireResponses')}</h3>
           </div>
           <Button
             variant="ghost"
@@ -192,9 +195,9 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             }}
           >
             {copiedSection === 'questionnaire' ? (
-              <><Check size={16} className="mr-2 text-green-400" /> Copié !</>
+              <><Check size={16} className="mr-2 text-green-400" /> {tCommon('copied')}</>
             ) : (
-              <><Copy size={16} className="mr-2" /> Copier JSON</>
+              <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
             )}
           </Button>
         </button>
@@ -204,7 +207,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             {/* Préférences Design */}
             <div>
               <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                Préférences Design
+                {t('designPreferences')}
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {items.map((item) => (
@@ -226,7 +229,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             {response.moodboard_likes?.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                  Moodboard ({response.moodboard_likes.length} sélections)
+                  {t('moodboard')} ({response.moodboard_likes.length} {t('selections')})
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {response.moodboard_likes.map((id) => {
@@ -248,7 +251,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             {response.features?.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                  Features ({response.features.length} sélectionnées)
+                  {t('features')} ({response.features.length} {t('selectedFeatures')})
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {response.features.map((feature) => (
@@ -275,7 +278,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
           >
             <div className="flex items-center gap-3">
               {voiceOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-              <h3 className="font-bold text-lg">Analyse Vocale (IA)</h3>
+              <h3 className="font-bold text-lg">{t('voiceAnalysis')}</h3>
             </div>
             <Button
               variant="ghost"
@@ -287,9 +290,9 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               }}
             >
               {copiedSection === 'voice' ? (
-                <><Check size={16} className="mr-2 text-green-200" /> Copié !</>
+                <><Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}</>
               ) : (
-                <><Copy size={16} className="mr-2" /> Copier JSON</>
+                <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
               )}
             </Button>
           </button>
@@ -298,14 +301,14 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             <div className="p-6 space-y-4">
               {voiceAnalysis.vision_globale && (
                 <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
-                  <span className="text-xs font-bold text-orange-600 uppercase">Vision globale</span>
+                  <span className="text-xs font-bold text-orange-600 uppercase">{t('globalVision')}</span>
                   <p className="text-slate-800 mt-1">{voiceAnalysis.vision_globale}</p>
                 </div>
               )}
 
               {voiceAnalysis.inspirations?.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">Inspirations mentionnées</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">{t('mentionedInspirations')}</span>
                   <div className="mt-2 space-y-2">
                     {voiceAnalysis.inspirations.map((insp: any, i: number) => (
                       <div key={i} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
@@ -321,23 +324,23 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
 
               {voiceAnalysis.style_visuel && Object.keys(voiceAnalysis.style_visuel).some(k => voiceAnalysis.style_visuel[k] && (Array.isArray(voiceAnalysis.style_visuel[k]) ? voiceAnalysis.style_visuel[k].length > 0 : true)) && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">Style visuel souhaité</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">{t('desiredVisualStyle')}</span>
                   <div className="mt-2 grid grid-cols-2 gap-3">
                     {voiceAnalysis.style_visuel.ambiance && (
                       <div className="bg-slate-50 rounded-lg p-3">
-                        <span className="text-xs text-slate-400">Ambiance</span>
+                        <span className="text-xs text-slate-400">{t('ambiance')}</span>
                         <p className="font-medium">{voiceAnalysis.style_visuel.ambiance}</p>
                       </div>
                     )}
                     {voiceAnalysis.style_visuel.typographie && (
                       <div className="bg-slate-50 rounded-lg p-3">
-                        <span className="text-xs text-slate-400">Typographie</span>
+                        <span className="text-xs text-slate-400">{t('typography')}</span>
                         <p className="font-medium">{voiceAnalysis.style_visuel.typographie}</p>
                       </div>
                     )}
                     {voiceAnalysis.style_visuel.couleurs_souhaitees?.length > 0 && (
                       <div className="bg-slate-50 rounded-lg p-3 col-span-2">
-                        <span className="text-xs text-slate-400">Couleurs souhaitées</span>
+                        <span className="text-xs text-slate-400">{t('desiredColors')}</span>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c: string, i: number) => (
                             <span key={i} className="bg-white border px-2 py-1 rounded text-sm">{c}</span>
@@ -351,7 +354,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
 
               {voiceAnalysis.fonctionnalites?.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">Fonctionnalités demandées</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">{t('requestedFeatures')}</span>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {voiceAnalysis.fonctionnalites.map((f: string, i: number) => (
                       <span key={i} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">{f}</span>
@@ -362,14 +365,14 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
 
               {voiceAnalysis.ton_marque && (
                 <div className="bg-slate-50 rounded-lg p-3">
-                  <span className="text-xs text-slate-400">Ton / Marque</span>
+                  <span className="text-xs text-slate-400">{t('brandTone')}</span>
                   <p className="font-medium">{voiceAnalysis.ton_marque}</p>
                 </div>
               )}
 
               {voiceAnalysis.keywords?.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">Mots-clés</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">{t('keywords')}</span>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {voiceAnalysis.keywords.map((k: string, i: number) => (
                       <span key={i} className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">{k}</span>

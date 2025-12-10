@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Globe, Calendar, CheckCircle } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import {
   Header,
@@ -12,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getStatusLabel, generateSessionUrl, formatDateTime } from '@/lib/utils'
+import { generateSessionUrl, formatDateTime } from '@/lib/utils'
 
 async function getClient(id: string) {
   const supabase = await createClient()
@@ -67,6 +68,7 @@ export default async function ClientDetailPage({
 }) {
   const { id } = await params
   const client = await getClient(id)
+  const t = await getTranslations('studio.clients')
 
   if (!client) {
     notFound()
@@ -100,7 +102,7 @@ export default async function ClientDetailPage({
           <Link href="/studio/clients">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft size={16} />
-              Retour aux clients
+              {t('backToClients')}
             </Button>
           </Link>
           <div className="flex items-center gap-4">
@@ -108,18 +110,18 @@ export default async function ClientDetailPage({
               <div className="flex items-center gap-4 text-sm text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <Calendar size={14} />
-                  <span>Envoyé {formatDateTime(latestSession.created_at)}</span>
+                  <span>{t('sentAt')} {formatDateTime(latestSession.created_at)}</span>
                 </div>
                 {latestSession.completed_at && (
                   <div className="flex items-center gap-1.5 text-green-600">
                     <CheckCircle size={14} />
-                    <span>Complété {formatDateTime(latestSession.completed_at)}</span>
+                    <span>{t('completedAt')} {formatDateTime(latestSession.completed_at)}</span>
                   </div>
                 )}
               </div>
             )}
             <Badge variant={statusVariant} className="text-sm px-4 py-1">
-              {latestSession ? getStatusLabel(status) : 'Pas de session'}
+              {t(`status.${status}`)}
             </Badge>
           </div>
         </div>
@@ -131,7 +133,7 @@ export default async function ClientDetailPage({
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-slate-500 mb-4">
-                Le client n'a pas encore répondu au questionnaire.
+                {t('notYetResponded')}
               </p>
               {latestSession && (
                 <div className="flex items-center justify-center gap-2">
@@ -170,7 +172,7 @@ export default async function ClientDetailPage({
         {(client.website_url || client.notes) && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Contact</CardTitle>
+              <CardTitle className="text-base">{t('contact')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3 text-sm">
@@ -199,7 +201,7 @@ export default async function ClientDetailPage({
 
               {client.notes && (
                 <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Notes</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">{t('notes')}</p>
                   <p className="text-sm text-slate-600">{client.notes}</p>
                 </div>
               )}

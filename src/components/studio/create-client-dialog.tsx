@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Rocket, Copy, Check, ExternalLink } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,8 @@ import { generateSessionUrl, copyToClipboard } from '@/lib/utils'
 
 export function CreateClientDialog() {
   const router = useRouter()
+  const t = useTranslations('studio.clients')
+  const tCommon = useTranslations('common')
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
@@ -84,7 +87,7 @@ export function CreateClientDialog() {
       <DialogTrigger asChild>
         <Button variant="orange">
           <Rocket size={18} className="mr-2" />
-          Nouvel Archetype
+          {t('newArchetype')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
@@ -92,15 +95,15 @@ export function CreateClientDialog() {
           // Étape 1 : Saisie de l'email
           <form onSubmit={handleSubmit}>
             <DialogHeader>
-              <DialogTitle>Nouveau prospect</DialogTitle>
+              <DialogTitle>{t('newProspect')}</DialogTitle>
               <DialogDescription>
-                Entrez l'email du prospect pour générer son lien personnalisé.
+                {t('enterProspectEmail')}
               </DialogDescription>
             </DialogHeader>
 
             <div className="py-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email du prospect</Label>
+                <Label htmlFor="email">{t('prospectEmail')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -122,11 +125,11 @@ export function CreateClientDialog() {
               disabled={isLoading || !email}
             >
               {isLoading ? (
-                'Création...'
+                t('creating')
               ) : (
                 <>
                   <Rocket size={18} className="mr-2" />
-                  Nouvel Archetype
+                  {t('newArchetype')}
                 </>
               )}
             </Button>
@@ -139,16 +142,16 @@ export function CreateClientDialog() {
                 <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                   <Check className="text-green-600" size={18} />
                 </div>
-                Lien créé !
+                {t('linkCreated')}
               </DialogTitle>
               <DialogDescription>
-                Envoyez ce lien à <strong>{email}</strong> pour qu'il remplisse son questionnaire.
+                {t('sendLinkTo')} <strong>{email}</strong> {t('toFillQuestionnaire')}
               </DialogDescription>
             </DialogHeader>
 
             <div className="py-4">
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                <p className="text-xs text-slate-500 mb-2">Lien personnel</p>
+                <p className="text-xs text-slate-500 mb-2">{t('personalLink')}</p>
                 <code className="text-sm text-teal-600 break-all block mb-4">
                   {createdSession.url}
                 </code>
@@ -161,12 +164,12 @@ export function CreateClientDialog() {
                     {copied ? (
                       <>
                         <Check size={16} className="mr-2" />
-                        Copié !
+                        {tCommon('copied')}
                       </>
                     ) : (
                       <>
                         <Copy size={16} className="mr-2" />
-                        Copier le lien
+                        {t('copyLink')}
                       </>
                     )}
                   </Button>
@@ -188,7 +191,7 @@ export function CreateClientDialog() {
               className="w-full"
               onClick={handleClose}
             >
-              Fermer
+              {tCommon('close')}
             </Button>
           </>
         )}

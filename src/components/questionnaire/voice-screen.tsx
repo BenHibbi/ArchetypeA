@@ -2,6 +2,7 @@
 
 import { Mic, Square, Loader2 } from 'lucide-react'
 import { useState, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { LogoMark } from '@/components/shared/logo'
 
@@ -11,6 +12,7 @@ interface VoiceScreenProps {
 }
 
 export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
+  const t = useTranslations('questionnaire.voice')
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [processingStep, setProcessingStep] = useState<'transcribing' | 'analyzing' | null>(null)
@@ -40,7 +42,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
       setIsRecording(true)
     } catch (err) {
       console.error('Erreur accès microphone:', err)
-      alert('Impossible d\'accéder au microphone. Vérifiez les permissions.')
+      alert(t('microphoneError'))
     }
   }
 
@@ -87,7 +89,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
       onComplete(data.transcription, data.analysis)
     } catch (err) {
       console.error('Erreur traitement audio:', err)
-      alert('Erreur lors du traitement de l\'audio. Réessayez ou passez cette étape.')
+      alert(t('processingError'))
       setIsProcessing(false)
       setProcessingStep(null)
     }
@@ -102,7 +104,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
           </div>
 
           <h2 className="text-2xl font-bold text-slate-900 mb-4">
-            {processingStep === 'transcribing' ? 'Transcription en cours...' : 'Analyse de vos besoins...'}
+            {processingStep === 'transcribing' ? t('transcribing') : t('analyzing')}
           </h2>
 
           <div className="flex justify-center gap-2 mb-6">
@@ -112,8 +114,8 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
 
           <p className="text-slate-500">
             {processingStep === 'transcribing'
-              ? 'Whisper transcrit votre message...'
-              : 'L\'IA extrait les informations de design...'
+              ? t('whisperTranscribing')
+              : t('aiExtracting')
             }
           </p>
         </div>
@@ -130,23 +132,21 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
             <LogoMark />
             <span className="font-bold tracking-tight">archetype</span>
           </div>
-          <h2 className="text-3xl font-bold mb-2">Une dernière chose...</h2>
-          <p className="text-slate-400">Décrivez-nous votre vision</p>
+          <h2 className="text-3xl font-bold mb-2">{t('title')}</h2>
+          <p className="text-slate-400">{t('subtitle')}</p>
         </div>
 
         {/* Content */}
         <div className="p-10 text-center">
           <div className="bg-slate-50 rounded-2xl p-6 mb-8 text-left border border-slate-100">
             <p className="text-slate-700 leading-relaxed">
-              Appuyez sur <span className="font-semibold text-orange-500">"Enregistrer"</span> et décrivez
-              votre site rêvé, vos inspirations, tout ce qui vous passe par la tête.
+              {t('instruction')} <span className="font-semibold text-orange-500">"{t('recordButton')}"</span> {t('andDescribe')}
             </p>
             <p className="text-slate-500 mt-4 text-sm">
-              🔒 Nous n'écouterons pas directement votre message, ne vous en faites pas,
-              vous ne serez pas jugé. Une IA va analyser vos besoins pour nous les résumer.
+              🔒 {t('privacyNote')}
             </p>
             <p className="text-orange-600 font-medium mt-4 text-sm">
-              ✨ Cette étape est importante pour personnaliser au maximum votre proposition.
+              ✨ {t('importantNote')}
             </p>
           </div>
 
@@ -159,7 +159,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
               >
                 <Mic size={48} className="group-hover:scale-110 transition-transform" />
                 <span className="absolute -bottom-8 text-sm font-medium text-slate-600">
-                  Enregistrer
+                  {t('recordButton')}
                 </span>
               </button>
             ) : (
@@ -169,7 +169,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
               >
                 <Square size={40} className="group-hover:scale-110 transition-transform" />
                 <span className="absolute -bottom-8 text-sm font-medium text-red-600">
-                  Arrêter
+                  {t('stop')}
                 </span>
                 {/* Recording indicator */}
                 <span className="absolute top-2 right-2 w-4 h-4 bg-white rounded-full animate-ping" />
@@ -180,7 +180,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
           {isRecording && (
             <div className="flex items-center justify-center gap-2 text-red-500 mb-4">
               <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium">Enregistrement en cours...</span>
+              <span className="text-sm font-medium">{t('recording')}</span>
             </div>
           )}
         </div>
@@ -191,7 +191,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
             onClick={onSkip}
             className="text-slate-400 hover:text-slate-600 text-sm transition-colors"
           >
-            Passer cette étape →
+            {t('skip')} →
           </button>
         </div>
       </div>

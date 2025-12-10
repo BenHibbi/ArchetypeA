@@ -1,6 +1,7 @@
 'use client'
 
 import { Zap } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { FEATURES_LIST } from '@/config'
 import { cn } from '@/lib/utils'
@@ -18,14 +19,17 @@ export function FeaturesScreen({
   onGenerate,
   isSubmitting,
 }: FeaturesScreenProps) {
+  const t = useTranslations('questionnaire.features')
+  const tCommon = useTranslations('common')
+
   return (
     <div className="max-w-3xl mx-auto w-full animate-slide-in-from-bottom">
       <div className="text-center mb-10">
         <span className="text-teal-600 font-bold text-xs tracking-widest uppercase mb-2 block">
           Step 8
         </span>
-        <h2 className="text-4xl font-bold text-slate-900">Features & Options</h2>
-        <p className="text-slate-500 text-lg mt-2">Les briques fonctionnelles.</p>
+        <h2 className="text-4xl font-bold text-slate-900">{t('title')}</h2>
+        <p className="text-slate-500 text-lg mt-2">{t('subtitle')}</p>
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -53,10 +57,10 @@ export function FeaturesScreen({
           size="xl"
         >
           {isSubmitting ? (
-            'Génération...'
+            tCommon('loading')
           ) : (
             <>
-              Générer mon Brief <Zap size={20} className="fill-yellow-300 text-yellow-300" />
+              {t('continue')} <Zap size={20} className="fill-yellow-300 text-yellow-300" />
             </>
           )}
         </Button>

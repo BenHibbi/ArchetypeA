@@ -1,0 +1,345 @@
+{
+  "common": {
+    "login": "Login",
+    "signup": "Sign up",
+    "studio": "Studio",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "saved": "Saved",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "send": "Send",
+    "retry": "Retry",
+    "close": "Close"
+  },
+  "home": {
+    "title": "archetype",
+    "subtitle": "Design Intelligence Profiler",
+    "description": "Qualify your prospects in 3 minutes. Capture their design preferences and generate personalized AI prompts to create custom websites.",
+    "demo": "View demo",
+    "accessStudio": "Access Studio",
+    "features": {
+      "qualification": {
+        "title": "Client Qualification",
+        "description": "Send a unique link to your prospects. They fill out a visual questionnaire that captures their preferences."
+      },
+      "prompts": {
+        "title": "Prompt Generation",
+        "description": "Transform responses into optimized prompts for V0, Lovable, Bolt.new or Midjourney."
+      },
+      "dashboard": {
+        "title": "Studio Dashboard",
+        "description": "Manage your clients, track responses and increase your conversion rate with targeted proposals."
+      }
+    },
+    "footer": "\u00a9 2024 Archetype. Built with Next.js & Supabase."
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "signupTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Sign in",
+    "signupButton": "Sign up",
+    "noAccount": "Don't have an account yet?",
+    "hasAccount": "Already have an account?",
+    "createAccount": "Create an account",
+    "loginHere": "Log in"
+  },
+  "questionnaire": {
+    "intro": {
+      "title": "Welcome",
+      "subtitle": "Your project deserves a unique identity. Answer a few questions to help us understand your vision.",
+      "businessName": "Name of your company / project",
+      "businessPlaceholder": "Ex: My Great Project",
+      "websiteUrl": "URL of your current website (optional)",
+      "websitePlaceholder": "https://...",
+      "screenshotLabel": "We'll automatically capture a preview of your site",
+      "start": "Get started"
+    },
+    "questions": {
+      "ambiance": {
+        "question": "What overall ambiance?",
+        "subtitle": "The immediate atmosphere.",
+        "options": {
+          "minimal": { "label": "Minimal", "desc": "Less is more." },
+          "bold": { "label": "Bold", "desc": "Loud and strong." },
+          "corporate": { "label": "Corporate", "desc": "Serious & reliable." },
+          "soft": { "label": "Soft", "desc": "Welcoming." },
+          "futuristic": { "label": "Futuristic", "desc": "High-tech." },
+          "editorial": { "label": "Editorial", "desc": "Magazine style." }
+        }
+      },
+      "valeurs": {
+        "question": "What should the site convey?",
+        "subtitle": "The key emotion.",
+        "options": {
+          "confiance": "Trust",
+          "creativite": "Creativity",
+          "performance": "Performance",
+          "simplicite": "Simplicity",
+          "luxe": "Subtle Luxury",
+          "accessibilite": "Accessibility"
+        }
+      },
+      "structure": {
+        "question": "Desired structure?",
+        "subtitle": "The information density.",
+        "options": {
+          "simple": { "label": "Focus", "desc": "1-3 sections" },
+          "standard": { "label": "Standard", "desc": "Classic" },
+          "rich": { "label": "Dense", "desc": "Complete portal" },
+          "fullscreen": { "label": "Immersive", "desc": "Full screen" },
+          "masonry": { "label": "Masonry", "desc": "Pinterest style" },
+          "bento": { "label": "Bento", "desc": "Modular grid" }
+        }
+      },
+      "typo": {
+        "question": "Typography?",
+        "subtitle": "The voice of text.",
+        "options": {
+          "fine": "Fine / Light",
+          "bold": "Bold / Impactful",
+          "serif": "Elegant Serif",
+          "modern": "Modern Sans-serif",
+          "variable": "Variable / Tech",
+          "retro": "Retro / Soft"
+        }
+      },
+      "ratio": {
+        "question": "Image / Text Ratio?",
+        "subtitle": "The visual balance.",
+        "options": {
+          "image_heavy": "Visual",
+          "mix": "Balanced",
+          "text_heavy": "Textual"
+        }
+      },
+      "palette": {
+        "question": "Color Palette?",
+        "subtitle": "The color universe.",
+        "options": {
+          "cold": "Cold / Tech",
+          "warm": "Warm / Friendly",
+          "bw": "Black & White",
+          "accent": "Minimal Colored",
+          "pastel": "Pastel",
+          "neutral": "Neutral / Corp."
+        }
+      }
+    },
+    "moodboard": {
+      "title": "Inspirations",
+      "subtitle": "Select the styles that speak to you.",
+      "selected": "selected",
+      "continue": "Continue"
+    },
+    "features": {
+      "title": "Features",
+      "subtitle": "What features would you like to integrate?",
+      "continue": "Continue"
+    },
+    "voice": {
+      "title": "One last thing...",
+      "subtitle": "Tell us about your vision",
+      "instruction": "Press",
+      "recordButton": "Record",
+      "andDescribe": "and describe your dream website, your inspirations, anything that comes to mind.",
+      "privacyNote": "We won't listen directly to your message, don't worry, you won't be judged. An AI will analyze your needs to summarize them for us.",
+      "importantNote": "This step is important to personalize your proposal as much as possible.",
+      "recording": "Recording...",
+      "stop": "Stop",
+      "skip": "Skip this step",
+      "transcribing": "Transcribing...",
+      "analyzing": "Analyzing your needs...",
+      "whisperTranscribing": "Whisper is transcribing your message...",
+      "aiExtracting": "AI is extracting design information...",
+      "microphoneError": "Unable to access microphone. Check permissions.",
+      "processingError": "Error processing audio. Try again or skip this step."
+    },
+    "output": {
+      "title": "Your Brief",
+      "subtitle": "Review your choices before sending.",
+      "vibe": "Vibe",
+      "palette": "Palette",
+      "identity": "Identity",
+      "structureAndFeatures": "Structure & Features",
+      "inspirations": "Inspirations (Moodboard)",
+      "modules": "Modules",
+      "sendBrief": "Send my brief",
+      "capturing": "Capturing...",
+      "finishDemo": "Finish demo",
+      "briefSent": "Brief sent!",
+      "thankYouMessage": "Thank you for completing the questionnaire.",
+      "teamAnalyzeMessage": "Our team will analyze your preferences and get back to you very soon with a personalized proposal."
+    },
+    "sessionNotFound": "Session not found. Please check your link.",
+    "loadingError": "Loading error"
+  },
+  "studio": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "clients": "Clients",
+      "prompts": "Prompts",
+      "settings": "Settings",
+      "logout": "Log out"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Overview of your activity",
+      "totalClients": "Total Clients",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "pending": "Pending",
+      "completionRate": "Completion Rate"
+    },
+    "header": {
+      "search": "Search..."
+    },
+    "stats": {
+      "totalClients": "Total Clients",
+      "pending": "Pending",
+      "completed": "Completed",
+      "completionRate": "Completion Rate"
+    },
+    "card": {
+      "website": "Website",
+      "createdAt": "Created on",
+      "copyLink": "Copy link",
+      "noSession": "No session"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Configure your space",
+      "profile": "Profile",
+      "profileDesc": "Your account information",
+      "email": "Email",
+      "branding": "Branding",
+      "brandingDesc": "Customize the questionnaire appearance",
+      "logo": "Logo",
+      "change": "Change",
+      "companyName": "Company name",
+      "companyPlaceholder": "Your company",
+      "dangerZone": "Danger Zone",
+      "dangerZoneDesc": "Irreversible actions",
+      "deleteAllData": "Delete all data"
+    },
+    "clients": {
+      "title": "Clients",
+      "subtitle": "Manage your clients and their sessions",
+      "addClient": "Add client",
+      "noClients": "No clients yet",
+      "search": "Search...",
+      "email": "Email",
+      "company": "Company",
+      "contact": "Contact",
+      "website": "Website",
+      "notes": "Notes",
+      "client": "Client",
+      "date": "Date",
+      "actions": "Actions",
+      "clientCount": "{count} client(s)",
+      "status": {
+        "pending": "Pending",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "no_session": "No session"
+      },
+      "sendQuestionnaire": "Send questionnaire",
+      "viewDetails": "View details",
+      "backToClients": "Back to clients",
+      "sentAt": "Sent",
+      "completedAt": "Completed",
+      "notYetResponded": "The client has not yet responded to the questionnaire.",
+      "newArchetype": "New Archetype",
+      "newProspect": "New prospect",
+      "enterProspectEmail": "Enter the prospect's email to generate their personalized link.",
+      "prospectEmail": "Prospect email",
+      "creating": "Creating...",
+      "linkCreated": "Link created!",
+      "sendLinkTo": "Send this link to",
+      "toFillQuestionnaire": "so they can fill out their questionnaire.",
+      "personalLink": "Personal link",
+      "copyLink": "Copy link"
+    },
+    "showroom": {
+      "title": "Showroom Designer",
+      "sent": "Sent",
+      "image": "Image",
+      "html": "HTML",
+      "dragOrPaste": "Drag, paste or click",
+      "pasteHtml": "Paste HTML code here...",
+      "price": "Price",
+      "designsConfigured": "design(s) configured",
+      "addDesignPrompt": "Add at least 1 design to send the showroom",
+      "sendShowroom": "Send Showroom",
+      "showroomLink": "Showroom link:"
+    },
+    "prompt": {
+      "title": "Design Prompt",
+      "generating": "Generating Prompt...",
+      "copyPrompt": "Copy prompt",
+      "agentGenerating": "ANALYST agent is generating your prompt...",
+      "mayTakeMoment": "This may take a few seconds",
+      "errorGenerating": "An error occurred while generating the brief."
+    },
+    "response": {
+      "clientInfo": "Client Information",
+      "businessName": "Business name",
+      "questionnaireResponses": "Questionnaire Responses",
+      "copyJson": "Copy JSON",
+      "designPreferences": "Design Preferences",
+      "moodboard": "Moodboard",
+      "selections": "selections",
+      "selectedFeatures": "selected",
+      "voiceAnalysis": "Voice Analysis (AI)",
+      "globalVision": "Global vision",
+      "mentionedInspirations": "Mentioned inspirations",
+      "desiredVisualStyle": "Desired visual style",
+      "ambiance": "Ambiance",
+      "typography": "Typography",
+      "desiredColors": "Desired colors",
+      "requestedFeatures": "Requested features",
+      "brandTone": "Tone / Brand",
+      "keywords": "Keywords",
+      "notAnswered": "Not answered",
+      "clickToCopyImage": "Click to copy image",
+      "copyImage": "Copy image",
+      "screenshot": "Screenshot",
+      "features": "Features",
+      "value": "Value",
+      "structure": "Structure",
+      "ratio": "Ratio",
+      "palette": "Palette"
+    }
+  },
+  "showroom": {
+    "title": "Your proposals",
+    "subtitle": "Click to select the design that suits you.",
+    "designSelected": "Design selected",
+    "interested": "I'm interested",
+    "signDiscount": "Sign (-15%)",
+    "yourSelection": "Your selection",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "messageOptional": "(optional)",
+    "messagePlaceholder": "Details about your project...",
+    "confirmOrder": "Confirm my order",
+    "sendRequest": "Send my request",
+    "sending": "Sending...",
+    "thankYou": "Thank you!",
+    "orderConfirmed": "Your order has been confirmed.",
+    "requestSent": "Your request has been sent.",
+    "teamWillContact": "Our team will contact you very soon.",
+    "notFound": "Showroom not found.",
+    "notAvailable": "This showroom is not yet available.",
+    "noDesigns": "No designs available."
+  }
+}

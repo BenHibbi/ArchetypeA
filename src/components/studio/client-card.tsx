@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ExternalLink, Mail, Globe, MoreVertical } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,7 +11,6 @@ import { ClientWithSession } from '@/types'
 import {
   formatDate,
   getInitials,
-  getStatusLabel,
   generateSessionUrl,
 } from '@/lib/utils'
 
@@ -19,6 +19,8 @@ interface ClientCardProps {
 }
 
 export function ClientCard({ client }: ClientCardProps) {
+  const t = useTranslations('studio.card')
+  const tStatus = useTranslations('studio.clients.status')
   const latestSession = client.latest_session
   const status = latestSession?.status || 'no_session'
 
@@ -52,7 +54,7 @@ export function ClientCard({ client }: ClientCardProps) {
             </div>
           </div>
           <Badge variant={statusVariant}>
-            {latestSession ? getStatusLabel(status) : 'Pas de session'}
+            {latestSession ? tStatus(status) : t('noSession')}
           </Badge>
         </div>
       </CardHeader>
@@ -73,7 +75,7 @@ export function ClientCard({ client }: ClientCardProps) {
                 className="flex items-center gap-1 hover:text-teal-600"
               >
                 <Globe size={14} />
-                <span>Site web</span>
+                <span>{t('website')}</span>
               </a>
             )}
           </div>
@@ -82,7 +84,7 @@ export function ClientCard({ client }: ClientCardProps) {
           {latestSession && (
             <div className="flex items-center justify-between pt-3 border-t border-slate-100">
               <span className="text-xs text-slate-400">
-                Créé le {formatDate(client.created_at)}
+                {t('createdAt')} {formatDate(client.created_at)}
               </span>
               {latestSession.status === 'pending' && (
                 <Button
@@ -96,7 +98,7 @@ export function ClientCard({ client }: ClientCardProps) {
                   }}
                 >
                   <ExternalLink size={14} className="mr-1" />
-                  Copier le lien
+                  {t('copyLink')}
                 </Button>
               )}
             </div>

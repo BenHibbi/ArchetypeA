@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { useQuestionnaireStore } from '@/stores/questionnaire-store'
 import { QUESTIONS } from '@/config'
@@ -20,6 +21,7 @@ import {
 export default function QuestionnairePage() {
   const params = useParams()
   const sessionId = params.sessionId as string
+  const t = useTranslations('questionnaire')
 
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +65,7 @@ export default function QuestionnairePage() {
           .single()
 
         if (sessionError || !session) {
-          setError('Session introuvable. Vérifiez votre lien.')
+          setError(t('sessionNotFound'))
           setIsLoading(false)
           return
         }
@@ -100,7 +102,7 @@ export default function QuestionnairePage() {
         setSessionId(sessionId)
         setIsLoading(false)
       } catch (err) {
-        setError('Erreur de chargement')
+        setError(t('loadingError'))
         setIsLoading(false)
       }
     }

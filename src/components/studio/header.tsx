@@ -1,6 +1,7 @@
 'use client'
 
 import { Bell, Search } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -11,6 +12,8 @@ interface HeaderProps {
 }
 
 export function Header({ title, subtitle }: HeaderProps) {
+  const t = useTranslations('studio.header')
+
   return (
     <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6">
       <div>
@@ -25,7 +28,7 @@ export function Header({ title, subtitle }: HeaderProps) {
             className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
           />
           <Input
-            placeholder="Rechercher..."
+            placeholder={t('search')}
             className="pl-10 w-64 bg-slate-50 border-slate-200"
           />
         </div>

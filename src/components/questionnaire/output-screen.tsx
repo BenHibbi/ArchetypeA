@@ -2,6 +2,7 @@
 
 import { Send, Check, PartyPopper, Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { QuestionnaireAnswers } from '@/types'
 import { QUESTIONS, SKELETONS } from '@/config'
@@ -26,14 +27,32 @@ export function OutputScreen({
   onRestart,
   isDemo = false,
 }: OutputScreenProps) {
+  const t = useTranslations('questionnaire.output')
+  const tQuestions = useTranslations('questionnaire.questions')
   const [sent, setSent] = useState(false)
   const [isSending, setIsSending] = useState(false)
 
   const getOptionLabel = (questionId: string, optionId?: string) => {
-    if (!optionId) return 'Non défini'
-    const question = QUESTIONS.find((q) => q.id === questionId)
-    const option = question?.options.find((o) => o.id === optionId)
-    return option?.label || optionId
+    if (!optionId) return 'N/A'
+    try {
+      // Try getting label from nested object first
+      return tQuestions(`${questionId}.options.${optionId}.label`)
+    } catch {
+      // Fall back to simple string value
+      try {
+        return tQuestions(`${questionId}.options.${optionId}`)
+      } catch {
+        return optionId
+      }
+    }
+  }
+
+  const getQuestionText = (questionId: string) => {
+    try {
+      return tQuestions(`${questionId}.question`)
+    } catch {
+      return questionId
+    }
   }
 
   const handleSendBrief = async () => {
@@ -79,14 +98,13 @@ export function OutputScreen({
             <PartyPopper className="text-green-600" size={40} />
           </div>
           <h2 className="text-3xl font-bold text-slate-900 mb-4">
-            Brief envoyé !
+            {t('briefSent')}
           </h2>
           <p className="text-slate-500 text-lg mb-2">
-            Merci d'avoir complété le questionnaire.
+            {t('thankYouMessage')}
           </p>
           <p className="text-slate-400">
-            Notre équipe va analyser vos préférences et vous recontacter très vite
-            avec une proposition personnalisée.
+            {t('teamAnalyzeMessage')}
           </p>
         </div>
       </div>
@@ -105,13 +123,13 @@ export function OutputScreen({
               <div className="w-3 h-3 rounded-full bg-yellow-400" />
               <span className="font-bold tracking-tight ml-2">archetype</span>
             </div>
-            <h2 className="text-3xl font-bold mb-1">Votre Brief</h2>
-            <p className="text-slate-400">Vérifiez vos choix avant d'envoyer.</p>
+            <h2 className="text-3xl font-bold mb-1">{t('title')}</h2>
+            <p className="text-slate-400">{t('subtitle')}</p>
           </div>
           <div className="flex gap-2">
             <div className="bg-white/10 px-4 py-2 rounded-lg backdrop-blur text-center border border-white/10">
               <span className="block text-[10px] uppercase tracking-wider text-slate-400">
-                Vibe
+                {t('vibe')}
               </span>
               <span className="font-bold text-teal-400">
                 {answers.ambiance?.toUpperCase()}
@@ -119,7 +137,7 @@ export function OutputScreen({
             </div>
             <div className="bg-white/10 px-4 py-2 rounded-lg backdrop-blur text-center border border-white/10">
               <span className="block text-[10px] uppercase tracking-wider text-slate-400">
-                Palette
+                {t('palette')}
               </span>
               <span className="font-bold text-orange-400">
                 {answers.palette?.toUpperCase()}
@@ -133,21 +151,19 @@ export function OutputScreen({
           {/* Identité */}
           <div className="space-y-6">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b pb-2">
-              Identité
+              {t('identity')}
             </h3>
             <div className="space-y-4">
               {Object.keys(answers).map((key) => {
-                const q = QUESTIONS.find((q) => q.id === key)
                 const answer = answers[key as keyof QuestionnaireAnswers]
-                const a = q?.options.find((o) => o.id === answer)
-                if (!a) return null
+                if (!answer) return null
                 return (
                   <div key={key} className="flex justify-between items-center group">
                     <span className="text-slate-500 font-medium text-sm">
-                      {q?.question.split('?')[0]}
+                      {getQuestionText(key).split('?')[0]}
                     </span>
                     <span className="font-bold text-slate-900 bg-slate-100 px-3 py-1 rounded-full text-sm group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
-                      {a.label}
+                      {getOptionLabel(key, answer)}
                     </span>
                   </div>
                 )
@@ -158,12 +174,12 @@ export function OutputScreen({
           {/* Structure & Features */}
           <div className="space-y-6">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b pb-2">
-              Structure & Features
+              {t('structureAndFeatures')}
             </h3>
 
             <div>
               <span className="text-slate-500 font-medium block mb-2 text-sm">
-                Inspirations (Moodboard)
+                {t('inspirations')}
               </span>
               <div className="flex flex-wrap gap-2">
                 {moodboardLikes.map((like) => (
@@ -178,7 +194,7 @@ export function OutputScreen({
             </div>
 
             <div>
-              <span className="text-slate-500 font-medium block mb-2 text-sm">Modules</span>
+              <span className="text-slate-500 font-medium block mb-2 text-sm">{t('modules')}</span>
               <div className="flex flex-wrap gap-2">
                 {features.slice(0, 8).map((f) => (
                   <span
@@ -202,7 +218,7 @@ export function OutputScreen({
         <div className="bg-slate-50 p-6 flex flex-col sm:flex-row gap-4 justify-center border-t border-slate-100">
           {isDemo ? (
             <Button onClick={onRestart} variant="orange" className="gap-2">
-              <Check size={18} /> Terminer la démo
+              <Check size={18} /> {t('finishDemo')}
             </Button>
           ) : (
             <Button
@@ -214,11 +230,11 @@ export function OutputScreen({
             >
               {isSending ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" /> Capture en cours...
+                  <Loader2 size={18} className="animate-spin" /> {t('capturing')}
                 </>
               ) : (
                 <>
-                  <Send size={18} /> Envoyer mon brief
+                  <Send size={18} /> {t('sendBrief')}
                 </>
               )}
             </Button>

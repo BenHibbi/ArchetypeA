@@ -2,17 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LogOut } from 'lucide-react'
+import { LogOut, LayoutDashboard, Users, Sparkles, Settings } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Logo } from '@/components/shared/logo'
 import { Button } from '@/components/ui/button'
-import { STUDIO_NAV } from '@/config/navigation'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
+const NAV_ITEMS = [
+  { key: 'dashboard', href: '/studio', icon: LayoutDashboard },
+  { key: 'clients', href: '/studio/clients', icon: Users },
+  { key: 'prompts', href: '/studio/prompts', icon: Sparkles },
+  { key: 'settings', href: '/studio/settings', icon: Settings },
+] as const
+
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations('studio.nav')
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -40,7 +48,7 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-1">
-          {STUDIO_NAV.map((item) => {
+          {NAV_ITEMS.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
 
@@ -56,7 +64,7 @@ export function Sidebar() {
                   )}
                 >
                   <Icon size={20} />
-                  <span className="font-medium">{item.title}</span>
+                  <span className="font-medium">{t(item.key)}</span>
                 </Link>
               </li>
             )
@@ -72,7 +80,7 @@ export function Sidebar() {
           onClick={handleLogout}
         >
           <LogOut size={20} className="mr-3" />
-          Déconnexion
+          {t('logout')}
         </Button>
       </div>
     </aside>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -12,6 +13,7 @@ interface IntroScreenProps {
 }
 
 export function IntroScreen({ onStart }: IntroScreenProps) {
+  const t = useTranslations('questionnaire.intro')
   const [businessName, setBusinessName] = useState('')
   const [websiteUrl, setWebsiteUrl] = useState('')
 
@@ -36,18 +38,18 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
       </div>
 
       <p className="max-w-md text-slate-400">
-        Définissez votre identité visuelle en 3 minutes.
+        {t('subtitle')}
       </p>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <div className="text-left space-y-2">
           <Label htmlFor="businessName" className="text-slate-700">
-            Quel est le nom de votre business ? <span className="text-orange-500">*</span>
+            {t('businessName')} <span className="text-orange-500">*</span>
           </Label>
           <Input
             id="businessName"
             type="text"
-            placeholder="Mon Entreprise"
+            placeholder={t('businessPlaceholder')}
             value={businessName}
             onChange={(e) => setBusinessName(e.target.value)}
             required
@@ -57,12 +59,12 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
 
         <div className="text-left space-y-2">
           <Label htmlFor="websiteUrl" className="text-slate-700">
-            Site web actuel <span className="text-slate-400 text-sm">(optionnel)</span>
+            {t('websiteUrl')}
           </Label>
           <Input
             id="websiteUrl"
             type="url"
-            placeholder="https://monsite.com"
+            placeholder={t('websitePlaceholder')}
             value={websiteUrl}
             onChange={(e) => setWebsiteUrl(e.target.value)}
             className="h-12 text-lg"
@@ -76,7 +78,7 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
           className="w-full mt-6"
           disabled={!businessName.trim()}
         >
-          Commencer <ArrowRight size={20} />
+          {t('start')} <ArrowRight size={20} />
         </Button>
       </form>
     </div>

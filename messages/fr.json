@@ -1,0 +1,345 @@
+{
+  "common": {
+    "login": "Connexion",
+    "signup": "Inscription",
+    "studio": "Studio",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "save": "Sauvegarder",
+    "saved": "Sauvegard\u00e9",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "skip": "Passer",
+    "copy": "Copier",
+    "copied": "Copi\u00e9 !",
+    "send": "Envoyer",
+    "retry": "R\u00e9essayer",
+    "close": "Fermer"
+  },
+  "home": {
+    "title": "archetype",
+    "subtitle": "Design Intelligence Profiler",
+    "description": "Qualifiez vos prospects en 3 minutes. R\u00e9cup\u00e9rez leurs pr\u00e9f\u00e9rences design et g\u00e9n\u00e9rez des prompts IA personnalis\u00e9s pour cr\u00e9er des sites web sur-mesure.",
+    "demo": "Voir la d\u00e9mo",
+    "accessStudio": "Acc\u00e9der au Studio",
+    "features": {
+      "qualification": {
+        "title": "Qualification Client",
+        "description": "Envoyez un lien unique \u00e0 vos prospects. Ils remplissent un questionnaire visuel qui capture leurs pr\u00e9f\u00e9rences."
+      },
+      "prompts": {
+        "title": "G\u00e9n\u00e9ration de Prompts",
+        "description": "Transformez les r\u00e9ponses en prompts optimis\u00e9s pour V0, Lovable, Bolt.new ou Midjourney."
+      },
+      "dashboard": {
+        "title": "Dashboard Studio",
+        "description": "G\u00e9rez vos clients, suivez les r\u00e9ponses et augmentez votre taux de conversion avec des propositions cibl\u00e9es."
+      }
+    },
+    "footer": "\u00a9 2024 Archetype. Built with Next.js & Supabase."
+  },
+  "auth": {
+    "loginTitle": "Connexion",
+    "signupTitle": "Cr\u00e9er un compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "loginButton": "Se connecter",
+    "signupButton": "S'inscrire",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "D\u00e9j\u00e0 un compte ?",
+    "createAccount": "Cr\u00e9er un compte",
+    "loginHere": "Se connecter"
+  },
+  "questionnaire": {
+    "intro": {
+      "title": "Bienvenue",
+      "subtitle": "Votre projet m\u00e9rite une identit\u00e9 unique. R\u00e9pondez \u00e0 quelques questions pour nous aider \u00e0 comprendre votre vision.",
+      "businessName": "Nom de votre entreprise / projet",
+      "businessPlaceholder": "Ex: Mon Super Projet",
+      "websiteUrl": "URL de votre site actuel (optionnel)",
+      "websitePlaceholder": "https://...",
+      "screenshotLabel": "On capturera automatiquement un aper\u00e7u de votre site",
+      "start": "Commencer"
+    },
+    "questions": {
+      "ambiance": {
+        "question": "Quelle ambiance g\u00e9n\u00e9rale ?",
+        "subtitle": "L'atmosph\u00e8re imm\u00e9diate.",
+        "options": {
+          "minimal": { "label": "Minimal", "desc": "Less is more." },
+          "bold": { "label": "Bold", "desc": "Fort et bruyant." },
+          "corporate": { "label": "Corporate", "desc": "S\u00e9rieux & fiable." },
+          "soft": { "label": "Soft", "desc": "Accueillant." },
+          "futuristic": { "label": "Futuristic", "desc": "High-tech." },
+          "editorial": { "label": "Editorial", "desc": "Style magazine." }
+        }
+      },
+      "valeurs": {
+        "question": "Que doit transmettre le site ?",
+        "subtitle": "L'\u00e9motion cl\u00e9.",
+        "options": {
+          "confiance": "Confiance",
+          "creativite": "Cr\u00e9ativit\u00e9",
+          "performance": "Performance",
+          "simplicite": "Simplicit\u00e9",
+          "luxe": "Luxe Discret",
+          "accessibilite": "Accessibilit\u00e9"
+        }
+      },
+      "structure": {
+        "question": "Structure d\u00e9sir\u00e9e ?",
+        "subtitle": "La densit\u00e9 de l'information.",
+        "options": {
+          "simple": { "label": "Focus", "desc": "1-3 sections" },
+          "standard": { "label": "Standard", "desc": "Classique" },
+          "rich": { "label": "Dense", "desc": "Portail complet" },
+          "fullscreen": { "label": "Immersif", "desc": "Plein \u00e9cran" },
+          "masonry": { "label": "Masonry", "desc": "Style Pinterest" },
+          "bento": { "label": "Bento", "desc": "Grille modulaire" }
+        }
+      },
+      "typo": {
+        "question": "Typographie ?",
+        "subtitle": "La voix du texte.",
+        "options": {
+          "fine": "Fine / L\u00e9g\u00e8re",
+          "bold": "Bold / Impactante",
+          "serif": "Serif \u00c9l\u00e9gante",
+          "modern": "Sans-serif Moderne",
+          "variable": "Variable / Tech",
+          "retro": "Retro / Soft"
+        }
+      },
+      "ratio": {
+        "question": "Ratio Image / Texte ?",
+        "subtitle": "L'\u00e9quilibre visuel.",
+        "options": {
+          "image_heavy": "Visuel",
+          "mix": "\u00c9quilibr\u00e9",
+          "text_heavy": "Textuel"
+        }
+      },
+      "palette": {
+        "question": "Palette ?",
+        "subtitle": "L'univers colorim\u00e9trique.",
+        "options": {
+          "cold": "Froid / Tech",
+          "warm": "Chaud / Convivial",
+          "bw": "Noir & Blanc",
+          "accent": "Minimal Color\u00e9",
+          "pastel": "Pastel",
+          "neutral": "Neutre / Corp."
+        }
+      }
+    },
+    "moodboard": {
+      "title": "Inspirations",
+      "subtitle": "S\u00e9lectionnez les styles qui vous parlent.",
+      "selected": "s\u00e9lectionn\u00e9(s)",
+      "continue": "Continuer"
+    },
+    "features": {
+      "title": "Fonctionnalit\u00e9s",
+      "subtitle": "Quelles fonctionnalit\u00e9s souhaitez-vous int\u00e9grer ?",
+      "continue": "Continuer"
+    },
+    "voice": {
+      "title": "Une dernière chose...",
+      "subtitle": "Décrivez-nous votre vision",
+      "instruction": "Appuyez sur",
+      "recordButton": "Enregistrer",
+      "andDescribe": "et décrivez votre site rêvé, vos inspirations, tout ce qui vous passe par la tête.",
+      "privacyNote": "Nous n'écouterons pas directement votre message, ne vous en faites pas, vous ne serez pas jugé. Une IA va analyser vos besoins pour nous les résumer.",
+      "importantNote": "Cette étape est importante pour personnaliser au maximum votre proposition.",
+      "recording": "Enregistrement en cours...",
+      "stop": "Arrêter",
+      "skip": "Passer cette étape",
+      "transcribing": "Transcription en cours...",
+      "analyzing": "Analyse de vos besoins...",
+      "whisperTranscribing": "Whisper transcrit votre message...",
+      "aiExtracting": "L'IA extrait les informations de design...",
+      "microphoneError": "Impossible d'accéder au microphone. Vérifiez les permissions.",
+      "processingError": "Erreur lors du traitement de l'audio. Réessayez ou passez cette étape."
+    },
+    "output": {
+      "title": "Votre Brief",
+      "subtitle": "Vérifiez vos choix avant d'envoyer.",
+      "vibe": "Vibe",
+      "palette": "Palette",
+      "identity": "Identité",
+      "structureAndFeatures": "Structure & Features",
+      "inspirations": "Inspirations (Moodboard)",
+      "modules": "Modules",
+      "sendBrief": "Envoyer mon brief",
+      "capturing": "Capture en cours...",
+      "finishDemo": "Terminer la démo",
+      "briefSent": "Brief envoyé !",
+      "thankYouMessage": "Merci d'avoir complété le questionnaire.",
+      "teamAnalyzeMessage": "Notre équipe va analyser vos préférences et vous recontacter très vite avec une proposition personnalisée."
+    },
+    "sessionNotFound": "Session introuvable. V\u00e9rifiez votre lien.",
+    "loadingError": "Erreur de chargement"
+  },
+  "studio": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "clients": "Clients",
+      "prompts": "Prompts",
+      "settings": "Paramètres",
+      "logout": "Déconnexion"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Vue d'ensemble de votre activité",
+      "totalClients": "Total Clients",
+      "completed": "Complétés",
+      "inProgress": "En cours",
+      "pending": "En attente",
+      "completionRate": "Taux de complétion"
+    },
+    "header": {
+      "search": "Rechercher..."
+    },
+    "stats": {
+      "totalClients": "Total Clients",
+      "pending": "En attente",
+      "completed": "Complétés",
+      "completionRate": "Taux de complétion"
+    },
+    "card": {
+      "website": "Site web",
+      "createdAt": "Créé le",
+      "copyLink": "Copier le lien",
+      "noSession": "Pas de session"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Configuration de votre espace",
+      "profile": "Profil",
+      "profileDesc": "Informations de votre compte",
+      "email": "Email",
+      "branding": "Branding",
+      "brandingDesc": "Personnalisez l'apparence du questionnaire",
+      "logo": "Logo",
+      "change": "Changer",
+      "companyName": "Nom de l'entreprise",
+      "companyPlaceholder": "Votre entreprise",
+      "dangerZone": "Zone dangereuse",
+      "dangerZoneDesc": "Actions irréversibles",
+      "deleteAllData": "Supprimer toutes les données"
+    },
+    "clients": {
+      "title": "Clients",
+      "subtitle": "Gérez vos clients et leurs sessions",
+      "addClient": "Ajouter un client",
+      "noClients": "Aucun client pour le moment",
+      "search": "Rechercher...",
+      "email": "Email",
+      "company": "Entreprise",
+      "contact": "Contact",
+      "website": "Site web",
+      "notes": "Notes",
+      "client": "Client",
+      "date": "Date",
+      "actions": "Actions",
+      "clientCount": "{count} client(s)",
+      "status": {
+        "pending": "En attente",
+        "in_progress": "En cours",
+        "completed": "Compl\u00e9t\u00e9",
+        "no_session": "Pas de session"
+      },
+      "sendQuestionnaire": "Envoyer le questionnaire",
+      "viewDetails": "Voir les d\u00e9tails",
+      "backToClients": "Retour aux clients",
+      "sentAt": "Envoyé",
+      "completedAt": "Complété",
+      "notYetResponded": "Le client n'a pas encore répondu au questionnaire.",
+      "newArchetype": "Nouvel Archetype",
+      "newProspect": "Nouveau prospect",
+      "enterProspectEmail": "Entrez l'email du prospect pour générer son lien personnalisé.",
+      "prospectEmail": "Email du prospect",
+      "creating": "Création...",
+      "linkCreated": "Lien créé !",
+      "sendLinkTo": "Envoyez ce lien à",
+      "toFillQuestionnaire": "pour qu'il remplisse son questionnaire.",
+      "personalLink": "Lien personnel",
+      "copyLink": "Copier le lien"
+    },
+    "showroom": {
+      "title": "Showroom Designer",
+      "sent": "Envoy\u00e9",
+      "image": "Image",
+      "html": "HTML",
+      "dragOrPaste": "Glisser, coller ou cliquer",
+      "pasteHtml": "Coller le code HTML ici...",
+      "price": "Prix",
+      "designsConfigured": "design(s) configur\u00e9(s)",
+      "addDesignPrompt": "Ajoutez au moins 1 design pour envoyer le showroom",
+      "sendShowroom": "Envoyer le Showroom",
+      "showroomLink": "Lien showroom :"
+    },
+    "prompt": {
+      "title": "Prompt Design",
+      "generating": "G\u00e9n\u00e9ration du Prompt...",
+      "copyPrompt": "Copier le prompt",
+      "agentGenerating": "L'agent ANALYST g\u00e9n\u00e8re votre prompt...",
+      "mayTakeMoment": "Cela peut prendre quelques secondes",
+      "errorGenerating": "Une erreur est survenue lors de la g\u00e9n\u00e9ration du brief."
+    },
+    "response": {
+      "clientInfo": "Informations Client",
+      "businessName": "Nom du business",
+      "questionnaireResponses": "Réponses Questionnaire",
+      "copyJson": "Copier JSON",
+      "designPreferences": "Préférences Design",
+      "moodboard": "Moodboard",
+      "selections": "sélections",
+      "selectedFeatures": "sélectionnées",
+      "voiceAnalysis": "Analyse Vocale (IA)",
+      "globalVision": "Vision globale",
+      "mentionedInspirations": "Inspirations mentionnées",
+      "desiredVisualStyle": "Style visuel souhaité",
+      "ambiance": "Ambiance",
+      "typography": "Typographie",
+      "desiredColors": "Couleurs souhaitées",
+      "requestedFeatures": "Fonctionnalités demandées",
+      "brandTone": "Ton / Marque",
+      "keywords": "Mots-clés",
+      "notAnswered": "Non répondu",
+      "clickToCopyImage": "Cliquer pour copier l'image",
+      "copyImage": "Copier l'image",
+      "screenshot": "Screenshot",
+      "features": "Features",
+      "value": "Valeur",
+      "structure": "Structure",
+      "ratio": "Ratio",
+      "palette": "Palette"
+    }
+  },
+  "showroom": {
+    "title": "Vos propositions",
+    "subtitle": "Cliquez pour s\u00e9lectionner le design qui vous correspond.",
+    "designSelected": "Design s\u00e9lectionn\u00e9",
+    "interested": "Je suis int\u00e9ress\u00e9",
+    "signDiscount": "Signer (-15%)",
+    "yourSelection": "Votre s\u00e9lection",
+    "email": "Email",
+    "phone": "T\u00e9l\u00e9phone",
+    "message": "Message",
+    "messageOptional": "(optionnel)",
+    "messagePlaceholder": "Des pr\u00e9cisions sur votre projet...",
+    "confirmOrder": "Confirmer ma commande",
+    "sendRequest": "Envoyer ma demande",
+    "sending": "Envoi en cours...",
+    "thankYou": "Merci !",
+    "orderConfirmed": "Votre commande a \u00e9t\u00e9 confirm\u00e9e.",
+    "requestSent": "Votre demande a bien \u00e9t\u00e9 envoy\u00e9e.",
+    "teamWillContact": "Notre \u00e9quipe vous recontactera tr\u00e8s rapidement.",
+    "notFound": "Showroom introuvable.",
+    "notAvailable": "Ce showroom n'est pas encore disponible.",
+    "noDesigns": "Aucun design disponible."
+  }
+}

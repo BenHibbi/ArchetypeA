@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { SKELETONS } from '@/config'
 import { SkeletonCard } from './visualizations'
@@ -12,15 +13,17 @@ interface MoodboardScreenProps {
 }
 
 export function MoodboardScreen({ likes, onToggle, onConfirm }: MoodboardScreenProps) {
+  const t = useTranslations('questionnaire.moodboard')
+
   return (
     <div className="max-w-5xl mx-auto w-full animate-zoom-in h-[calc(100vh-180px)] flex flex-col">
       <div className="text-center mb-6 flex-shrink-0">
         <span className="text-teal-600 font-bold text-xs tracking-widest uppercase mb-2 block">
           Step 7
         </span>
-        <h2 className="text-4xl font-bold text-slate-900">Moodboard Abstrait</h2>
+        <h2 className="text-4xl font-bold text-slate-900">{t('title')}</h2>
         <p className="text-slate-500 text-lg mt-2">
-          Sélectionnez les mises en page qui vous inspirent.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -43,7 +46,7 @@ export function MoodboardScreen({ likes, onToggle, onConfirm }: MoodboardScreenP
           size="xl"
           className={likes.length > 0 ? 'bg-slate-900 hover:bg-orange-500' : ''}
         >
-          Confirmer ({likes.length}) <ArrowRight size={20} />
+          {t('continue')} ({likes.length} {t('selected')}) <ArrowRight size={20} />
         </Button>
       </div>
     </div>
