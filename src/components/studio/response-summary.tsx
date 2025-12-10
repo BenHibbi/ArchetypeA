@@ -1,0 +1,378 @@
+'use client'
+
+import { useState } from 'react'
+import { Copy, Check, ChevronDown, ChevronRight, Camera, ExternalLink } from 'lucide-react'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { QUESTIONS, SKELETONS } from '@/config'
+
+interface Response {
+  ambiance: string | null
+  valeurs: string | null
+  structure: string | null
+  typo: string | null
+  ratio: string | null
+  palette: string | null
+  moodboard_likes: string[]
+  features: string[]
+  voice_transcription?: string | null
+  voice_analysis?: string | null
+  screenshot_url?: string | null
+  business_name?: string | null
+  website_url?: string | null
+}
+
+interface ResponseSummaryProps {
+  response: Response
+}
+
+export function ResponseSummary({ response }: ResponseSummaryProps) {
+  const [copiedSection, setCopiedSection] = useState<string | null>(null)
+  const [questionnaireOpen, setQuestionnaireOpen] = useState(false)
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [screenshotCopied, setScreenshotCopied] = useState(false)
+
+  const getOptionLabel = (questionId: string, optionId: string | null) => {
+    if (!optionId) return 'Non répondu'
+    const question = QUESTIONS.find((q) => q.id === questionId)
+    const option = question?.options.find((o) => o.id === optionId)
+    return option?.label || optionId
+  }
+
+  const copyToClipboard = async (text: string, section: string) => {
+    await navigator.clipboard.writeText(text)
+    setCopiedSection(section)
+    setTimeout(() => setCopiedSection(null), 2000)
+  }
+
+  // Préparer le JSON des réponses questionnaire
+  const questionnaireData = {
+    preferences_design: {
+      ambiance: { id: response.ambiance, label: getOptionLabel('ambiance', response.ambiance) },
+      valeurs: { id: response.valeurs, label: getOptionLabel('valeurs', response.valeurs) },
+      structure: { id: response.structure, label: getOptionLabel('structure', response.structure) },
+      typographie: { id: response.typo, label: getOptionLabel('typo', response.typo) },
+      ratio: { id: response.ratio, label: getOptionLabel('ratio', response.ratio) },
+      palette: { id: response.palette, label: getOptionLabel('palette', response.palette) },
+    },
+    moodboard: response.moodboard_likes?.map(id => ({
+      id,
+      label: SKELETONS.find(s => s.id === id)?.label || id
+    })) || [],
+    features: response.features || []
+  }
+
+  // Parser l'analyse vocale si disponible
+  let voiceAnalysis = null
+  if (response.voice_analysis) {
+    try {
+      voiceAnalysis = JSON.parse(response.voice_analysis)
+    } catch {
+      voiceAnalysis = { raw: response.voice_analysis }
+    }
+  }
+
+  const items = [
+    { label: 'Ambiance', value: getOptionLabel('ambiance', response.ambiance), id: response.ambiance },
+    { label: 'Valeur', value: getOptionLabel('valeurs', response.valeurs), id: response.valeurs },
+    { label: 'Structure', value: getOptionLabel('structure', response.structure), id: response.structure },
+    { label: 'Typographie', value: getOptionLabel('typo', response.typo), id: response.typo },
+    { label: 'Ratio', value: getOptionLabel('ratio', response.ratio), id: response.ratio },
+    { label: 'Palette', value: getOptionLabel('palette', response.palette), id: response.palette },
+  ]
+
+  const copyScreenshot = async () => {
+    if (!response.screenshot_url) return
+
+    try {
+      // Convert base64 to blob
+      const response64 = await fetch(response.screenshot_url)
+      const blob = await response64.blob()
+
+      // Copy to clipboard as image
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob })
+      ])
+
+      setScreenshotCopied(true)
+      setTimeout(() => setScreenshotCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy screenshot:', err)
+      // Fallback: copy data URL
+      await navigator.clipboard.writeText(response.screenshot_url)
+      setScreenshotCopied(true)
+      setTimeout(() => setScreenshotCopied(false), 2000)
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Business Info + Screenshot */}
+      {(response.business_name || response.screenshot_url) && (
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
+          <div className="flex items-start gap-6">
+            {/* Screenshot Thumbnail */}
+            {response.screenshot_url && (
+              <button
+                onClick={copyScreenshot}
+                className="relative group flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden border-2 border-slate-200 hover:border-teal-500 transition-all shadow-sm hover:shadow-lg"
+                title="Cliquer pour copier l'image"
+              >
+                <img
+                  src={response.screenshot_url}
+                  alt="Screenshot du site"
+                  className="w-full h-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  {screenshotCopied ? (
+                    <span className="text-white text-sm font-medium flex items-center gap-2">
+                      <Check size={16} /> Copié !
+                    </span>
+                  ) : (
+                    <span className="text-white text-sm font-medium flex items-center gap-2">
+                      <Copy size={16} /> Copier l'image
+                    </span>
+                  )}
+                </div>
+                <div className="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                  <Camera size={12} /> Screenshot
+                </div>
+              </button>
+            )}
+
+            {/* Business Info */}
+            <div className="flex-1">
+              {response.business_name && (
+                <div className="mb-3">
+                  <span className="text-xs text-slate-400 uppercase tracking-wider">Nom du business</span>
+                  <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
+                </div>
+              )}
+              {response.website_url && (
+                <a
+                  href={response.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 hover:underline text-sm"
+                >
+                  <ExternalLink size={14} />
+                  {response.website_url}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Section Questionnaire - Accordéon */}
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <button
+          onClick={() => setQuestionnaireOpen(!questionnaireOpen)}
+          className="w-full bg-slate-900 text-white px-6 py-4 flex items-center justify-between hover:bg-slate-800 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            {questionnaireOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+            <h3 className="font-bold text-lg">Réponses Questionnaire</h3>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/10"
+            onClick={(e) => {
+              e.stopPropagation()
+              copyToClipboard(JSON.stringify(questionnaireData, null, 2), 'questionnaire')
+            }}
+          >
+            {copiedSection === 'questionnaire' ? (
+              <><Check size={16} className="mr-2 text-green-400" /> Copié !</>
+            ) : (
+              <><Copy size={16} className="mr-2" /> Copier JSON</>
+            )}
+          </Button>
+        </button>
+
+        {questionnaireOpen && (
+          <div className="p-6 space-y-6">
+            {/* Préférences Design */}
+            <div>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                Préférences Design
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {items.map((item) => (
+                  <div
+                    key={item.label}
+                    className="bg-slate-50 rounded-lg p-3 border border-slate-100"
+                  >
+                    <span className="text-xs text-slate-400 block mb-1">
+                      {item.label}
+                    </span>
+                    <span className="font-semibold text-slate-900">{item.value}</span>
+                    <span className="text-xs text-slate-400 ml-2">({item.id})</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Moodboard */}
+            {response.moodboard_likes?.length > 0 && (
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  Moodboard ({response.moodboard_likes.length} sélections)
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {response.moodboard_likes.map((id) => {
+                    const skeleton = SKELETONS.find((s) => s.id === id)
+                    return (
+                      <span
+                        key={id}
+                        className="text-sm font-medium bg-slate-900 text-white px-3 py-1.5 rounded-full"
+                      >
+                        {skeleton?.label || id}
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Features */}
+            {response.features?.length > 0 && (
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  Features ({response.features.length} sélectionnées)
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {response.features.map((feature) => (
+                    <span
+                      key={feature}
+                      className="text-sm font-medium bg-teal-100 text-teal-800 px-3 py-1.5 rounded-full"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Section Analyse Vocale - Accordéon */}
+      {voiceAnalysis && (
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setVoiceOpen(!voiceOpen)}
+            className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-4 flex items-center justify-between hover:from-orange-600 hover:to-yellow-600 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              {voiceOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+              <h3 className="font-bold text-lg">Analyse Vocale (IA)</h3>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/20"
+              onClick={(e) => {
+                e.stopPropagation()
+                copyToClipboard(JSON.stringify(voiceAnalysis, null, 2), 'voice')
+              }}
+            >
+              {copiedSection === 'voice' ? (
+                <><Check size={16} className="mr-2 text-green-200" /> Copié !</>
+              ) : (
+                <><Copy size={16} className="mr-2" /> Copier JSON</>
+              )}
+            </Button>
+          </button>
+
+          {voiceOpen && (
+            <div className="p-6 space-y-4">
+              {voiceAnalysis.vision_globale && (
+                <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                  <span className="text-xs font-bold text-orange-600 uppercase">Vision globale</span>
+                  <p className="text-slate-800 mt-1">{voiceAnalysis.vision_globale}</p>
+                </div>
+              )}
+
+              {voiceAnalysis.inspirations?.length > 0 && (
+                <div>
+                  <span className="text-xs font-bold text-slate-500 uppercase">Inspirations mentionnées</span>
+                  <div className="mt-2 space-y-2">
+                    {voiceAnalysis.inspirations.map((insp: any, i: number) => (
+                      <div key={i} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                        <span className="font-semibold text-slate-900">{insp.nom}</span>
+                        {insp.elements_apprecies && (
+                          <p className="text-sm text-slate-500 mt-1">{insp.elements_apprecies}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {voiceAnalysis.style_visuel && Object.keys(voiceAnalysis.style_visuel).some(k => voiceAnalysis.style_visuel[k] && (Array.isArray(voiceAnalysis.style_visuel[k]) ? voiceAnalysis.style_visuel[k].length > 0 : true)) && (
+                <div>
+                  <span className="text-xs font-bold text-slate-500 uppercase">Style visuel souhaité</span>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    {voiceAnalysis.style_visuel.ambiance && (
+                      <div className="bg-slate-50 rounded-lg p-3">
+                        <span className="text-xs text-slate-400">Ambiance</span>
+                        <p className="font-medium">{voiceAnalysis.style_visuel.ambiance}</p>
+                      </div>
+                    )}
+                    {voiceAnalysis.style_visuel.typographie && (
+                      <div className="bg-slate-50 rounded-lg p-3">
+                        <span className="text-xs text-slate-400">Typographie</span>
+                        <p className="font-medium">{voiceAnalysis.style_visuel.typographie}</p>
+                      </div>
+                    )}
+                    {voiceAnalysis.style_visuel.couleurs_souhaitees?.length > 0 && (
+                      <div className="bg-slate-50 rounded-lg p-3 col-span-2">
+                        <span className="text-xs text-slate-400">Couleurs souhaitées</span>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c: string, i: number) => (
+                            <span key={i} className="bg-white border px-2 py-1 rounded text-sm">{c}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {voiceAnalysis.fonctionnalites?.length > 0 && (
+                <div>
+                  <span className="text-xs font-bold text-slate-500 uppercase">Fonctionnalités demandées</span>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {voiceAnalysis.fonctionnalites.map((f: string, i: number) => (
+                      <span key={i} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">{f}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {voiceAnalysis.ton_marque && (
+                <div className="bg-slate-50 rounded-lg p-3">
+                  <span className="text-xs text-slate-400">Ton / Marque</span>
+                  <p className="font-medium">{voiceAnalysis.ton_marque}</p>
+                </div>
+              )}
+
+              {voiceAnalysis.keywords?.length > 0 && (
+                <div>
+                  <span className="text-xs font-bold text-slate-500 uppercase">Mots-clés</span>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {voiceAnalysis.keywords.map((k: string, i: number) => (
+                      <span key={i} className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">{k}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
