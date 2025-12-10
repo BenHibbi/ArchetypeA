@@ -78,14 +78,14 @@
       },
       "valeurs": {
         "question": "Que doit transmettre le site ?",
-        "subtitle": "L'\u00e9motion cl\u00e9.",
+        "subtitle": "L'émotion clé.",
         "options": {
-          "confiance": "Confiance",
-          "creativite": "Cr\u00e9ativit\u00e9",
-          "performance": "Performance",
-          "simplicite": "Simplicit\u00e9",
-          "luxe": "Luxe Discret",
-          "accessibilite": "Accessibilit\u00e9"
+          "confiance": { "label": "Confiance", "desc": "Rassurer et fidéliser" },
+          "creativite": { "label": "Créativité", "desc": "Inspirer et innover" },
+          "performance": { "label": "Performance", "desc": "Efficacité et résultats" },
+          "simplicite": { "label": "Simplicité", "desc": "Clarté et accessibilité" },
+          "luxe": { "label": "Luxe Discret", "desc": "Raffinement et exclusivité" },
+          "accessibilite": { "label": "Accessibilité", "desc": "Ouverture à tous" }
         }
       },
       "structure": {
@@ -104,33 +104,33 @@
         "question": "Typographie ?",
         "subtitle": "La voix du texte.",
         "options": {
-          "fine": "Fine / L\u00e9g\u00e8re",
-          "bold": "Bold / Impactante",
-          "serif": "Serif \u00c9l\u00e9gante",
-          "modern": "Sans-serif Moderne",
-          "variable": "Variable / Tech",
-          "retro": "Retro / Soft"
+          "fine": { "label": "Fine / Légère", "desc": "Élégance discrète" },
+          "bold": { "label": "Bold / Impactante", "desc": "Présence forte" },
+          "serif": { "label": "Serif Élégante", "desc": "Classique raffiné" },
+          "modern": { "label": "Sans-serif Moderne", "desc": "Contemporain épuré" },
+          "variable": { "label": "Variable / Tech", "desc": "Innovant dynamique" },
+          "retro": { "label": "Retro / Soft", "desc": "Nostalgique chaleureux" }
         }
       },
       "ratio": {
         "question": "Ratio Image / Texte ?",
-        "subtitle": "L'\u00e9quilibre visuel.",
+        "subtitle": "L'équilibre visuel.",
         "options": {
-          "image_heavy": "Visuel",
-          "mix": "\u00c9quilibr\u00e9",
-          "text_heavy": "Textuel"
+          "image_heavy": { "label": "Visuel", "desc": "Focus images" },
+          "mix": { "label": "Équilibré", "desc": "Mix harmonieux" },
+          "text_heavy": { "label": "Textuel", "desc": "Focus contenu" }
         }
       },
       "palette": {
         "question": "Palette ?",
-        "subtitle": "L'univers colorim\u00e9trique.",
+        "subtitle": "L'univers colorimétrique.",
         "options": {
-          "cold": "Froid / Tech",
-          "warm": "Chaud / Convivial",
-          "bw": "Noir & Blanc",
-          "accent": "Minimal Color\u00e9",
-          "pastel": "Pastel",
-          "neutral": "Neutre / Corp."
+          "cold": { "label": "Froid / Tech", "desc": "Bleus et gris" },
+          "warm": { "label": "Chaud / Convivial", "desc": "Oranges et rouges" },
+          "bw": { "label": "Noir & Blanc", "desc": "Contraste épuré" },
+          "accent": { "label": "Minimal Coloré", "desc": "Touches de couleur" },
+          "pastel": { "label": "Pastel", "desc": "Doux et léger" },
+          "neutral": { "label": "Neutre / Corp.", "desc": "Sobre et pro" }
         }
       }
     },
@@ -340,6 +340,14 @@
     "teamWillContact": "Notre \u00e9quipe vous recontactera tr\u00e8s rapidement.",
     "notFound": "Showroom introuvable.",
     "notAvailable": "Ce showroom n'est pas encore disponible.",
-    "noDesigns": "Aucun design disponible."
+    "noDesigns": "Aucun design disponible.",
+    "chat": {
+      "subtitle": "Stratégiste Digital",
+      "welcomeTitle": "Bienvenue !",
+      "welcomeSubtitle": "Une question sur les designs ? Je suis là pour vous aider.",
+      "placeholder": "Posez votre question...",
+      "typing": "Alex écrit...",
+      "errorMessage": "Désolé, une erreur s'est produite. Veuillez réessayer."
+    }
   }
 }

@@ -80,12 +80,12 @@
         "question": "What should the site convey?",
         "subtitle": "The key emotion.",
         "options": {
-          "confiance": "Trust",
-          "creativite": "Creativity",
-          "performance": "Performance",
-          "simplicite": "Simplicity",
-          "luxe": "Subtle Luxury",
-          "accessibilite": "Accessibility"
+          "confiance": { "label": "Trust", "desc": "Reassure and retain" },
+          "creativite": { "label": "Creativity", "desc": "Inspire and innovate" },
+          "performance": { "label": "Performance", "desc": "Efficiency and results" },
+          "simplicite": { "label": "Simplicity", "desc": "Clarity and ease" },
+          "luxe": { "label": "Subtle Luxury", "desc": "Refinement and exclusivity" },
+          "accessibilite": { "label": "Accessibility", "desc": "Open to everyone" }
         }
       },
       "structure": {
@@ -104,33 +104,33 @@
         "question": "Typography?",
         "subtitle": "The voice of text.",
         "options": {
-          "fine": "Fine / Light",
-          "bold": "Bold / Impactful",
-          "serif": "Elegant Serif",
-          "modern": "Modern Sans-serif",
-          "variable": "Variable / Tech",
-          "retro": "Retro / Soft"
+          "fine": { "label": "Fine / Light", "desc": "Subtle elegance" },
+          "bold": { "label": "Bold / Impactful", "desc": "Strong presence" },
+          "serif": { "label": "Elegant Serif", "desc": "Refined classic" },
+          "modern": { "label": "Modern Sans-serif", "desc": "Clean contemporary" },
+          "variable": { "label": "Variable / Tech", "desc": "Dynamic innovation" },
+          "retro": { "label": "Retro / Soft", "desc": "Warm nostalgia" }
         }
       },
       "ratio": {
         "question": "Image / Text Ratio?",
         "subtitle": "The visual balance.",
         "options": {
-          "image_heavy": "Visual",
-          "mix": "Balanced",
-          "text_heavy": "Textual"
+          "image_heavy": { "label": "Visual", "desc": "Image-focused" },
+          "mix": { "label": "Balanced", "desc": "Equal mix" },
+          "text_heavy": { "label": "Textual", "desc": "Content-focused" }
         }
       },
       "palette": {
         "question": "Color Palette?",
         "subtitle": "The color universe.",
         "options": {
-          "cold": "Cold / Tech",
-          "warm": "Warm / Friendly",
-          "bw": "Black & White",
-          "accent": "Minimal Colored",
-          "pastel": "Pastel",
-          "neutral": "Neutral / Corp."
+          "cold": { "label": "Cold / Tech", "desc": "Blues and grays" },
+          "warm": { "label": "Warm / Friendly", "desc": "Oranges and reds" },
+          "bw": { "label": "Black & White", "desc": "Clean contrast" },
+          "accent": { "label": "Minimal Colored", "desc": "Color accents" },
+          "pastel": { "label": "Pastel", "desc": "Soft and light" },
+          "neutral": { "label": "Neutral / Corp.", "desc": "Sober and pro" }
         }
       }
     },
@@ -340,6 +340,14 @@
     "teamWillContact": "Our team will contact you very soon.",
     "notFound": "Showroom not found.",
     "notAvailable": "This showroom is not yet available.",
-    "noDesigns": "No designs available."
+    "noDesigns": "No designs available.",
+    "chat": {
+      "subtitle": "Digital Strategist",
+      "welcomeTitle": "Welcome!",
+      "welcomeSubtitle": "Got a question about the designs? I'm here to help.",
+      "placeholder": "Ask your question...",
+      "typing": "Alex is typing...",
+      "errorMessage": "Sorry, an error occurred. Please try again."
+    }
   }
 }

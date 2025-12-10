@@ -74,12 +74,12 @@ export const QUESTIONS: Question[] = [
     subtitle: "L'univers colorimétrique.",
     layout: 'grid-cols-2 sm:grid-cols-3',
     options: [
-      { id: 'cold', label: 'Froid / Tech', colors: ['bg-blue-600', 'bg-cyan-400', 'bg-slate-900'] },
-      { id: 'warm', label: 'Chaud / Convivial', colors: ['bg-orange-500', 'bg-amber-300', 'bg-stone-100'] },
-      { id: 'bw', label: 'Noir & Blanc', colors: ['bg-black', 'bg-white', 'bg-zinc-500'] },
-      { id: 'accent', label: 'Minimal Coloré', colors: ['bg-zinc-100', 'bg-teal-600', 'bg-white'] },
-      { id: 'pastel', label: 'Pastel', colors: ['bg-rose-200', 'bg-purple-200', 'bg-emerald-100'] },
-      { id: 'neutral', label: 'Neutre / Corp.', colors: ['bg-slate-800', 'bg-slate-400', 'bg-slate-200'] },
+      { id: 'cold', label: 'Froid / Tech', colors: ['bg-slate-900', 'bg-blue-600', 'bg-cyan-400', 'bg-indigo-500', 'bg-sky-300'] },
+      { id: 'warm', label: 'Chaud / Convivial', colors: ['bg-orange-500', 'bg-amber-400', 'bg-red-400', 'bg-yellow-300', 'bg-stone-200'] },
+      { id: 'bw', label: 'Noir & Blanc', colors: ['bg-black', 'bg-zinc-800', 'bg-zinc-500', 'bg-zinc-300', 'bg-white'] },
+      { id: 'accent', label: 'Minimal Coloré', colors: ['bg-white', 'bg-zinc-100', 'bg-zinc-200', 'bg-teal-500', 'bg-emerald-400'] },
+      { id: 'pastel', label: 'Pastel', colors: ['bg-rose-200', 'bg-pink-200', 'bg-purple-200', 'bg-sky-200', 'bg-emerald-200'] },
+      { id: 'neutral', label: 'Neutre / Corp.', colors: ['bg-slate-800', 'bg-slate-600', 'bg-slate-400', 'bg-gray-300', 'bg-stone-100'] },
     ]
   }
 ]

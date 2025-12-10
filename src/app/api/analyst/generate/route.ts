@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
-import Groq from 'groq-sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-})
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
 
 // Load analyst prompt from external file
 const ANALYST_SYSTEM_PROMPT = readFileSync(
@@ -46,7 +44,7 @@ interface VoiceAnalysis {
 
 export async function POST(request: Request) {
   try {
-    const { questionnaire, voiceAnalysis, clientName, websiteUrl } = await request.json()
+    const { questionnaire, voiceAnalysis, clientName, websiteUrl, screenshotUrl } = await request.json()
 
     if (!questionnaire) {
       return NextResponse.json({ error: 'Données questionnaire manquantes' }, { status: 400 })
@@ -66,21 +64,57 @@ ${questionnaireText}
 ## VOICE ANALYSIS:
 ${voiceText}
 
+${screenshotUrl ? '## CURRENT WEBSITE SCREENSHOT:\nA screenshot of the client\'s current website is attached. Analyze its current design, identify strengths and weaknesses, and use this context to inform your redesign recommendations.' : ''}
+
 ---
 Generate the Redesign Master Prompt following the exact structure specified.
 `
 
-    const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        { role: 'system', content: ANALYST_SYSTEM_PROMPT },
-        { role: 'user', content: userPrompt }
-      ],
-      temperature: 0.4,
-      max_completion_tokens: 4096,
-    })
+    // Use Gemini 2.5 Pro with multimodal support
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro-preview-06-05' })
 
-    const brief = completion.choices[0]?.message?.content || ''
+    // Build content parts
+    const parts: any[] = [
+      { text: ANALYST_SYSTEM_PROMPT + '\n\n' + userPrompt }
+    ]
+
+    // Add screenshot if available
+    if (screenshotUrl) {
+      if (screenshotUrl.startsWith('data:image')) {
+        // Base64 data URL
+        const matches = screenshotUrl.match(/^data:([^;]+);base64,(.+)$/)
+        if (matches) {
+          const mimeType = matches[1]
+          const base64Data = matches[2]
+          parts.push({
+            inlineData: {
+              mimeType,
+              data: base64Data
+            }
+          })
+        }
+      } else if (screenshotUrl.startsWith('http')) {
+        // HTTP URL - fetch and convert to base64
+        try {
+          const imageResponse = await fetch(screenshotUrl)
+          const arrayBuffer = await imageResponse.arrayBuffer()
+          const base64Data = Buffer.from(arrayBuffer).toString('base64')
+          const contentType = imageResponse.headers.get('content-type') || 'image/png'
+          parts.push({
+            inlineData: {
+              mimeType: contentType,
+              data: base64Data
+            }
+          })
+        } catch (imgError) {
+          console.error('Error fetching screenshot:', imgError)
+        }
+      }
+    }
+
+    const result = await model.generateContent(parts)
+    const response = await result.response
+    const brief = response.text()
 
     return NextResponse.json({ brief })
   } catch (error) {

@@ -15,6 +15,7 @@ interface Response {
   moodboard_likes: string[]
   features: string[]
   voice_analysis?: string | null
+  screenshot_url?: string | null
 }
 
 interface Client {
@@ -69,6 +70,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
           voiceAnalysis,
           clientName: client.company_name || client.email.split('@')[0],
           websiteUrl: client.website_url,
+          screenshotUrl: response.screenshot_url,
         }),
       })
 

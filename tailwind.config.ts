@@ -6,6 +6,16 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/config/**/*.{js,ts}',
+  ],
+  safelist: [
+    // Palette colors used in questions.ts
+    'bg-slate-900', 'bg-blue-600', 'bg-cyan-400', 'bg-indigo-500', 'bg-sky-300',
+    'bg-orange-500', 'bg-amber-400', 'bg-red-400', 'bg-yellow-300', 'bg-stone-200',
+    'bg-black', 'bg-zinc-800', 'bg-zinc-500', 'bg-zinc-300', 'bg-white',
+    'bg-zinc-100', 'bg-zinc-200', 'bg-teal-500', 'bg-emerald-400',
+    'bg-rose-200', 'bg-pink-200', 'bg-purple-200', 'bg-sky-200', 'bg-emerald-200',
+    'bg-slate-800', 'bg-slate-600', 'bg-slate-400', 'bg-gray-300', 'bg-stone-100',
   ],
   theme: {
     extend: {

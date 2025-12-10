@@ -4,13 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import { Header, CreateClientDialog, CopyButton } from '@/components/studio'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Eye } from 'lucide-react'
-import {
-  formatDate,
-  getInitials,
-  generateSessionUrl,
-} from '@/lib/utils'
+import { formatDate, generateSessionUrl } from '@/lib/utils'
 
 async function getClients() {
   const supabase = await createClient()
@@ -24,10 +19,15 @@ async function getClients() {
         status,
         started_at,
         completed_at,
-        created_at
+        created_at,
+        responses (
+          business_name,
+          website_url
+        )
       )
     `)
     .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false, referencedTable: 'sessions' })
 
   return clients || []
 }
@@ -61,6 +61,9 @@ export default async function ClientsPage() {
                   {t('email')}
                 </th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  {t('website')}
+                </th>
+                <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
@@ -82,32 +85,48 @@ export default async function ClientsPage() {
                     ? 'warning'
                     : 'pending'
 
+                // responses peut être un objet ou un array selon Supabase
+                const rawResponses = latestSession?.responses
+                const response = Array.isArray(rawResponses)
+                  ? rawResponses[0]
+                  : rawResponses
+
+                const businessName = response?.business_name || client.company_name
+                const websiteUrl = response?.website_url || client.website_url
+
                 return (
                   <tr key={client.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-teal-100 text-teal-700 text-sm font-bold">
-                            {getInitials(client.company_name || client.email)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <Link
-                            href={`/studio/clients/${client.id}`}
-                            className="font-medium text-slate-900 hover:text-teal-600"
-                          >
-                            {client.company_name || 'N/A'}
-                          </Link>
-                          {client.contact_name && (
-                            <p className="text-sm text-slate-500">
-                              {client.contact_name}
-                            </p>
-                          )}
-                        </div>
+                      <div>
+                        <Link
+                          href={`/studio/clients/${client.id}`}
+                          className="font-medium text-slate-900 hover:text-teal-600"
+                        >
+                          {businessName || client.email}
+                        </Link>
+                        {client.contact_name && (
+                          <p className="text-sm text-slate-500">
+                            {client.contact_name}
+                          </p>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-600">
                       {client.email}
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      {websiteUrl ? (
+                        <a
+                          href={websiteUrl.startsWith('http') ? websiteUrl : `https://${websiteUrl}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-teal-600 hover:text-teal-700 hover:underline truncate max-w-[200px] block"
+                        >
+                          {websiteUrl.replace(/^https?:\/\//, '')}
+                        </a>
+                      ) : (
+                        <span className="text-slate-400">-</span>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <Badge variant={statusVariant}>

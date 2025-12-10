@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Logo } from '@/components/shared/logo'
 import { LoadingScreen } from '@/components/shared/loading'
+import { ShowroomChat } from '@/components/showroom/showroom-chat'
 import { cn } from '@/lib/utils'
 
 interface DesignProposal {
@@ -23,6 +24,7 @@ interface DesignProposal {
 interface ShowroomData {
   sessionId: string
   businessName: string | null
+  designBrief: string | null
   designs: DesignProposal[]
   existingSelection: any | null
 }
@@ -73,9 +75,9 @@ export default function ShowroomPage() {
 
         const { data: response } = await supabase
           .from('responses')
-          .select('business_name')
+          .select('business_name, generated_brief')
           .eq('session_id', sessionId)
-          .single()
+          .single() as { data: { business_name: string | null; generated_brief: string | null } | null }
 
         const { data: designs } = await supabase
           .from('design_proposals')
@@ -98,7 +100,8 @@ export default function ShowroomPage() {
         setData({
           sessionId,
           businessName: response?.business_name || null,
-          designs,
+          designBrief: response?.generated_brief || null,
+          designs: designs || [],
           existingSelection,
         })
 
@@ -347,10 +350,16 @@ export default function ShowroomPage() {
         )}
       </header>
 
-      <main className="pt-24 pb-40 px-4 md:px-8">
+      <main className={cn(
+        'px-4 md:px-8',
+        selectedDesign ? 'pt-20 pb-32' : 'pt-24 pb-40'
+      )}>
         <div className="max-w-[95vw] mx-auto">
-          {/* Hero - Compact */}
-          <div className="text-center mb-8">
+          {/* Hero - Compact, hidden when design selected */}
+          <div className={cn(
+            'text-center transition-all duration-300 overflow-hidden',
+            selectedDesign ? 'h-0 opacity-0 mb-0' : 'mb-8'
+          )}>
             <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-2">
               {t('title')}
             </h1>
@@ -374,16 +383,16 @@ export default function ShowroomPage() {
               const isNotSelected = hasSelection && !isSelected
 
               return (
-                <button
+                <div
                   key={design.id}
                   onClick={() => handleSelectDesign(design)}
                   className={cn(
-                    'group relative rounded-xl overflow-hidden transition-all duration-500 ease-out',
+                    'group relative rounded-xl transition-all duration-500 ease-out cursor-pointer',
                     'hover:shadow-2xl',
-                    // Dynamic sizing based on selection - more dramatic
-                    isSelected && 'md:flex-[3] z-10',
-                    isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95',
-                    !hasSelection && 'md:flex-1 hover:-translate-y-2',
+                    // Dynamic sizing based on selection
+                    isSelected && 'md:flex-none w-fit mx-auto z-10',
+                    isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95 overflow-hidden',
+                    !hasSelection && 'md:flex-1 hover:-translate-y-2 overflow-hidden',
                     // Ring styling
                     isSelected
                       ? 'ring-4 ring-orange-500 shadow-2xl shadow-orange-500/30'
@@ -393,16 +402,16 @@ export default function ShowroomPage() {
                 >
                   {/* Selection Indicator */}
                   {isSelected && (
-                    <div className="absolute top-4 right-4 z-10 bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl animate-zoom-in">
+                    <div className="absolute top-4 right-4 z-20 bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl animate-zoom-in">
                       <Check size={22} strokeWidth={3} />
                     </div>
                   )}
 
-                  {/* Design Image - 16/9 format with min height for maximum size */}
+                  {/* Design Image - fit to image dimensions when selected */}
                   <div
                     className={cn(
-                      'bg-slate-100 overflow-hidden transition-all duration-500',
-                      'aspect-video min-h-[50vh]',
+                      'bg-slate-100 transition-all duration-500 rounded-xl overflow-hidden',
+                      !isSelected && 'aspect-video min-h-[40vh]',
                     )}
                   >
                     {design.image_url ? (
@@ -410,8 +419,10 @@ export default function ShowroomPage() {
                         src={design.image_url}
                         alt="Design"
                         className={cn(
-                          'w-full h-full object-cover object-top transition-all duration-500',
-                          'group-hover:scale-105',
+                          'transition-all duration-500',
+                          isSelected
+                            ? 'h-auto max-h-[calc(100vh-12rem)] w-auto'
+                            : 'w-full h-full object-cover object-top group-hover:scale-105',
                           isNotSelected && 'grayscale-[40%] group-hover:grayscale-0'
                         )}
                       />
@@ -437,7 +448,7 @@ export default function ShowroomPage() {
                       isSelected && 'opacity-0 group-hover:opacity-0'
                     )}
                   />
-                </button>
+                </div>
               )
             })}
           </div>
@@ -499,6 +510,9 @@ export default function ShowroomPage() {
           </div>
         </div>
       )}
+
+      {/* Chatbot */}
+      <ShowroomChat sessionId={sessionId} designBrief={data.designBrief} />
     </div>
   )
 }
