@@ -63,8 +63,7 @@ export function ShowroomChat({ sessionId, designBrief }: ShowroomChatProps) {
 
       const data = await res.json()
       setMessages([...newMessages, { role: 'assistant', content: data.reply }])
-    } catch (error) {
-      console.error('Chat error:', error)
+    } catch {
       setMessages([
         ...newMessages,
         { role: 'assistant', content: t('errorMessage') },

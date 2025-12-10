@@ -40,8 +40,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
 
       mediaRecorder.start()
       setIsRecording(true)
-    } catch (err) {
-      console.error('Erreur accès microphone:', err)
+    } catch {
       alert(t('microphoneError'))
     }
   }
@@ -87,8 +86,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
       await new Promise(resolve => setTimeout(resolve, 500))
 
       onComplete(data.transcription, data.analysis)
-    } catch (err) {
-      console.error('Erreur traitement audio:', err)
+    } catch {
       alert(t('processingError'))
       setIsProcessing(false)
       setProcessingStep(null)

@@ -1,12 +1,14 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { Upload, Code, X, Send, Loader2, Check, Euro, Image as ImageIcon, Copy, Link } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createClient } from '@/lib/supabase/client'
+import { COPY_FEEDBACK_DURATION, SAVE_FEEDBACK_DURATION } from '@/config'
 
 interface DesignSlot {
   id?: string
@@ -17,11 +19,18 @@ interface DesignSlot {
   title: string
 }
 
+interface ClientInfo {
+  email: string
+  name?: string
+  businessName?: string
+}
+
 interface ShowroomBuilderProps {
   sessionId: string
   initialDesigns?: DesignSlot[]
   showroomStatus?: string | null
   onShowroomSent?: () => void
+  client: ClientInfo
 }
 
 export function ShowroomBuilder({
@@ -29,6 +38,7 @@ export function ShowroomBuilder({
   initialDesigns = [],
   showroomStatus,
   onShowroomSent,
+  client,
 }: ShowroomBuilderProps) {
   const t = useTranslations('studio.showroom')
   const tCommon = useTranslations('common')
@@ -71,7 +81,8 @@ export function ShowroomBuilder({
     const items = e.clipboardData?.items
     if (!items) return
 
-    for (const item of items) {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
       if (item.type.startsWith('image/')) {
         e.preventDefault()
         const file = item.getAsFile()
@@ -128,9 +139,9 @@ export function ShowroomBuilder({
       }
 
       setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    } catch (err) {
-      console.error('Error saving designs:', err)
+      setTimeout(() => setSaved(false), SAVE_FEEDBACK_DURATION)
+    } catch {
+      // Error handled silently
     } finally {
       setIsSaving(false)
     }
@@ -152,9 +163,21 @@ export function ShowroomBuilder({
         })
         .eq('id', sessionId)
 
+      // Send email to client
+      await fetch('/api/email/send-showroom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId,
+          clientEmail: client.email,
+          clientName: client.name || client.email.split('@')[0],
+          businessName: client.businessName,
+        }),
+      })
+
       onShowroomSent?.()
-    } catch (err) {
-      console.error('Error sending showroom:', err)
+    } catch {
+      // Error handled silently
     } finally {
       setIsSending(false)
     }
@@ -229,12 +252,14 @@ export function ShowroomBuilder({
             </div>
 
             {/* Content Area */}
-            <div className="aspect-[4/3] bg-slate-50 rounded-lg overflow-hidden mb-3">
+            <div className="relative aspect-[4/3] bg-slate-50 rounded-lg overflow-hidden mb-3">
               {design.imageUrl ? (
-                <img
+                <Image
                   src={design.imageUrl}
                   alt={design.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 300px"
+                  className="object-cover"
                 />
               ) : design.htmlCode ? (
                 <iframe
@@ -329,7 +354,7 @@ export function ShowroomBuilder({
             onClick={() => {
               navigator.clipboard.writeText(showroomUrl)
               setLinkCopied(true)
-              setTimeout(() => setLinkCopied(false), 2000)
+              setTimeout(() => setLinkCopied(false), COPY_FEEDBACK_DURATION)
             }}
             className="relative"
             title={t('showroomLink')}

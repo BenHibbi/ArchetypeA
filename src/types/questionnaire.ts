@@ -27,6 +27,7 @@ export interface Question {
   subtitle: string
   layout: string
   options: QuestionOption[]
+  multiSelect?: boolean
 }
 
 export interface Skeleton {

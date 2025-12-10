@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Users, Sparkles, BarChart3 } from 'lucide-react'
+import { ArrowRight, Users, Sparkles, BarChart3, Store } from 'lucide-react'
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/shared/logo'
@@ -58,7 +58,7 @@ export default async function HomePage() {
           </div>
 
           {/* Features */}
-          <div className="grid md:grid-cols-3 gap-8 text-left">
+          <div className="grid md:grid-cols-2 gap-6 text-left max-w-3xl mx-auto">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mb-4">
                 <Users className="text-teal-600" size={24} />
@@ -86,6 +86,16 @@ export default async function HomePage() {
               <h3 className="font-bold text-lg mb-2">{t('features.dashboard.title')}</h3>
               <p className="text-slate-500 text-sm">
                 {t('features.dashboard.description')}
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4">
+                <Store className="text-amber-600" size={24} />
+              </div>
+              <h3 className="font-bold text-lg mb-2">{t('features.showroom.title')}</h3>
+              <p className="text-slate-500 text-sm">
+                {t('features.showroom.description')}
               </p>
             </div>
           </div>

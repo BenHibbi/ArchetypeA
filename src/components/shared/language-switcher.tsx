@@ -70,8 +70,8 @@ export function useAutoDetectLocale() {
 
         setDetected(true)
         router.refresh()
-      } catch (error) {
-        console.error('Failed to detect locale:', error)
+      } catch {
+        // Locale detection failed silently
       }
     }
 

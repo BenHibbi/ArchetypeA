@@ -7,11 +7,23 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { session_id, ...responseData } = body
 
-    if (!session_id) {
+    if (!session_id || typeof session_id !== 'string') {
       return NextResponse.json(
         { error: 'session_id is required' },
         { status: 400 }
       )
+    }
+
+    // Sanitise payload to avoid unexpected types
+    const cleanedResponse = {
+      ...responseData,
+      session_id,
+      moodboard_likes: Array.isArray(responseData.moodboard_likes)
+        ? responseData.moodboard_likes.filter((x: unknown) => typeof x === 'string')
+        : [],
+      features: Array.isArray(responseData.features)
+        ? responseData.features.filter((x: unknown) => typeof x === 'string')
+        : [],
     }
 
     const supabase = await createClient()
@@ -21,8 +33,7 @@ export async function POST(request: NextRequest) {
       .from('responses')
       .upsert(
         {
-          session_id,
-          ...responseData,
+          ...cleanedResponse,
         },
         { onConflict: 'session_id' }
       )

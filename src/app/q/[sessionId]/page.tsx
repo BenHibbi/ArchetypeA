@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { ChevronLeft, Loader2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { useQuestionnaireStore } from '@/stores/questionnaire-store'
@@ -12,11 +13,34 @@ import {
   ProgressHeader,
   IntroScreen,
   QuestionScreen,
-  MoodboardScreen,
-  FeaturesScreen,
-  VoiceScreen,
-  OutputScreen,
 } from '@/components/questionnaire'
+
+// Dynamic imports for heavy screens to improve initial load
+const ScreenLoader = () => (
+  <div className="flex items-center justify-center py-20">
+    <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+  </div>
+)
+
+const MoodboardScreen = dynamic(
+  () => import('@/components/questionnaire/moodboard-screen').then(mod => ({ default: mod.MoodboardScreen })),
+  { loading: ScreenLoader }
+)
+
+const FeaturesScreen = dynamic(
+  () => import('@/components/questionnaire/features-screen').then(mod => ({ default: mod.FeaturesScreen })),
+  { loading: ScreenLoader }
+)
+
+const VoiceScreen = dynamic(
+  () => import('@/components/questionnaire/voice-screen').then(mod => ({ default: mod.VoiceScreen })),
+  { loading: ScreenLoader }
+)
+
+const OutputScreen = dynamic(
+  () => import('@/components/questionnaire/output-screen').then(mod => ({ default: mod.OutputScreen })),
+  { loading: ScreenLoader }
+)
 
 export default function QuestionnairePage() {
   const params = useParams()
@@ -50,6 +74,7 @@ export default function QuestionnairePage() {
     setCompleted,
     reset,
   } = useQuestionnaireStore()
+  const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Vérifier et charger la session au démarrage
   useEffect(() => {
@@ -119,7 +144,11 @@ export default function QuestionnairePage() {
   useEffect(() => {
     if (!sessionId || step === 0 || isLoading) return
 
-    async function saveProgress() {
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current)
+    }
+
+    saveTimeout.current = setTimeout(async () => {
       const supabase = createClient()
 
       // Mettre à jour le statut de la session
@@ -147,14 +176,24 @@ export default function QuestionnairePage() {
         },
         { onConflict: 'session_id' }
       )
-    }
+    }, 400)
 
-    saveProgress()
-  }, [step, businessName, websiteUrl, answers, moodboardLikes, features, voiceTranscription, voiceAnalysis])
+    return () => {
+      if (saveTimeout.current) clearTimeout(saveTimeout.current)
+    }
+  }, [step, businessName, websiteUrl, answers, moodboardLikes, features, voiceTranscription, voiceAnalysis, sessionId, isLoading])
 
   const handleAnswer = (questionId: string, value: string) => {
     setAnswer(questionId, value)
-    setTimeout(() => nextStep(), 350)
+    // Don't auto-advance for multi-select questions
+    const currentQuestion = QUESTIONS[step - 1]
+    if (!currentQuestion?.multiSelect) {
+      setTimeout(() => nextStep(), 350)
+    }
+  }
+
+  const handleMultiSelectConfirm = () => {
+    nextStep()
   }
 
   const handleGenerate = async () => {
@@ -174,8 +213,8 @@ export default function QuestionnairePage() {
 
       setCompleted(true)
       nextStep()
-    } catch (err) {
-      console.error('Error completing session:', err)
+    } catch {
+      // Error handled silently
     } finally {
       setSubmitting(false)
     }
@@ -222,6 +261,7 @@ export default function QuestionnairePage() {
             questionIndex={step - 1}
             currentAnswer={answers[QUESTIONS[step - 1].id as keyof typeof answers]}
             onAnswer={handleAnswer}
+            onMultiSelectConfirm={handleMultiSelectConfirm}
           />
         )}
 

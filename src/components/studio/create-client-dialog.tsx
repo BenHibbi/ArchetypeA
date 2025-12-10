@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { generateSessionUrl, copyToClipboard } from '@/lib/utils'
+import { COPY_FEEDBACK_DURATION } from '@/config'
 
 export function CreateClientDialog() {
   const router = useRouter()
@@ -57,8 +58,8 @@ export function CreateClientDialog() {
       setCreatedSession({ id: session.id, url })
 
       router.refresh()
-    } catch (error) {
-      console.error('Error creating client:', error)
+    } catch {
+      // Error handled silently
     } finally {
       setIsLoading(false)
     }
@@ -68,7 +69,7 @@ export function CreateClientDialog() {
     if (createdSession) {
       await copyToClipboard(createdSession.url)
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), COPY_FEEDBACK_DURATION)
     }
   }
 

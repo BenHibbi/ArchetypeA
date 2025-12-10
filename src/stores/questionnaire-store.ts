@@ -107,14 +107,10 @@ export const useQuestionnaireStore = create<QuestionnaireStore>()(
       name: 'archetype-questionnaire',
       partialize: (state) => ({
         sessionId: state.sessionId,
-        businessName: state.businessName,
-        websiteUrl: state.websiteUrl,
         step: state.step,
         answers: state.answers,
         moodboardLikes: state.moodboardLikes,
         features: state.features,
-        voiceTranscription: state.voiceTranscription,
-        voiceAnalysis: state.voiceAnalysis,
         isCompleted: state.isCompleted,
       }),
     }

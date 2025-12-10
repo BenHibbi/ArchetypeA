@@ -1,34 +1,52 @@
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getTranslations } from 'next-intl/server'
-import { Header, StatsCards, CreateClientDialog, CopyButton } from '@/components/studio'
+import { Header, StatsCards, CreateClientDialog, DeleteClientButton, ClickableRow } from '@/components/studio'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Eye } from 'lucide-react'
-import { ClientWithSession, DashboardStats } from '@/types'
-import { formatDate, getInitials, generateSessionUrl } from '@/lib/utils'
+import { Check } from 'lucide-react'
+import { DashboardStats } from '@/types'
+import { formatDate, getInitials } from '@/lib/utils'
+
+interface SessionResponse {
+  business_name: string | null
+  website_url: string | null
+}
+
+interface ClientSession {
+  id: string
+  status: string | null
+  showroom_status: string | null
+  started_at: string | null
+  completed_at: string | null
+  created_at: string
+  responses: SessionResponse | SessionResponse[] | null
+}
+
+interface ClientWithSessions {
+  id: string
+  email: string
+  company_name: string | null
+  contact_name: string | null
+  website_url: string | null
+  created_at: string
+  sessions: ClientSession[] | null
+}
 
 async function getStats(): Promise<DashboardStats> {
   const supabase = await createClient()
 
-  const { count: totalClients } = await supabase
-    .from('clients')
-    .select('*', { count: 'exact', head: true })
-
-  const { count: pendingSessions } = await supabase
-    .from('sessions')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'pending')
-
-  const { count: completedSessions } = await supabase
-    .from('sessions')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'completed')
-
-  const { count: totalSessions } = await supabase
-    .from('sessions')
-    .select('*', { count: 'exact', head: true })
+  // Execute all queries in parallel for better performance
+  const [
+    { count: totalClients },
+    { count: pendingSessions },
+    { count: completedSessions },
+    { count: totalSessions },
+  ] = await Promise.all([
+    supabase.from('clients').select('*', { count: 'exact', head: true }),
+    supabase.from('sessions').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    supabase.from('sessions').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+    supabase.from('sessions').select('*', { count: 'exact', head: true }),
+  ])
 
   const completionRate =
     totalSessions && totalSessions > 0
@@ -43,7 +61,7 @@ async function getStats(): Promise<DashboardStats> {
   }
 }
 
-async function getRecentClients(): Promise<ClientWithSession[]> {
+async function getRecentClients(): Promise<ClientWithSessions[]> {
   const supabase = await createClient()
 
   const { data: clients } = await supabase
@@ -53,22 +71,21 @@ async function getRecentClients(): Promise<ClientWithSession[]> {
       sessions (
         id,
         status,
+        showroom_status,
         started_at,
         completed_at,
         created_at,
-        responses (*)
+        responses (
+          business_name,
+          website_url
+        )
       )
     `)
     .order('created_at', { ascending: false })
-    .limit(6)
+    .order('created_at', { ascending: false, referencedTable: 'sessions' })
+    .limit(6) as { data: ClientWithSessions[] | null }
 
-  if (!clients) return []
-
-  return clients.map((client) => ({
-    ...client,
-    sessions: client.sessions || [],
-    latest_session: client.sessions?.[0] || undefined,
-  }))
+  return clients || []
 }
 
 export default async function DashboardPage() {
@@ -109,10 +126,16 @@ export default async function DashboardPage() {
                       {tClients('email')}
                     </th>
                     <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      {tClients('website')}
+                    </th>
+                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Status
                     </th>
                     <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('date')}
+                    </th>
+                    <th className="text-center px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      {tClients('showroomSent')}
                     </th>
                     <th className="text-right px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('actions')}
@@ -121,7 +144,7 @@ export default async function DashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {recentClients.map((client) => {
-                    const latestSession = client.latest_session
+                    const latestSession = client.sessions?.[0]
                     const status = latestSession?.status || 'no_session'
                     const statusVariant =
                       status === 'completed'
@@ -130,22 +153,33 @@ export default async function DashboardPage() {
                         ? 'warning'
                         : 'pending'
 
+                    // responses peut être un objet ou un array selon Supabase
+                    const rawResponses = latestSession?.responses
+                    const response = Array.isArray(rawResponses)
+                      ? rawResponses[0]
+                      : rawResponses
+
+                    const businessName = response?.business_name || client.company_name
+                    const websiteUrl = response?.website_url || client.website_url
+                    const showroomSent = latestSession?.showroom_status === 'sent'
+
                     return (
-                      <tr key={client.id} className="hover:bg-slate-50">
+                      <ClickableRow
+                        key={client.id}
+                        href={`/studio/${client.id}`}
+                        className="hover:bg-slate-50 cursor-pointer"
+                      >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10">
                               <AvatarFallback className="bg-teal-100 text-teal-700 text-sm font-bold">
-                                {getInitials(client.company_name || client.email)}
+                                {getInitials(businessName || client.email)}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <Link
-                                href={`/studio/clients/${client.id}`}
-                                className="font-medium text-slate-900 hover:text-teal-600"
-                              >
-                                {client.company_name || 'N/A'}
-                              </Link>
+                              <span className="font-medium text-slate-900">
+                                {businessName || client.email}
+                              </span>
                               {client.contact_name && (
                                 <p className="text-sm text-slate-500">
                                   {client.contact_name}
@@ -157,6 +191,20 @@ export default async function DashboardPage() {
                         <td className="px-6 py-4 text-sm text-slate-600">
                           {client.email}
                         </td>
+                        <td className="px-6 py-4 text-sm">
+                          {websiteUrl ? (
+                            <a
+                              href={websiteUrl.startsWith('http') ? websiteUrl : `https://${websiteUrl}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-teal-600 hover:text-teal-700 hover:underline truncate max-w-[200px] block"
+                            >
+                              {websiteUrl.replace(/^https?:\/\//, '')}
+                            </a>
+                          ) : (
+                            <span className="text-slate-400">-</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4">
                           <Badge variant={statusVariant}>
                             {tClients(`status.${status}`)}
@@ -165,22 +213,19 @@ export default async function DashboardPage() {
                         <td className="px-6 py-4 text-sm text-slate-500">
                           {formatDate(client.created_at)}
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            {latestSession && (
-                              <CopyButton
-                                text={generateSessionUrl(latestSession.id)}
-                                variant="ghost"
-                              />
-                            )}
-                            <Link href={`/studio/clients/${client.id}`}>
-                              <Button variant="ghost" size="sm">
-                                <Eye size={14} />
-                              </Button>
-                            </Link>
-                          </div>
+                        <td className="px-6 py-4 text-center">
+                          {showroomSent ? (
+                            <div className="inline-flex items-center justify-center w-5 h-5 rounded bg-teal-500 text-white">
+                              <Check size={14} />
+                            </div>
+                          ) : (
+                            <div className="inline-flex items-center justify-center w-5 h-5 rounded border-2 border-slate-200" />
+                          )}
                         </td>
-                      </tr>
+                        <td className="px-6 py-4 text-right">
+                          <DeleteClientButton clientId={client.id} />
+                        </td>
+                      </ClickableRow>
                     )
                   })}
                 </tbody>

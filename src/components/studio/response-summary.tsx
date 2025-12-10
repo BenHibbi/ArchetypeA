@@ -1,11 +1,30 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Check, ChevronDown, ChevronRight, Camera, ExternalLink } from 'lucide-react'
-import Image from 'next/image'
+import { Copy, Check, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
-import { QUESTIONS, SKELETONS } from '@/config'
+import { QUESTIONS, SKELETONS, COPY_FEEDBACK_DURATION } from '@/config'
+
+interface Inspiration {
+  nom: string
+  elements_apprecies?: string
+}
+
+interface VisualStyle {
+  ambiance?: string
+  typographie?: string
+  couleurs_souhaitees?: string[]
+}
+
+interface VoiceAnalysis {
+  vision_globale?: string
+  inspirations?: Inspiration[]
+  style_visuel?: VisualStyle
+  fonctionnalites?: string[]
+  ton_marque?: string
+  keywords?: string[]
+  raw?: string
+}
 
 interface Response {
   ambiance: string | null
@@ -18,7 +37,6 @@ interface Response {
   features: string[]
   voice_transcription?: string | null
   voice_analysis?: string | null
-  screenshot_url?: string | null
   business_name?: string | null
   website_url?: string | null
 }
@@ -33,7 +51,6 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
   const [copiedSection, setCopiedSection] = useState<string | null>(null)
   const [questionnaireOpen, setQuestionnaireOpen] = useState(false)
   const [voiceOpen, setVoiceOpen] = useState(false)
-  const [screenshotCopied, setScreenshotCopied] = useState(false)
 
   const getOptionLabel = (questionId: string, optionId: string | null) => {
     if (!optionId) return t('notAnswered')
@@ -45,7 +62,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
   const copyToClipboard = async (text: string, section: string) => {
     await navigator.clipboard.writeText(text)
     setCopiedSection(section)
-    setTimeout(() => setCopiedSection(null), 2000)
+    setTimeout(() => setCopiedSection(null), COPY_FEEDBACK_DURATION)
   }
 
   // Préparer le JSON des réponses questionnaire
@@ -66,10 +83,10 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
   }
 
   // Parser l'analyse vocale si disponible
-  let voiceAnalysis = null
+  let voiceAnalysis: VoiceAnalysis | null = null
   if (response.voice_analysis) {
     try {
-      voiceAnalysis = JSON.parse(response.voice_analysis)
+      voiceAnalysis = JSON.parse(response.voice_analysis) as VoiceAnalysis
     } catch {
       voiceAnalysis = { raw: response.voice_analysis }
     }
@@ -84,93 +101,34 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
     { label: t('palette'), value: getOptionLabel('palette', response.palette), id: response.palette },
   ]
 
-  const copyScreenshot = async () => {
-    if (!response.screenshot_url) return
-
-    try {
-      // Convert base64 to blob
-      const response64 = await fetch(response.screenshot_url)
-      const blob = await response64.blob()
-
-      // Copy to clipboard as image
-      await navigator.clipboard.write([
-        new ClipboardItem({ [blob.type]: blob })
-      ])
-
-      setScreenshotCopied(true)
-      setTimeout(() => setScreenshotCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy screenshot:', err)
-      // Fallback: copy data URL
-      await navigator.clipboard.writeText(response.screenshot_url)
-      setScreenshotCopied(true)
-      setTimeout(() => setScreenshotCopied(false), 2000)
-    }
-  }
-
   return (
     <div className="space-y-4">
-      {/* Business Info + Screenshot */}
-      {(response.business_name || response.screenshot_url) && (
+      {/* Business Info */}
+      {(response.business_name || response.website_url) && (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
           <div className="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3">
-            <h3 className="font-bold text-white flex items-center gap-2">
-              <Camera size={18} />
+            <h3 className="font-bold text-white">
               {t('clientInfo')}
             </h3>
           </div>
           <div className="p-6">
-            <div className="flex items-start gap-6">
-              {/* Screenshot Thumbnail */}
-              {response.screenshot_url && (
-                <button
-                  onClick={copyScreenshot}
-                  className="relative group flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden border-2 border-slate-200 hover:border-teal-500 transition-all shadow-sm hover:shadow-lg"
-                  title={t('clickToCopyImage')}
-                >
-                  <img
-                    src={response.screenshot_url}
-                    alt="Screenshot"
-                    className="w-full h-full object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    {screenshotCopied ? (
-                      <span className="text-white text-sm font-medium flex items-center gap-2">
-                        <Check size={16} /> {tCommon('copied')}
-                      </span>
-                    ) : (
-                      <span className="text-white text-sm font-medium flex items-center gap-2">
-                        <Copy size={16} /> {t('copyImage')}
-                      </span>
-                    )}
-                  </div>
-                  <div className="absolute top-2 right-2 bg-teal-600/90 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
-                    <Camera size={12} /> {t('screenshot')}
-                  </div>
-                </button>
-              )}
-
-              {/* Business Info */}
-              <div className="flex-1">
-                {response.business_name && (
-                  <div className="mb-3">
-                    <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">{t('businessName')}</span>
-                    <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
-                  </div>
-                )}
-                {response.website_url && (
-                  <a
-                    href={response.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 hover:underline text-sm"
-                  >
-                    <ExternalLink size={14} />
-                    {response.website_url}
-                  </a>
-                )}
+            {response.business_name && (
+              <div className="mb-3">
+                <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">{t('businessName')}</span>
+                <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
               </div>
-            </div>
+            )}
+            {response.website_url && (
+              <a
+                href={response.website_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 hover:underline text-sm"
+              >
+                <ExternalLink size={14} />
+                {response.website_url}
+              </a>
+            )}
           </div>
         </div>
       )}
@@ -185,13 +143,19 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             {questionnaireOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
             <h3 className="font-bold text-lg">{t('questionnaireResponses')}</h3>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/10"
+          <div
+            role="button"
+            tabIndex={0}
+            className="inline-flex items-center text-sm text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-colors"
             onClick={(e) => {
               e.stopPropagation()
               copyToClipboard(JSON.stringify(questionnaireData, null, 2), 'questionnaire')
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.stopPropagation()
+                copyToClipboard(JSON.stringify(questionnaireData, null, 2), 'questionnaire')
+              }
             }}
           >
             {copiedSection === 'questionnaire' ? (
@@ -199,7 +163,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             ) : (
               <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
             )}
-          </Button>
+          </div>
         </button>
 
         {questionnaireOpen && (
@@ -226,7 +190,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             </div>
 
             {/* Moodboard */}
-            {response.moodboard_likes?.length > 0 && (
+            {response.moodboard_likes && response.moodboard_likes.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                   {t('moodboard')} ({response.moodboard_likes.length} {t('selections')})
@@ -248,7 +212,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             )}
 
             {/* Features */}
-            {response.features?.length > 0 && (
+            {response.features && response.features.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                   {t('features')} ({response.features.length} {t('selectedFeatures')})
@@ -280,13 +244,19 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               {voiceOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
               <h3 className="font-bold text-lg">{t('voiceAnalysis')}</h3>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20"
+            <div
+              role="button"
+              tabIndex={0}
+              className="inline-flex items-center text-sm text-white hover:bg-white/20 px-3 py-1.5 rounded-md transition-colors"
               onClick={(e) => {
                 e.stopPropagation()
                 copyToClipboard(JSON.stringify(voiceAnalysis, null, 2), 'voice')
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.stopPropagation()
+                  copyToClipboard(JSON.stringify(voiceAnalysis, null, 2), 'voice')
+                }
               }}
             >
               {copiedSection === 'voice' ? (
@@ -294,7 +264,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               ) : (
                 <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
               )}
-            </Button>
+            </div>
           </button>
 
           {voiceOpen && (
@@ -306,11 +276,11 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                 </div>
               )}
 
-              {voiceAnalysis.inspirations?.length > 0 && (
+              {voiceAnalysis.inspirations && voiceAnalysis.inspirations.length > 0 && (
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase">{t('mentionedInspirations')}</span>
                   <div className="mt-2 space-y-2">
-                    {voiceAnalysis.inspirations.map((insp: any, i: number) => (
+                    {voiceAnalysis.inspirations.map((insp: { nom?: string; elements_apprecies?: string }, i: number) => (
                       <div key={i} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
                         <span className="font-semibold text-slate-900">{insp.nom}</span>
                         {insp.elements_apprecies && (
@@ -322,7 +292,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                 </div>
               )}
 
-              {voiceAnalysis.style_visuel && Object.keys(voiceAnalysis.style_visuel).some(k => voiceAnalysis.style_visuel[k] && (Array.isArray(voiceAnalysis.style_visuel[k]) ? voiceAnalysis.style_visuel[k].length > 0 : true)) && (
+              {voiceAnalysis.style_visuel && (voiceAnalysis.style_visuel.ambiance || voiceAnalysis.style_visuel.typographie || (voiceAnalysis.style_visuel.couleurs_souhaitees && voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0)) && (
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase">{t('desiredVisualStyle')}</span>
                   <div className="mt-2 grid grid-cols-2 gap-3">
@@ -338,11 +308,11 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                         <p className="font-medium">{voiceAnalysis.style_visuel.typographie}</p>
                       </div>
                     )}
-                    {voiceAnalysis.style_visuel.couleurs_souhaitees?.length > 0 && (
+                    {voiceAnalysis.style_visuel.couleurs_souhaitees && voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0 && (
                       <div className="bg-slate-50 rounded-lg p-3 col-span-2">
                         <span className="text-xs text-slate-400">{t('desiredColors')}</span>
                         <div className="flex flex-wrap gap-2 mt-1">
-                          {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c: string, i: number) => (
+                          {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c, i) => (
                             <span key={i} className="bg-white border px-2 py-1 rounded text-sm">{c}</span>
                           ))}
                         </div>
@@ -352,11 +322,11 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                 </div>
               )}
 
-              {voiceAnalysis.fonctionnalites?.length > 0 && (
+              {voiceAnalysis.fonctionnalites && voiceAnalysis.fonctionnalites.length > 0 && (
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase">{t('requestedFeatures')}</span>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {voiceAnalysis.fonctionnalites.map((f: string, i: number) => (
+                    {voiceAnalysis.fonctionnalites.map((f, i) => (
                       <span key={i} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">{f}</span>
                     ))}
                   </div>
@@ -370,11 +340,11 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                 </div>
               )}
 
-              {voiceAnalysis.keywords?.length > 0 && (
+              {voiceAnalysis.keywords && voiceAnalysis.keywords.length > 0 && (
                 <div>
                   <span className="text-xs font-bold text-slate-500 uppercase">{t('keywords')}</span>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {voiceAnalysis.keywords.map((k: string, i: number) => (
+                    {voiceAnalysis.keywords.map((k, i) => (
                       <span key={i} className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">{k}</span>
                     ))}
                   </div>

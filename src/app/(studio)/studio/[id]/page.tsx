@@ -15,17 +15,64 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { generateSessionUrl, formatDateTime } from '@/lib/utils'
 
+interface DesignProposalDB {
+  id: string
+  slot_number: number
+  image_url: string | null
+  html_code: string | null
+  price: number | null
+  title: string | null
+}
+
+interface ResponseDB {
+  ambiance: string | null
+  valeurs: string | null
+  structure: string | null
+  typo: string | null
+  ratio: string | null
+  palette: string | null
+  moodboard_likes: string[]
+  features: string[]
+  voice_transcription?: string | null
+  voice_analysis?: string | null
+  business_name?: string | null
+  website_url?: string | null
+}
+
+interface SessionDB {
+  id: string
+  status: string | null
+  started_at: string | null
+  completed_at: string | null
+  created_at: string
+  showroom_status: string | null
+  showroom_sent_at: string | null
+  responses: ResponseDB | ResponseDB[] | null
+}
+
+interface ClientDB {
+  id: string
+  email: string
+  company_name: string | null
+  contact_name: string | null
+  website_url: string | null
+  notes: string | null
+  created_at: string
+}
+
 async function getClient(id: string) {
   const supabase = await createClient()
 
   // Récupérer le client
-  const { data: client, error: clientError } = await supabase
+  const { data: clientData, error: clientError } = await supabase
     .from('clients')
     .select('*')
     .eq('id', id)
     .single()
 
-  if (clientError || !client) return null
+  if (clientError || !clientData) return null
+
+  const client = clientData as ClientDB
 
   // Récupérer la session la plus récente avec ses réponses
   const { data: sessions } = await supabase
@@ -42,12 +89,12 @@ async function getClient(id: string) {
     `)
     .eq('client_id', id)
     .order('created_at', { ascending: false })
-    .limit(1)
+    .limit(1) as { data: SessionDB[] | null }
 
   const latestSession = sessions?.[0] || null
 
   // Récupérer les design proposals si session existe
-  let designProposals: any[] = []
+  let designProposals: DesignProposalDB[] = []
   if (latestSession) {
     const { data: designs } = await supabase
       .from('design_proposals')
@@ -64,9 +111,9 @@ async function getClient(id: string) {
 export default async function ClientDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }) {
-  const { id } = await params
+  const { id } = params
   const client = await getClient(id)
   const t = await getTranslations('studio.clients')
 
@@ -99,7 +146,7 @@ export default async function ClientDetailPage({
       <div className="p-6 space-y-6">
         {/* Back button + Status + Dates */}
         <div className="flex items-center justify-between">
-          <Link href="/studio/clients">
+          <Link href="/studio">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft size={16} />
               {t('backToClients')}
@@ -156,7 +203,7 @@ export default async function ClientDetailPage({
         {latestSession && status === 'completed' && (
           <ShowroomBuilder
             sessionId={latestSession.id}
-            initialDesigns={client.designProposals.map((d: any) => ({
+            initialDesigns={client.designProposals.map((d: DesignProposalDB) => ({
               id: d.id,
               slotNumber: d.slot_number,
               imageUrl: d.image_url,
@@ -165,6 +212,11 @@ export default async function ClientDetailPage({
               title: d.title || `Design ${d.slot_number}`,
             }))}
             showroomStatus={latestSession.showroom_status}
+            client={{
+              email: client.email,
+              name: client.contact_name || undefined,
+              businessName: response?.business_name || client.company_name || undefined,
+            }}
           />
         )}
 

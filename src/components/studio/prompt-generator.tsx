@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Copy, Check, Sparkles, ChevronDown, ChevronRight, Loader2, RefreshCw } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
+import { COPY_FEEDBACK_DURATION } from '@/config'
 
 interface Response {
   ambiance: string | null
@@ -15,7 +16,8 @@ interface Response {
   moodboard_likes: string[]
   features: string[]
   voice_analysis?: string | null
-  screenshot_url?: string | null
+  business_name?: string | null
+  website_url?: string | null
 }
 
 interface Client {
@@ -37,6 +39,23 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedBrief, setGeneratedBrief] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const cacheKey = useMemo(() => {
+    const fingerprint = [
+      client.email,
+      client.company_name || '',
+      client.website_url || '',
+      response.ambiance || '',
+      response.valeurs || '',
+      response.structure || '',
+      response.typo || '',
+      response.ratio || '',
+      response.palette || '',
+      (response.moodboard_likes || []).join(','),
+      (response.features || []).join(','),
+      response.voice_analysis || '',
+    ].join('|')
+    return `prompt-cache::${fingerprint}`
+  }, [client, response])
 
   // Parse voice analysis if available
   let voiceAnalysis = null
@@ -48,7 +67,10 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
     }
   }
 
-  const generateBrief = async () => {
+  const generateBrief = async (force = false) => {
+    if (isGenerating) return
+    if (!force && generatedBrief) return
+
     setIsGenerating(true)
     setError(null)
 
@@ -68,9 +90,8 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
             features: response.features,
           },
           voiceAnalysis,
-          clientName: client.company_name || client.email.split('@')[0],
-          websiteUrl: client.website_url,
-          screenshotUrl: response.screenshot_url,
+          clientName: response.business_name || client.company_name || client.email.split('@')[0],
+          websiteUrl: response.website_url || client.website_url,
         }),
       })
 
@@ -80,27 +101,33 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
 
       const data = await res.json()
       setGeneratedBrief(data.brief)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(cacheKey, data.brief)
+      }
       setBriefOpen(true)
-    } catch (err) {
-      console.error('Brief generation error:', err)
+    } catch {
       setError(t('errorGenerating'))
     } finally {
       setIsGenerating(false)
     }
   }
 
-  // Generate brief on mount
+  // Generate brief on mount or load from cache
   useEffect(() => {
-    if (!generatedBrief && !isGenerating) {
-      generateBrief()
+    if (typeof window === 'undefined') return
+    const cached = sessionStorage.getItem(cacheKey)
+    if (cached) {
+      setGeneratedBrief(cached)
+      return
     }
-  }, [])
+    generateBrief()
+  }, [cacheKey])
 
   const handleCopy = async () => {
     if (generatedBrief) {
       await navigator.clipboard.writeText(generatedBrief)
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), COPY_FEEDBACK_DURATION)
     }
   }
 
@@ -130,7 +157,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
                 className="text-white hover:bg-white/20"
                 onClick={(e) => {
                   e.stopPropagation()
-                  generateBrief()
+                  generateBrief(true)
                 }}
                 disabled={isGenerating}
               >
@@ -167,7 +194,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
           ) : error ? (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
               <p className="text-red-600 mb-3">{error}</p>
-              <Button variant="outline" onClick={generateBrief}>
+              <Button variant="outline" onClick={() => generateBrief(true)}>
                 <RefreshCw size={16} className="mr-2" />
                 {tCommon('retry')}
               </Button>

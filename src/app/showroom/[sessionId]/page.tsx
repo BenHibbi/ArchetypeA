@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Image from 'next/image'
 import { Check, Sparkles, Mail, Phone, Loader2, PartyPopper, ArrowLeft } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
@@ -21,12 +22,25 @@ interface DesignProposal {
   title: string
 }
 
+interface ShowroomSelection {
+  id: string
+  session_id: string
+  selected_proposal_id: string
+  action_type: 'quote_request' | 'signed'
+  discount_applied: boolean
+  final_price: number | null
+  client_email: string | null
+  client_phone: string | null
+  client_message: string | null
+  created_at: string
+}
+
 interface ShowroomData {
   sessionId: string
   businessName: string | null
   designBrief: string | null
   designs: DesignProposal[]
-  existingSelection: any | null
+  existingSelection: ShowroomSelection | null
 }
 
 export default function ShowroomPage() {
@@ -156,9 +170,24 @@ export default function ShowroomPage() {
         .update({ showroom_status: actionType === 'signed' ? 'signed' : 'quote_requested' })
         .eq('id', sessionId)
 
+      // Send notification email to admin + confirmation to client
+      await fetch('/api/email/notify-interest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientEmail: formData.email,
+          clientPhone: formData.phone,
+          clientMessage: formData.message,
+          businessName: data?.businessName,
+          designTitle: selectedDesign.title,
+          actionType,
+          finalPrice,
+        }),
+      })
+
       setStep('success')
-    } catch (err) {
-      console.error('Error submitting selection:', err)
+    } catch {
+      // Error handled silently
     } finally {
       setIsSubmitting(false)
     }
@@ -407,22 +436,23 @@ export default function ShowroomPage() {
                     </div>
                   )}
 
-                  {/* Design Image - fit to image dimensions when selected */}
+                  {/* Design Image - always maintain dimensions */}
                   <div
                     className={cn(
-                      'bg-slate-100 transition-all duration-500 rounded-xl overflow-hidden',
-                      !isSelected && 'aspect-video min-h-[40vh]',
+                      'relative bg-slate-100 transition-all duration-500 rounded-xl overflow-hidden',
+                      'aspect-video min-h-[40vh] max-h-[70vh]',
                     )}
                   >
                     {design.image_url ? (
-                      <img
+                      <Image
                         src={design.image_url}
-                        alt="Design"
+                        alt="Design proposal"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        priority={index === 0}
                         className={cn(
-                          'transition-all duration-500',
-                          isSelected
-                            ? 'h-auto max-h-[calc(100vh-12rem)] w-auto'
-                            : 'w-full h-full object-cover object-top group-hover:scale-105',
+                          'transition-all duration-500 object-cover object-top',
+                          !isSelected && 'group-hover:scale-105',
                           isNotSelected && 'grayscale-[40%] group-hover:grayscale-0'
                         )}
                       />
@@ -498,8 +528,8 @@ export default function ShowroomPage() {
                   <Button
                     variant="orange"
                     size="lg"
-                    onClick={() => handleAction('signed')}
-                    className="flex-1 md:flex-none gap-2"
+                    disabled
+                    className="flex-1 md:flex-none gap-2 opacity-50 cursor-not-allowed"
                   >
                     <Sparkles size={16} />
                     {t('signDiscount')}

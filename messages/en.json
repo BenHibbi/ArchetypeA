@@ -18,6 +18,18 @@
     "retry": "Retry",
     "close": "Close"
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "studioTitle": "Studio Error",
+    "studioDescription": "An error occurred in the studio. Your data is safe.",
+    "backToStudio": "Back to Studio",
+    "questionnaireTitle": "Oops!",
+    "questionnaireDescription": "Something went wrong while loading the questionnaire. Please try again.",
+    "showroomTitle": "Showroom Unavailable",
+    "showroomDescription": "We couldn't load the showroom. Please try again in a moment."
+  },
   "home": {
     "title": "archetype",
     "subtitle": "Design Intelligence Profiler",
@@ -36,9 +48,13 @@
       "dashboard": {
         "title": "Studio Dashboard",
         "description": "Manage your clients, track responses and increase your conversion rate with targeted proposals."
+      },
+      "showroom": {
+        "title": "Client Showroom",
+        "description": "Send back a private showroom with your design proposals. They can seal the deal right in the app and discover your workflow."
       }
     },
-    "footer": "\u00a9 2024 Archetype. Built with Next.js & Supabase."
+    "footer": "\u00a9 2024 Archetype. Built with love by Crush Digital Atelier LLC"
   },
   "auth": {
     "loginTitle": "Login",
@@ -60,7 +76,6 @@
       "businessPlaceholder": "Ex: My Great Project",
       "websiteUrl": "URL of your current website (optional)",
       "websitePlaceholder": "https://...",
-      "screenshotLabel": "We'll automatically capture a preview of your site",
       "start": "Get started"
     },
     "questions": {
@@ -173,7 +188,6 @@
       "inspirations": "Inspirations (Moodboard)",
       "modules": "Modules",
       "sendBrief": "Send my brief",
-      "capturing": "Capturing...",
       "finishDemo": "Finish demo",
       "briefSent": "Brief sent!",
       "thankYouMessage": "Thank you for completing the questionnaire.",
@@ -266,7 +280,10 @@
       "sendLinkTo": "Send this link to",
       "toFillQuestionnaire": "so they can fill out their questionnaire.",
       "personalLink": "Personal link",
-      "copyLink": "Copy link"
+      "copyLink": "Copy link",
+      "showroomSent": "Showroom",
+      "deleteClient": "Delete client",
+      "confirmDelete": "Are you sure you want to delete this client?"
     },
     "showroom": {
       "title": "Showroom Designer",
@@ -309,14 +326,34 @@
       "brandTone": "Tone / Brand",
       "keywords": "Keywords",
       "notAnswered": "Not answered",
-      "clickToCopyImage": "Click to copy image",
-      "copyImage": "Copy image",
-      "screenshot": "Screenshot",
       "features": "Features",
       "value": "Value",
       "structure": "Structure",
       "ratio": "Ratio",
       "palette": "Palette"
+    },
+    "userMenu": {
+      "myPlan": "My Plan",
+      "subscription": "Subscription",
+      "perMonth": "/month",
+      "plusUsage": "+ usage",
+      "helpSupport": "Help & Support",
+      "faq": "FAQ",
+      "legalNotice": "Legal Notice",
+      "termsOfService": "Terms of Service",
+      "termsOfSale": "Terms of Sale",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "noNotifications": "No new notifications",
+      "questionnaireCompleted": "completed their questionnaire",
+      "viewProfile": "View profile",
+      "markAllRead": "Mark all as read",
+      "justNow": "Just now",
+      "minutesAgo": "{count}m ago",
+      "hoursAgo": "{count}h ago",
+      "daysAgo": "{count}d ago"
     }
   },
   "showroom": {
@@ -324,7 +361,7 @@
     "subtitle": "Click to select the design that suits you.",
     "designSelected": "Design selected",
     "interested": "I'm interested",
-    "signDiscount": "Sign (-15%)",
+    "signDiscount": "Coming soon",
     "yourSelection": "Your selection",
     "email": "Email",
     "phone": "Phone",

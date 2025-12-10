@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { readFileSync } from 'fs'
 import { join } from 'path'
+import { createClient } from '@/lib/supabase/server'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
 
@@ -44,15 +45,45 @@ interface VoiceAnalysis {
 
 export async function POST(request: Request) {
   try {
-    const { questionnaire, voiceAnalysis, clientName, websiteUrl, screenshotUrl } = await request.json()
+    const supabase = await createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: 'GEMINI_API_KEY manquante' }, { status: 500 })
+    }
+
+    const { questionnaire, voiceAnalysis, clientName, websiteUrl } = await request.json()
 
     if (!questionnaire) {
       return NextResponse.json({ error: 'Données questionnaire manquantes' }, { status: 400 })
     }
 
+    const cleanedQuestionnaire: QuestionnaireData = {
+      ambiance: typeof questionnaire.ambiance === 'string' ? questionnaire.ambiance : null,
+      valeurs: typeof questionnaire.valeurs === 'string' ? questionnaire.valeurs : null,
+      structure: typeof questionnaire.structure === 'string' ? questionnaire.structure : null,
+      typo: typeof questionnaire.typo === 'string' ? questionnaire.typo : null,
+      ratio: typeof questionnaire.ratio === 'string' ? questionnaire.ratio : null,
+      palette: typeof questionnaire.palette === 'string' ? questionnaire.palette : null,
+      moodboard_likes: Array.isArray(questionnaire.moodboard_likes)
+        ? questionnaire.moodboard_likes.filter((x: unknown) => typeof x === 'string').slice(0, 12)
+        : [],
+      features: Array.isArray(questionnaire.features)
+        ? questionnaire.features.filter((x: unknown) => typeof x === 'string').slice(0, 20)
+        : [],
+    }
+
+    const safeVoiceAnalysis = voiceAnalysis && typeof voiceAnalysis === 'object' ? voiceAnalysis : null
+
     // Build the input for the analyst
-    const questionnaireText = formatQuestionnaireData(questionnaire)
-    const voiceText = voiceAnalysis ? formatVoiceAnalysis(voiceAnalysis) : 'Aucune analyse vocale disponible.'
+    const questionnaireText = formatQuestionnaireData(cleanedQuestionnaire)
+    const voiceText = safeVoiceAnalysis ? formatVoiceAnalysis(safeVoiceAnalysis) : 'Aucune analyse vocale disponible.'
 
     const userPrompt = `
 # CLIENT: ${clientName || 'Unknown'}
@@ -64,55 +95,14 @@ ${questionnaireText}
 ## VOICE ANALYSIS:
 ${voiceText}
 
-${screenshotUrl ? '## CURRENT WEBSITE SCREENSHOT:\nA screenshot of the client\'s current website is attached. Analyze its current design, identify strengths and weaknesses, and use this context to inform your redesign recommendations.' : ''}
-
 ---
 Generate the Redesign Master Prompt following the exact structure specified.
 `
 
-    // Use Gemini 2.5 Pro with multimodal support
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro-preview-06-05' })
+    // Use Gemini 2.0 Flash (latest model)
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
-    // Build content parts
-    const parts: any[] = [
-      { text: ANALYST_SYSTEM_PROMPT + '\n\n' + userPrompt }
-    ]
-
-    // Add screenshot if available
-    if (screenshotUrl) {
-      if (screenshotUrl.startsWith('data:image')) {
-        // Base64 data URL
-        const matches = screenshotUrl.match(/^data:([^;]+);base64,(.+)$/)
-        if (matches) {
-          const mimeType = matches[1]
-          const base64Data = matches[2]
-          parts.push({
-            inlineData: {
-              mimeType,
-              data: base64Data
-            }
-          })
-        }
-      } else if (screenshotUrl.startsWith('http')) {
-        // HTTP URL - fetch and convert to base64
-        try {
-          const imageResponse = await fetch(screenshotUrl)
-          const arrayBuffer = await imageResponse.arrayBuffer()
-          const base64Data = Buffer.from(arrayBuffer).toString('base64')
-          const contentType = imageResponse.headers.get('content-type') || 'image/png'
-          parts.push({
-            inlineData: {
-              mimeType: contentType,
-              data: base64Data
-            }
-          })
-        } catch (imgError) {
-          console.error('Error fetching screenshot:', imgError)
-        }
-      }
-    }
-
-    const result = await model.generateContent(parts)
+    const result = await model.generateContent(ANALYST_SYSTEM_PROMPT + '\n\n' + userPrompt)
     const response = await result.response
     const brief = response.text()
 

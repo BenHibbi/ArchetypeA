@@ -18,6 +18,18 @@
     "retry": "R\u00e9essayer",
     "close": "Fermer"
   },
+  "error": {
+    "title": "Une erreur est survenue",
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "retry": "Réessayer",
+    "studioTitle": "Erreur Studio",
+    "studioDescription": "Une erreur est survenue dans le studio. Vos données sont en sécurité.",
+    "backToStudio": "Retour au Studio",
+    "questionnaireTitle": "Oups !",
+    "questionnaireDescription": "Un problème est survenu lors du chargement du questionnaire. Veuillez réessayer.",
+    "showroomTitle": "Showroom indisponible",
+    "showroomDescription": "Impossible de charger le showroom. Veuillez réessayer dans un instant."
+  },
   "home": {
     "title": "archetype",
     "subtitle": "Design Intelligence Profiler",
@@ -36,9 +48,13 @@
       "dashboard": {
         "title": "Dashboard Studio",
         "description": "G\u00e9rez vos clients, suivez les r\u00e9ponses et augmentez votre taux de conversion avec des propositions cibl\u00e9es."
+      },
+      "showroom": {
+        "title": "Showroom Client",
+        "description": "Renvoyez un showroom priv\u00e9 avec vos propositions de design. Ils peuvent conclure directement dans l'app et d\u00e9couvrir votre workflow."
       }
     },
-    "footer": "\u00a9 2024 Archetype. Built with Next.js & Supabase."
+    "footer": "\u00a9 2024 Archetype. Built with love by Crush Digital Atelier LLC"
   },
   "auth": {
     "loginTitle": "Connexion",
@@ -60,7 +76,6 @@
       "businessPlaceholder": "Ex: Mon Super Projet",
       "websiteUrl": "URL de votre site actuel (optionnel)",
       "websitePlaceholder": "https://...",
-      "screenshotLabel": "On capturera automatiquement un aper\u00e7u de votre site",
       "start": "Commencer"
     },
     "questions": {
@@ -173,7 +188,6 @@
       "inspirations": "Inspirations (Moodboard)",
       "modules": "Modules",
       "sendBrief": "Envoyer mon brief",
-      "capturing": "Capture en cours...",
       "finishDemo": "Terminer la démo",
       "briefSent": "Brief envoyé !",
       "thankYouMessage": "Merci d'avoir complété le questionnaire.",
@@ -266,7 +280,10 @@
       "sendLinkTo": "Envoyez ce lien à",
       "toFillQuestionnaire": "pour qu'il remplisse son questionnaire.",
       "personalLink": "Lien personnel",
-      "copyLink": "Copier le lien"
+      "copyLink": "Copier le lien",
+      "showroomSent": "Showroom",
+      "deleteClient": "Supprimer le client",
+      "confirmDelete": "\u00cates-vous s\u00fbr de vouloir supprimer ce client ?"
     },
     "showroom": {
       "title": "Showroom Designer",
@@ -309,14 +326,34 @@
       "brandTone": "Ton / Marque",
       "keywords": "Mots-clés",
       "notAnswered": "Non répondu",
-      "clickToCopyImage": "Cliquer pour copier l'image",
-      "copyImage": "Copier l'image",
-      "screenshot": "Screenshot",
       "features": "Features",
       "value": "Valeur",
       "structure": "Structure",
       "ratio": "Ratio",
       "palette": "Palette"
+    },
+    "userMenu": {
+      "myPlan": "Mon Abonnement",
+      "subscription": "Abonnement",
+      "perMonth": "/mois",
+      "plusUsage": "+ usage",
+      "helpSupport": "Aide & Support",
+      "faq": "FAQ",
+      "legalNotice": "Mentions l\u00e9gales",
+      "termsOfService": "CGU",
+      "termsOfSale": "CGV",
+      "privacyPolicy": "Politique de confidentialit\u00e9"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "noNotifications": "Aucune nouvelle notification",
+      "questionnaireCompleted": "a compl\u00e9t\u00e9 son questionnaire",
+      "viewProfile": "Voir le profil",
+      "markAllRead": "Tout marquer comme lu",
+      "justNow": "\u00c0 l'instant",
+      "minutesAgo": "Il y a {count}min",
+      "hoursAgo": "Il y a {count}h",
+      "daysAgo": "Il y a {count}j"
     }
   },
   "showroom": {
@@ -324,7 +361,7 @@
     "subtitle": "Cliquez pour s\u00e9lectionner le design qui vous correspond.",
     "designSelected": "Design s\u00e9lectionn\u00e9",
     "interested": "Je suis int\u00e9ress\u00e9",
-    "signDiscount": "Signer (-15%)",
+    "signDiscount": "Bientôt",
     "yourSelection": "Votre s\u00e9lection",
     "email": "Email",
     "phone": "T\u00e9l\u00e9phone",

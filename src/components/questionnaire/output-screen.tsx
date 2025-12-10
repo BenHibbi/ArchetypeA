@@ -1,12 +1,11 @@
 'use client'
 
-import { Send, Check, PartyPopper, Loader2 } from 'lucide-react'
+import { Send, Check, PartyPopper } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { QuestionnaireAnswers } from '@/types'
 import { QUESTIONS, SKELETONS } from '@/config'
-import { createClient } from '@/lib/supabase/client'
 
 interface OutputScreenProps {
   answers: QuestionnaireAnswers
@@ -22,15 +21,14 @@ export function OutputScreen({
   answers,
   moodboardLikes,
   features,
-  websiteUrl,
-  sessionId,
+  websiteUrl: _websiteUrl,
+  sessionId: _sessionId,
   onRestart,
   isDemo = false,
 }: OutputScreenProps) {
   const t = useTranslations('questionnaire.output')
   const tQuestions = useTranslations('questionnaire.questions')
   const [sent, setSent] = useState(false)
-  const [isSending, setIsSending] = useState(false)
 
   const getOptionLabel = (questionId: string, optionId?: string) => {
     if (!optionId) return 'N/A'
@@ -55,39 +53,8 @@ export function OutputScreen({
     }
   }
 
-  const handleSendBrief = async () => {
-    setIsSending(true)
-
-    try {
-      // Capture screenshot if website URL is provided
-      if (websiteUrl && sessionId) {
-        try {
-          const screenshotResponse = await fetch('/api/screenshot', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: websiteUrl }),
-          })
-
-          if (screenshotResponse.ok) {
-            const { screenshot } = await screenshotResponse.json()
-
-            // Save screenshot to response in DB
-            const supabase = createClient()
-            await supabase
-              .from('responses')
-              .update({ screenshot_url: screenshot })
-              .eq('session_id', sessionId)
-          }
-        } catch (err) {
-          console.error('Screenshot capture failed:', err)
-          // Continue anyway - screenshot is not critical
-        }
-      }
-
-      setSent(true)
-    } finally {
-      setIsSending(false)
-    }
+  const handleSendBrief = () => {
+    setSent(true)
   }
 
   if (sent) {
@@ -226,17 +193,8 @@ export function OutputScreen({
               variant="orange"
               size="xl"
               className="gap-2"
-              disabled={isSending}
             >
-              {isSending ? (
-                <>
-                  <Loader2 size={18} className="animate-spin" /> {t('capturing')}
-                </>
-              ) : (
-                <>
-                  <Send size={18} /> {t('sendBrief')}
-                </>
-              )}
+              <Send size={18} /> {t('sendBrief')}
             </Button>
           )}
         </div>

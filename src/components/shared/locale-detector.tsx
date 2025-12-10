@@ -33,8 +33,8 @@ export function LocaleDetector() {
         document.cookie = `LOCALE_DETECTED=true;path=/;max-age=31536000`
 
         router.refresh()
-      } catch (error) {
-        console.error('Failed to detect locale:', error)
+      } catch {
+        // Locale detection failed silently
       }
     }
 

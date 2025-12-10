@@ -9,15 +9,24 @@ export async function POST(request: Request) {
   try {
     const { audio } = await request.json()
 
-    if (!audio) {
+    if (!audio || typeof audio !== 'string') {
       return NextResponse.json({ error: 'Audio manquant' }, { status: 400 })
+    }
+
+    // Taille max ~10MB pour éviter les abus (base64 => ~33% overhead)
+    const estimatedBytes = Math.ceil((audio.length * 3) / 4)
+    if (estimatedBytes > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: 'Fichier audio trop volumineux' }, { status: 413 })
     }
 
     // Convert base64 to buffer
     const audioBuffer = Buffer.from(audio, 'base64')
 
-    // Create a File-like object for Groq
-    const audioFile = new File([audioBuffer], 'recording.webm', { type: 'audio/webm' })
+    // Create a File object for Groq API (requires name and lastModified properties)
+    const audioFile = new File([audioBuffer], 'recording.webm', {
+      type: 'audio/webm',
+      lastModified: Date.now()
+    })
 
     // Step 1: Transcribe with Whisper
     const transcription = await groq.audio.transcriptions.create({

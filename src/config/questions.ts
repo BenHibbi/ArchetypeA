@@ -20,6 +20,7 @@ export const QUESTIONS: Question[] = [
     question: "Que doit transmettre le site ?",
     subtitle: "L'émotion clé.",
     layout: 'grid-cols-2',
+    multiSelect: true,
     options: [
       { id: 'confiance', label: 'Confiance' },
       { id: 'creativite', label: 'Créativité' },

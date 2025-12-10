@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { COPY_FEEDBACK_DURATION } from '@/config'
 
 interface CopyButtonProps {
   text: string
@@ -16,7 +17,7 @@ export function CopyButton({ text, label, variant = 'outline' }: CopyButtonProps
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopied(false), COPY_FEEDBACK_DURATION)
   }
 
   const iconOnly = !label
