@@ -109,56 +109,64 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
     <div className="space-y-4">
       {/* Business Info + Screenshot */}
       {(response.business_name || response.screenshot_url) && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <div className="flex items-start gap-6">
-            {/* Screenshot Thumbnail */}
-            {response.screenshot_url && (
-              <button
-                onClick={copyScreenshot}
-                className="relative group flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden border-2 border-slate-200 hover:border-teal-500 transition-all shadow-sm hover:shadow-lg"
-                title="Cliquer pour copier l'image"
-              >
-                <img
-                  src={response.screenshot_url}
-                  alt="Screenshot du site"
-                  className="w-full h-full object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  {screenshotCopied ? (
-                    <span className="text-white text-sm font-medium flex items-center gap-2">
-                      <Check size={16} /> Copié !
-                    </span>
-                  ) : (
-                    <span className="text-white text-sm font-medium flex items-center gap-2">
-                      <Copy size={16} /> Copier l'image
-                    </span>
-                  )}
-                </div>
-                <div className="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
-                  <Camera size={12} /> Screenshot
-                </div>
-              </button>
-            )}
-
-            {/* Business Info */}
-            <div className="flex-1">
-              {response.business_name && (
-                <div className="mb-3">
-                  <span className="text-xs text-slate-400 uppercase tracking-wider">Nom du business</span>
-                  <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
-                </div>
-              )}
-              {response.website_url && (
-                <a
-                  href={response.website_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 hover:underline text-sm"
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3">
+            <h3 className="font-bold text-white flex items-center gap-2">
+              <Camera size={18} />
+              Informations Client
+            </h3>
+          </div>
+          <div className="p-6">
+            <div className="flex items-start gap-6">
+              {/* Screenshot Thumbnail */}
+              {response.screenshot_url && (
+                <button
+                  onClick={copyScreenshot}
+                  className="relative group flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden border-2 border-slate-200 hover:border-teal-500 transition-all shadow-sm hover:shadow-lg"
+                  title="Cliquer pour copier l'image"
                 >
-                  <ExternalLink size={14} />
-                  {response.website_url}
-                </a>
+                  <img
+                    src={response.screenshot_url}
+                    alt="Screenshot du site"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    {screenshotCopied ? (
+                      <span className="text-white text-sm font-medium flex items-center gap-2">
+                        <Check size={16} /> Copié !
+                      </span>
+                    ) : (
+                      <span className="text-white text-sm font-medium flex items-center gap-2">
+                        <Copy size={16} /> Copier l'image
+                      </span>
+                    )}
+                  </div>
+                  <div className="absolute top-2 right-2 bg-teal-600/90 text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                    <Camera size={12} /> Screenshot
+                  </div>
+                </button>
               )}
+
+              {/* Business Info */}
+              <div className="flex-1">
+                {response.business_name && (
+                  <div className="mb-3">
+                    <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">Nom du business</span>
+                    <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
+                  </div>
+                )}
+                {response.website_url && (
+                  <a
+                    href={response.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 hover:underline text-sm"
+                  >
+                    <ExternalLink size={14} />
+                    {response.website_url}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -168,7 +176,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
         <button
           onClick={() => setQuestionnaireOpen(!questionnaireOpen)}
-          className="w-full bg-slate-900 text-white px-6 py-4 flex items-center justify-between hover:bg-slate-800 transition-colors"
+          className="w-full bg-gradient-to-r from-slate-800 to-slate-700 text-white px-6 py-4 flex items-center justify-between hover:from-slate-700 hover:to-slate-600 transition-colors"
         >
           <div className="flex items-center gap-3">
             {questionnaireOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}

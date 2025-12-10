@@ -229,18 +229,17 @@ export default function ShowroomPage() {
 
             <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
               {/* Summary Header */}
-              <div className="bg-slate-900 text-white p-6">
-                <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">
-                  Design sélectionné
+              <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-6">
+                <p className="text-slate-400 text-xs uppercase tracking-wider mb-2">
+                  Votre sélection
                 </p>
-                <h3 className="text-xl font-bold">{selectedDesign.title}</h3>
-                <div className="mt-4 flex items-baseline gap-3">
+                <div className="flex items-baseline gap-3">
                   {actionType === 'signed' && selectedDesign.price ? (
                     <>
                       <span className="text-slate-500 line-through text-lg">
                         {formatPrice(selectedDesign.price)}
                       </span>
-                      <span className="text-2xl font-black text-orange-400">
+                      <span className="text-3xl font-black text-orange-400">
                         {formatPrice(selectedDesign.price * 0.85)}
                       </span>
                       <span className="bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
@@ -248,7 +247,7 @@ export default function ShowroomPage() {
                       </span>
                     </>
                   ) : (
-                    <span className="text-2xl font-black">{formatPrice(selectedDesign.price)}</span>
+                    <span className="text-3xl font-black">{formatPrice(selectedDesign.price)}</span>
                   )}
                 </div>
               </div>
@@ -345,90 +344,96 @@ export default function ShowroomPage() {
         )}
       </header>
 
-      <main className="pt-32 pb-40 px-6 md:px-12">
-        <div className="max-w-5xl mx-auto">
-          {/* Hero */}
-          <div className="text-center mb-16">
-            <Logo size="lg" showText={false} className="justify-center mb-6" />
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-4">
+      <main className="pt-24 pb-40 px-4 md:px-8">
+        <div className="max-w-[95vw] mx-auto">
+          {/* Hero - Compact */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-2">
               Vos propositions
             </h1>
-            <p className="text-lg text-slate-500 max-w-xl mx-auto">
-              Découvrez les designs créés sur-mesure pour votre projet. Cliquez pour sélectionner
-              celui qui vous correspond.
+            <p className="text-base text-slate-500">
+              Cliquez pour sélectionner le design qui vous correspond.
             </p>
           </div>
 
-          {/* Designs Grid */}
+          {/* Designs Grid - Full width with dynamic sizing */}
           <div
             className={cn(
-              'grid gap-8',
-              designCount === 1 && 'max-w-xl mx-auto',
-              designCount === 2 && 'md:grid-cols-2 max-w-3xl mx-auto',
-              designCount === 3 && 'md:grid-cols-3'
+              'flex flex-col md:flex-row gap-4 items-stretch justify-center transition-all duration-500',
+              designCount === 1 && 'max-w-[80vw] mx-auto',
+              designCount === 2 && 'max-w-[90vw] mx-auto',
+              designCount === 3 && 'w-full'
             )}
           >
             {data.designs.map((design, index) => {
               const isSelected = selectedDesign?.id === design.id
+              const hasSelection = selectedDesign !== null
+              const isNotSelected = hasSelection && !isSelected
 
               return (
                 <button
                   key={design.id}
                   onClick={() => handleSelectDesign(design)}
                   className={cn(
-                    'group relative bg-white rounded-2xl border-2 overflow-hidden transition-all duration-300 text-left',
-                    'hover:shadow-xl hover:-translate-y-1',
+                    'group relative rounded-xl overflow-hidden transition-all duration-500 ease-out',
+                    'hover:shadow-2xl',
+                    // Dynamic sizing based on selection - more dramatic
+                    isSelected && 'md:flex-[3] z-10',
+                    isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95',
+                    !hasSelection && 'md:flex-1 hover:-translate-y-2',
+                    // Ring styling
                     isSelected
-                      ? 'border-orange-500 shadow-xl shadow-orange-500/20 ring-4 ring-orange-500/10'
-                      : 'border-slate-200 hover:border-slate-300'
+                      ? 'ring-4 ring-orange-500 shadow-2xl shadow-orange-500/30'
+                      : 'ring-1 ring-slate-200 hover:ring-slate-300'
                   )}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  {/* Selection Badge */}
+                  {/* Selection Indicator */}
                   {isSelected && (
-                    <div className="absolute top-4 right-4 z-10 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
-                      <Check size={18} strokeWidth={3} />
+                    <div className="absolute top-4 right-4 z-10 bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl animate-zoom-in">
+                      <Check size={22} strokeWidth={3} />
                     </div>
                   )}
 
-                  {/* Browser Mockup */}
-                  <div className="bg-slate-100 p-4">
-                    <div className="bg-slate-800 rounded-t-lg p-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-red-500" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                        <div className="w-3 h-3 rounded-full bg-green-500" />
-                        <div className="flex-1 bg-slate-700 rounded-full h-5 ml-3" />
+                  {/* Design Image - 16/9 format with min height for maximum size */}
+                  <div
+                    className={cn(
+                      'bg-slate-100 overflow-hidden transition-all duration-500',
+                      'aspect-video min-h-[50vh]',
+                    )}
+                  >
+                    {design.image_url ? (
+                      <img
+                        src={design.image_url}
+                        alt="Design"
+                        className={cn(
+                          'w-full h-full object-cover object-top transition-all duration-500',
+                          'group-hover:scale-105',
+                          isNotSelected && 'grayscale-[40%] group-hover:grayscale-0'
+                        )}
+                      />
+                    ) : design.html_code ? (
+                      <iframe
+                        srcDoc={design.html_code}
+                        className="w-full h-full border-0 pointer-events-none"
+                        sandbox=""
+                        title="Design"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                        <span className="text-slate-300 text-sm">Aperçu</span>
                       </div>
-                    </div>
-
-                    {/* Design Preview */}
-                    <div className="aspect-[4/3] bg-white overflow-hidden border-x border-b border-slate-300 rounded-b-lg">
-                      {design.image_url ? (
-                        <img
-                          src={design.image_url}
-                          alt={design.title}
-                          className="w-full h-full object-cover object-top"
-                        />
-                      ) : design.html_code ? (
-                        <iframe
-                          srcDoc={design.html_code}
-                          className="w-full h-full border-0 pointer-events-none"
-                          sandbox=""
-                          title={design.title}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-slate-50 flex items-center justify-center">
-                          <span className="text-slate-300 text-sm">Aperçu</span>
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
 
-                  {/* Title */}
-                  <div className="p-5">
-                    <h3 className="font-bold text-lg text-slate-900">{design.title}</h3>
-                  </div>
+                  {/* Subtle hover overlay */}
+                  <div
+                    className={cn(
+                      'absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300',
+                      'group-hover:opacity-100',
+                      isSelected && 'opacity-0 group-hover:opacity-0'
+                    )}
+                  />
                 </button>
               )
             })}
@@ -438,31 +443,18 @@ export default function ShowroomPage() {
 
       {/* Fixed Footer - Only visible when design is selected */}
       {selectedDesign && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl shadow-slate-900/10 animate-slide-in-from-bottom">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl shadow-slate-900/10 animate-slide-in-from-bottom">
           <div className="max-w-5xl mx-auto px-6 py-5">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              {/* Selected Design Info */}
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                  {selectedDesign.image_url ? (
-                    <img
-                      src={selectedDesign.image_url}
-                      alt={selectedDesign.title}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-slate-200" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider">Sélectionné</p>
-                  <p className="font-bold text-slate-900">{selectedDesign.title}</p>
+              {/* Price Display */}
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse" />
+                  <span className="text-sm font-medium text-slate-600">Design sélectionné</span>
                 </div>
                 {selectedDesign.price && (
-                  <div className="hidden md:block pl-4 border-l border-slate-200">
-                    <p className="text-2xl font-black text-slate-900">
-                      {formatPrice(selectedDesign.price)}
-                    </p>
+                  <div className="text-2xl font-black text-slate-900">
+                    {formatPrice(selectedDesign.price)}
                   </div>
                 )}
               </div>
@@ -480,7 +472,7 @@ export default function ShowroomPage() {
 
                 <div className="relative">
                   {selectedDesign.price && (
-                    <div className="absolute -top-6 right-0 flex items-center gap-1.5 text-xs">
+                    <div className="absolute -top-6 right-0 flex items-center gap-1.5 text-xs whitespace-nowrap">
                       <span className="text-slate-400 line-through">
                         {formatPrice(selectedDesign.price)}
                       </span>
@@ -496,7 +488,7 @@ export default function ShowroomPage() {
                     className="flex-1 md:flex-none gap-2"
                   >
                     <Sparkles size={16} />
-                    Signer le devis (-15%)
+                    Signer (-15%)
                   </Button>
                 </div>
               </div>

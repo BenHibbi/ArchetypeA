@@ -113,7 +113,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
             <Sparkles size={20} />
           )}
           <h3 className="font-bold text-lg">
-            {isGenerating ? 'Génération du Brief...' : 'Brief Design Complet'}
+            {isGenerating ? 'Génération du Prompt...' : 'Prompt Design'}
           </h3>
         </div>
         <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
                 {copied ? (
                   <><Check size={16} className="mr-2 text-green-200" /> Copié !</>
                 ) : (
-                  <><Copy size={16} className="mr-2" /> Copier le brief</>
+                  <><Copy size={16} className="mr-2" /> Copier le prompt</>
                 )}
               </Button>
             </>
@@ -156,7 +156,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
           {isGenerating ? (
             <div className="flex flex-col items-center justify-center py-12 text-slate-500">
               <Loader2 size={32} className="animate-spin mb-4 text-orange-500" />
-              <p className="text-sm">L'agent ANALYST génère votre brief...</p>
+              <p className="text-sm">L'agent ANALYST génère votre prompt...</p>
               <p className="text-xs text-slate-400 mt-1">Cela peut prendre quelques secondes</p>
             </div>
           ) : error ? (

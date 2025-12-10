@@ -163,13 +163,13 @@ export function ShowroomBuilder({
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-6 py-4 flex items-center justify-between">
         <h3 className="font-bold text-lg flex items-center gap-2">
           <ImageIcon size={20} />
           Showroom Designer
         </h3>
         {showroomStatus === 'sent' && (
-          <span className="bg-teal-500 text-white text-xs px-3 py-1 rounded-full">
+          <span className="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">
             Envoyé
           </span>
         )}
@@ -180,7 +180,7 @@ export function ShowroomBuilder({
         {designs.map((design) => (
           <div
             key={design.slotNumber}
-            className="border-2 border-dashed border-slate-200 rounded-xl p-4 hover:border-orange-300 transition-colors"
+            className="border-2 border-dashed border-slate-200 rounded-xl p-4 hover:border-yellow-400 transition-colors"
             onPaste={(e) => handlePaste(design.slotNumber, e)}
           >
             {/* Slot Header */}
@@ -207,7 +207,7 @@ export function ShowroomBuilder({
                 onClick={() => setActiveTab((prev) => ({ ...prev, [design.slotNumber]: 'image' }))}
                 className={`flex-1 text-xs py-1.5 rounded transition-colors ${
                   activeTab[design.slotNumber] === 'image'
-                    ? 'bg-orange-100 text-orange-700'
+                    ? 'bg-yellow-100 text-yellow-700'
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
               >
@@ -217,7 +217,7 @@ export function ShowroomBuilder({
                 onClick={() => setActiveTab((prev) => ({ ...prev, [design.slotNumber]: 'html' }))}
                 className={`flex-1 text-xs py-1.5 rounded transition-colors ${
                   activeTab[design.slotNumber] === 'html'
-                    ? 'bg-orange-100 text-orange-700'
+                    ? 'bg-yellow-100 text-yellow-700'
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
               >
@@ -342,17 +342,17 @@ export function ShowroomBuilder({
 
       {/* Showroom URL if sent */}
       {showroomStatus === 'sent' && (
-        <div className="px-6 py-3 bg-teal-50 border-t border-teal-100">
+        <div className="px-6 py-3 bg-amber-50 border-t border-amber-100">
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-teal-600 font-medium">Lien showroom :</span>
-            <code className="bg-white px-2 py-1 rounded text-teal-800 font-mono text-xs">
+            <span className="text-amber-700 font-medium">Lien showroom :</span>
+            <code className="bg-white px-2 py-1 rounded text-amber-800 font-mono text-xs">
               {showroomUrl}
             </code>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigator.clipboard.writeText(showroomUrl)}
-              className="text-teal-600 hover:text-teal-700"
+              className="text-amber-600 hover:text-amber-700"
             >
               Copier
             </Button>
