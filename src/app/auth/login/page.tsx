@@ -32,14 +32,15 @@ export default function LoginPage() {
 
       if (authError) {
         setError(authError.message)
+        setIsLoading(false)
         return
       }
 
-      router.push('/studio')
+      // Ne pas remettre isLoading à false - on redirige
       router.refresh()
+      router.push('/studio')
     } catch (err) {
       setError('Une erreur est survenue')
-    } finally {
       setIsLoading(false)
     }
   }

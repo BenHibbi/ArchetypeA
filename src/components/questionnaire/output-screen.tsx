@@ -118,7 +118,7 @@ export function OutputScreen({
   }
 
   return (
-    <div className="h-[calc(100vh-180px)] flex flex-col max-w-6xl mx-auto w-full animate-zoom-in px-4">
+    <div className="min-h-[calc(100vh-180px)] md:h-[calc(100vh-180px)] flex flex-col max-w-6xl mx-auto w-full animate-zoom-in px-4 pb-24 md:pb-0">
       {/* Header - Fixed height */}
       <div className="text-center py-4 flex-shrink-0">
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-3 py-1 rounded-full text-xs font-medium mb-2">
@@ -335,8 +335,8 @@ export function OutputScreen({
         </div>
       </div>
 
-      {/* Button - Fixed at bottom */}
-      <div className="py-4 flex justify-center flex-shrink-0">
+      {/* Button - Sticky on mobile, normal on desktop */}
+      <div className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto p-4 md:py-4 flex justify-center flex-shrink-0 bg-gradient-to-t from-slate-50 via-slate-50 to-transparent md:bg-none pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-4">
         {isDemo ? (
           <Button onClick={onRestart} variant="orange" size="lg" className="gap-2 shadow-xl">
             <Check size={18} /> {t('finishDemo')}

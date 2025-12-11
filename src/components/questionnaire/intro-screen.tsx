@@ -37,21 +37,21 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8 animate-fade-in">
-      <div className="relative mb-4">
+    <div className="flex flex-col items-center justify-start md:justify-center min-h-[60vh] text-center space-y-6 md:space-y-8 animate-fade-in pb-[env(safe-area-inset-bottom)] pt-4 md:pt-0">
+      <div className="relative mb-2 md:mb-4">
         <Logo size="lg" showText={false} />
       </div>
 
       <div className="space-y-2">
-        <h1 className="text-6xl font-black tracking-tight text-slate-900">archetype</h1>
-        <p className="text-xl text-slate-500 font-medium tracking-wide">
+        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900">archetype</h1>
+        <p className="text-lg md:text-xl text-slate-500 font-medium tracking-wide">
           DESIGN INTELLIGENCE PROFILER
         </p>
       </div>
 
-      <p className="max-w-md text-slate-400">{t('subtitle')}</p>
+      <p className="max-w-md text-slate-400 text-sm md:text-base">{t('subtitle')}</p>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4 pb-32 md:pb-0">
         <div className="text-left space-y-2">
           <Label htmlFor="businessName" className="text-slate-700">
             {t('businessName')} <span className="text-orange-500">*</span>
