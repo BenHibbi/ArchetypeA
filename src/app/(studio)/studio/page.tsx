@@ -222,7 +222,7 @@ export default async function DashboardPage() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            {latestSession && status !== 'completed' && (
+                            {latestSession && (
                               <CopyLinkIcon url={generateSessionUrl(latestSession.id)} />
                             )}
                             <DeleteClientButton clientId={client.id} />
