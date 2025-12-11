@@ -1,18 +1,11 @@
 import { NextResponse } from 'next/server'
 import Groq from 'groq-sdk'
-import { readFileSync } from 'fs'
-import { join } from 'path'
 import { createClient } from '@/lib/supabase/server'
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-})
+// Salesman prompt embedded to avoid fs issues in serverless
+const SALESMAN_SYSTEM_PROMPT = `You are an expert design consultant for Archetype, a premium branding studio. You help clients understand their design brief and make decisions about their visual identity.
 
-// Load salesman prompt from external file
-const SALESMAN_SYSTEM_PROMPT = readFileSync(
-  join(process.cwd(), 'src/prompts/salesman.md'),
-  'utf-8'
-)
+Be friendly, professional, and knowledgeable. Answer questions about branding, design choices, and the creative process.`
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -62,6 +55,11 @@ ${contextBrief}`
         content: msg.content,
       })),
     ]
+
+    // Initialize Groq client inside function to avoid build-time errors
+    const groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    })
 
     // Use Groq with GPT OSS 120B
     const completion = await groq.chat.completions.create({
