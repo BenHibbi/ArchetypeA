@@ -32,17 +32,15 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-900 text-white flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-slate-800">
-        <Link href="/studio">
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              <div className="w-4 h-4 rounded-full bg-teal-500" />
-              <div className="w-4 h-4 rounded-full bg-orange-500" />
-              <div className="w-4 h-4 rounded-full bg-yellow-400" />
-            </div>
-            <span className="font-bold tracking-tight">archetype</span>
-            <span className="text-xs bg-orange-500 px-2 py-0.5 rounded-full">Studio</span>
+        <div className="flex items-center gap-2">
+          <div className="flex -space-x-2">
+            <div className="w-4 h-4 rounded-full bg-teal-500" />
+            <div className="w-4 h-4 rounded-full bg-orange-500" />
+            <div className="w-4 h-4 rounded-full bg-yellow-400" />
           </div>
-        </Link>
+          <span className="font-bold tracking-tight">archetype</span>
+          <span className="text-xs bg-orange-500 px-2 py-0.5 rounded-full">Studio</span>
+        </div>
       </div>
 
       {/* Navigation */}

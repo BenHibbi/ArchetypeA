@@ -1,11 +1,46 @@
 'use client'
 
-import { Check, Shield, Zap, Box, Star, Heart, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
+import { Check, Shield, Zap, Box, Star, Heart, ChevronRight, Palette } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Question, QuestionnaireAnswers } from '@/types'
 import { cn } from '@/lib/utils'
 import { VizAmbiance, VizStructure, VizRatio } from './visualizations'
 import { Button } from '@/components/ui/button'
+
+// Couleurs disponibles pour le color picker - palette étendue
+const COLOR_PICKER_OPTIONS = [
+  // Reds
+  '#dc2626', '#ef4444', '#f87171', '#fca5a5',
+  // Pinks
+  '#db2777', '#ec4899', '#f472b6', '#f9a8d4',
+  // Oranges
+  '#ea580c', '#f97316', '#fb923c', '#fdba74',
+  // Yellows
+  '#ca8a04', '#eab308', '#facc15', '#fde047',
+  // Limes
+  '#65a30d', '#84cc16', '#a3e635', '#bef264',
+  // Greens
+  '#16a34a', '#22c55e', '#4ade80', '#86efac',
+  // Teals
+  '#0d9488', '#14b8a6', '#2dd4bf', '#5eead4',
+  // Cyans
+  '#0891b2', '#06b6d4', '#22d3ee', '#67e8f9',
+  // Blues
+  '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd',
+  // Indigos
+  '#4f46e5', '#6366f1', '#818cf8', '#a5b4fc',
+  // Purples
+  '#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd',
+  // Fuchsias
+  '#c026d3', '#d946ef', '#e879f9', '#f0abfc',
+  // Roses
+  '#e11d48', '#f43f5e', '#fb7185', '#fda4af',
+  // Neutrals
+  '#000000', '#1f2937', '#374151', '#4b5563',
+  '#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb',
+  '#f3f4f6', '#f9fafb', '#ffffff', '#fafaf9',
+]
 
 // Icon pour Performance (TrendingUp personnalisé)
 const TrendingUpIcon = ({ size }: { size: number }) => (
@@ -73,6 +108,8 @@ interface QuestionScreenProps {
   currentAnswer?: string
   onAnswer: (questionId: string, value: string) => void
   onMultiSelectConfirm?: () => void
+  customColors?: string[]
+  onCustomColorsChange?: (colors: string[]) => void
 }
 
 export function QuestionScreen({
@@ -81,16 +118,25 @@ export function QuestionScreen({
   currentAnswer,
   onAnswer,
   onMultiSelectConfirm,
+  customColors = [],
+  onCustomColorsChange,
 }: QuestionScreenProps) {
   const t = useTranslations('questionnaire.questions')
   const tCommon = useTranslations('questionnaire.moodboard')
+  const [showColorPicker, setShowColorPicker] = useState(false)
 
   // Parse multi-select values
   const selectedValues = question.multiSelect && currentAnswer
     ? currentAnswer.split(',').filter(Boolean)
     : []
 
-  const handleSelect = (optionId: string) => {
+  const handleSelect = (optionId: string, isColorPicker?: boolean) => {
+    if (isColorPicker) {
+      // Toggle color picker visibility
+      setShowColorPicker(true)
+      return
+    }
+
     if (question.multiSelect) {
       // Toggle selection for multi-select
       const newValues = selectedValues.includes(optionId)
@@ -99,7 +145,25 @@ export function QuestionScreen({
       onAnswer(question.id, newValues.join(','))
     } else {
       // Single select - auto-advance
+      setShowColorPicker(false)
       onAnswer(question.id, optionId)
+    }
+  }
+
+  const handleColorToggle = (color: string) => {
+    if (!onCustomColorsChange) return
+    const newColors = customColors.includes(color)
+      ? customColors.filter(c => c !== color)
+      : customColors.length < 5
+        ? [...customColors, color]
+        : customColors // Max 5 colors
+    onCustomColorsChange(newColors)
+  }
+
+  const handleCustomConfirm = () => {
+    if (customColors.length > 0) {
+      setShowColorPicker(false)
+      onAnswer(question.id, 'custom')
     }
   }
 
@@ -157,7 +221,7 @@ export function QuestionScreen({
           return (
             <button
               key={opt.id}
-              onClick={() => handleSelect(opt.id)}
+              onClick={() => handleSelect(opt.id, opt.isColorPicker)}
               className={cn(
                 'relative p-4 rounded-xl border-2 text-left transition-all duration-200',
                 'hover:scale-[1.02] active:scale-95 flex flex-col gap-2 group',
@@ -188,6 +252,25 @@ export function QuestionScreen({
                         className={cn('w-8 h-8 rounded-full border border-black/5 shadow-sm', c)}
                       />
                     ))}
+                  </div>
+                )}
+
+                {/* Custom color picker preview */}
+                {opt.isColorPicker && (
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    {customColors.length > 0 ? (
+                      customColors.map((c) => (
+                        <div
+                          key={c}
+                          className="w-8 h-8 rounded-full border border-black/10 shadow-sm"
+                          style={{ backgroundColor: c }}
+                        />
+                      ))
+                    ) : (
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400">
+                        <Palette size={24} className="text-white" />
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -228,6 +311,98 @@ export function QuestionScreen({
           )
         })}
       </div>
+
+      {/* Color Picker Modal */}
+      {showColorPicker && question.id === 'palette' && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl animate-slide-in-from-bottom">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-slate-900">
+                Choisis tes couleurs
+              </h3>
+              <button
+                onClick={() => setShowColorPicker(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-slate-500 text-sm mb-4">
+              Sélectionne jusqu'à 5 couleurs pour ta palette personnalisée
+            </p>
+
+            {/* Selected colors preview */}
+            <div className="flex gap-2 mb-4 min-h-[40px] items-center">
+              {customColors.length > 0 ? (
+                customColors.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => handleColorToggle(c)}
+                    className="w-10 h-10 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform relative group"
+                    style={{ backgroundColor: c }}
+                  >
+                    <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 rounded-full">
+                      <Check size={16} className="text-white" />
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <span className="text-slate-400 text-sm">Aucune couleur sélectionnée</span>
+              )}
+            </div>
+
+            {/* Color grid */}
+            <div className="grid grid-cols-8 gap-2 mb-6 max-h-[300px] overflow-y-auto">
+              {COLOR_PICKER_OPTIONS.map((color) => {
+                const isColorSelected = customColors.includes(color)
+                return (
+                  <button
+                    key={color}
+                    onClick={() => handleColorToggle(color)}
+                    className={cn(
+                      'w-10 h-10 rounded-full border-2 transition-all hover:scale-110',
+                      isColorSelected
+                        ? 'border-teal-500 ring-2 ring-teal-200 scale-110'
+                        : 'border-transparent hover:border-slate-300',
+                      color === '#ffffff' && 'border-slate-200'
+                    )}
+                    style={{ backgroundColor: color }}
+                  >
+                    {isColorSelected && (
+                      <Check size={16} className={cn(
+                        'mx-auto',
+                        ['#ffffff', '#e5e7eb', '#fde047', '#facc15', '#fca5a5', '#f9a8d4', '#fdba74', '#86efac', '#5eead4', '#93c5fd', '#67e8f9', '#c4b5fd', '#d8b4fe'].includes(color)
+                          ? 'text-slate-800'
+                          : 'text-white'
+                      )} />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowColorPicker(false)}
+              >
+                Annuler
+              </Button>
+              <Button
+                variant="orange"
+                className="flex-1"
+                onClick={handleCustomConfirm}
+                disabled={customColors.length === 0}
+              >
+                Confirmer ({customColors.length}/5)
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Continue button for multi-select */}
       {question.multiSelect && selectedValues.length > 0 && onMultiSelectConfirm && (

@@ -400,8 +400,8 @@ export default function ShowroomPage() {
           {/* Designs Grid - Full width with dynamic sizing */}
           <div
             className={cn(
-              'flex flex-col md:flex-row gap-4 items-stretch justify-center transition-all duration-500',
-              designCount === 1 && 'max-w-[80vw] mx-auto',
+              'flex flex-col md:flex-row gap-4 items-center justify-center transition-all duration-500',
+              designCount === 1 && 'max-w-3xl mx-auto',
               designCount === 2 && 'max-w-[90vw] mx-auto',
               designCount === 3 && 'w-full'
             )}
@@ -418,10 +418,12 @@ export default function ShowroomPage() {
                   className={cn(
                     'group relative rounded-xl transition-all duration-500 ease-out cursor-pointer',
                     'hover:shadow-2xl',
-                    // Dynamic sizing based on selection
-                    isSelected && 'md:flex-none w-fit mx-auto z-10',
-                    isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95 overflow-hidden',
-                    !hasSelection && 'md:flex-1 hover:-translate-y-2 overflow-hidden',
+                    // Single design: always full width of container
+                    designCount === 1 && 'w-full',
+                    // Multiple designs: dynamic sizing based on selection
+                    designCount > 1 && isSelected && 'md:flex-none md:w-[60%] z-10',
+                    designCount > 1 && isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95 overflow-hidden',
+                    designCount > 1 && !hasSelection && 'md:flex-1 hover:-translate-y-2 overflow-hidden',
                     // Ring styling
                     isSelected
                       ? 'ring-4 ring-orange-500 shadow-2xl shadow-orange-500/30'
@@ -525,15 +527,20 @@ export default function ShowroomPage() {
                       </span>
                     </div>
                   )}
-                  <Button
-                    variant="orange"
-                    size="lg"
-                    disabled
-                    className="flex-1 md:flex-none gap-2 opacity-50 cursor-not-allowed"
-                  >
-                    <Sparkles size={16} />
-                    {t('signDiscount')}
-                  </Button>
+                  <div className="relative flex-1 md:flex-none">
+                    <Button
+                      variant="orange"
+                      size="lg"
+                      disabled
+                      className="w-full gap-2 opacity-50 cursor-not-allowed"
+                    >
+                      <Sparkles size={16} />
+                      {t('signQuote')}
+                    </Button>
+                    <span className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full rotate-12 shadow-md">
+                      {t('comingSoon')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

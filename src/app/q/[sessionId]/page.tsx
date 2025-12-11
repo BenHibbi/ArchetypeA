@@ -57,6 +57,7 @@ export default function QuestionnairePage() {
     answers,
     moodboardLikes,
     features,
+    customColors,
     voiceTranscription,
     voiceAnalysis,
     isSubmitting,
@@ -69,6 +70,7 @@ export default function QuestionnairePage() {
     setAnswer,
     toggleMoodboard,
     toggleFeature,
+    setCustomColors,
     setVoiceData,
     setSubmitting,
     setCompleted,
@@ -262,6 +264,8 @@ export default function QuestionnairePage() {
             currentAnswer={answers[QUESTIONS[step - 1].id as keyof typeof answers]}
             onAnswer={handleAnswer}
             onMultiSelectConfirm={handleMultiSelectConfirm}
+            customColors={customColors}
+            onCustomColorsChange={setCustomColors}
           />
         )}
 
@@ -297,6 +301,7 @@ export default function QuestionnairePage() {
             answers={answers}
             moodboardLikes={moodboardLikes}
             features={features}
+            customColors={customColors}
             websiteUrl={websiteUrl}
             sessionId={sessionId}
             onRestart={handleRestart}

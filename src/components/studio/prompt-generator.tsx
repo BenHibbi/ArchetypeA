@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState } from 'react'
 import { Copy, Check, Sparkles, ChevronDown, ChevronRight, Loader2, RefreshCw } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -29,33 +29,18 @@ interface Client {
 interface PromptGeneratorProps {
   client: Client
   response: Response
+  sessionId: string
+  initialBrief?: string | null
 }
 
-export function PromptGenerator({ client, response }: PromptGeneratorProps) {
+export function PromptGenerator({ client, response, sessionId, initialBrief }: PromptGeneratorProps) {
   const t = useTranslations('studio.prompt')
   const tCommon = useTranslations('common')
   const [copied, setCopied] = useState(false)
-  const [briefOpen, setBriefOpen] = useState(false)
+  const [briefOpen, setBriefOpen] = useState(!!initialBrief)
   const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedBrief, setGeneratedBrief] = useState<string | null>(null)
+  const [generatedBrief, setGeneratedBrief] = useState<string | null>(initialBrief || null)
   const [error, setError] = useState<string | null>(null)
-  const cacheKey = useMemo(() => {
-    const fingerprint = [
-      client.email,
-      client.company_name || '',
-      client.website_url || '',
-      response.ambiance || '',
-      response.valeurs || '',
-      response.structure || '',
-      response.typo || '',
-      response.ratio || '',
-      response.palette || '',
-      (response.moodboard_likes || []).join(','),
-      (response.features || []).join(','),
-      response.voice_analysis || '',
-    ].join('|')
-    return `prompt-cache::${fingerprint}`
-  }, [client, response])
 
   // Parse voice analysis if available
   let voiceAnalysis = null
@@ -79,6 +64,7 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          sessionId,
           questionnaire: {
             ambiance: response.ambiance,
             valeurs: response.valeurs,
@@ -101,9 +87,6 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
 
       const data = await res.json()
       setGeneratedBrief(data.brief)
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem(cacheKey, data.brief)
-      }
       setBriefOpen(true)
     } catch {
       setError(t('errorGenerating'))
@@ -111,17 +94,6 @@ export function PromptGenerator({ client, response }: PromptGeneratorProps) {
       setIsGenerating(false)
     }
   }
-
-  // Generate brief on mount or load from cache
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const cached = sessionStorage.getItem(cacheKey)
-    if (cached) {
-      setGeneratedBrief(cached)
-      return
-    }
-    generateBrief()
-  }, [cacheKey])
 
   const handleCopy = async () => {
     if (generatedBrief) {

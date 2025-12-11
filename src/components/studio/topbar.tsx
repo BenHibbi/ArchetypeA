@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { LogOut, CreditCard, HelpCircle, FileText, Shield, Scale } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -48,17 +47,15 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-50 h-16 bg-slate-900 text-white flex items-center justify-between px-6">
       {/* Logo */}
-      <Link href="/studio/clients">
-        <div className="flex items-center gap-2">
-          <div className="flex -space-x-2">
-            <div className="w-4 h-4 rounded-full bg-teal-500" />
-            <div className="w-4 h-4 rounded-full bg-orange-500" />
-            <div className="w-4 h-4 rounded-full bg-yellow-400" />
-          </div>
-          <span className="font-bold tracking-tight">archetype</span>
-          <span className="text-xs bg-orange-500 px-2 py-0.5 rounded-full">Studio</span>
+      <div className="flex items-center gap-2">
+        <div className="flex -space-x-2">
+          <div className="w-4 h-4 rounded-full bg-teal-500" />
+          <div className="w-4 h-4 rounded-full bg-orange-500" />
+          <div className="w-4 h-4 rounded-full bg-yellow-400" />
         </div>
-      </Link>
+        <span className="font-bold tracking-tight">archetype</span>
+        <span className="text-xs bg-orange-500 px-2 py-0.5 rounded-full">Studio</span>
+      </div>
 
       {/* Actions */}
       <div className="flex items-center gap-3">

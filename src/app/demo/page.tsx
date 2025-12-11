@@ -19,19 +19,29 @@ export default function DemoPage() {
     answers,
     moodboardLikes,
     features,
+    customColors,
     setStep,
     nextStep,
     prevStep,
     setAnswer,
     toggleMoodboard,
     toggleFeature,
+    setCustomColors,
     setVoiceData,
     reset,
   } = useQuestionnaireStore()
 
   const handleAnswer = (questionId: string, value: string) => {
     setAnswer(questionId, value)
-    setTimeout(() => nextStep(), 350)
+    // Don't auto-advance for multi-select questions
+    const currentQuestion = QUESTIONS[step - 1]
+    if (!currentQuestion?.multiSelect) {
+      setTimeout(() => nextStep(), 350)
+    }
+  }
+
+  const handleMultiSelectConfirm = () => {
+    nextStep()
   }
 
   const handleRestart = () => {
@@ -52,6 +62,9 @@ export default function DemoPage() {
             questionIndex={step - 1}
             currentAnswer={answers[QUESTIONS[step - 1].id as keyof typeof answers]}
             onAnswer={handleAnswer}
+            onMultiSelectConfirm={handleMultiSelectConfirm}
+            customColors={customColors}
+            onCustomColorsChange={setCustomColors}
           />
         )}
 
@@ -86,6 +99,7 @@ export default function DemoPage() {
             answers={answers}
             moodboardLikes={moodboardLikes}
             features={features}
+            customColors={customColors}
             onRestart={handleRestart}
             isDemo={true}
           />

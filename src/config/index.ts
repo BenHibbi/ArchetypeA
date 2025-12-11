@@ -1,5 +1,6 @@
 export { QUESTIONS } from './questions'
 export { SKELETONS } from './skeletons'
+export { INSPIRATIONS } from './inspirations'
 export { FEATURES_LIST } from './features'
 export { STUDIO_NAV } from './navigation'
 export {

@@ -95,6 +95,8 @@ async function getClient(id: string) {
 
   // Récupérer les design proposals si session existe
   let designProposals: DesignProposalDB[] = []
+  let generatedBrief: string | null = null
+
   if (latestSession) {
     const { data: designs } = await supabase
       .from('design_proposals')
@@ -103,9 +105,19 @@ async function getClient(id: string) {
       .order('slot_number', { ascending: true })
 
     designProposals = designs || []
+
+    // Récupérer le brief généré s'il existe
+    const { data: promptData } = await supabase
+      .from('generated_prompts')
+      .select('prompt_content')
+      .eq('session_id', latestSession.id)
+      .eq('prompt_type', 'analyst_brief')
+      .single()
+
+    generatedBrief = promptData?.prompt_content || null
   }
 
-  return { ...client, latestSession, designProposals }
+  return { ...client, latestSession, designProposals, generatedBrief }
 }
 
 export default async function ClientDetailPage({
@@ -195,8 +207,13 @@ export default async function ClientDetailPage({
         )}
 
         {/* Prompt Generator - si complété */}
-        {response && status === 'completed' && (
-          <PromptGenerator client={client} response={response} />
+        {response && status === 'completed' && latestSession && (
+          <PromptGenerator
+            client={client}
+            response={response}
+            sessionId={latestSession.id}
+            initialBrief={client.generatedBrief}
+          />
         )}
 
         {/* Showroom Builder - si session existe et questionnaire complété */}

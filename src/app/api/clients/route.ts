@@ -15,10 +15,10 @@ async function requireAuth() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { supabase: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+    return { supabase: null, user: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
   }
 
-  return { supabase, response: null }
+  return { supabase, user, response: null }
 }
 
 // GET /api/clients - Liste tous les clients (auth required)
@@ -67,8 +67,8 @@ export async function GET() {
 // POST /api/clients - Créer un nouveau client (auth required)
 export async function POST(request: NextRequest) {
   try {
-    const { supabase, response } = await requireAuth()
-    if (!supabase) return response!
+    const { supabase, user, response } = await requireAuth()
+    if (!supabase || !user) return response!
 
     const body = await request.json()
     const { email, company_name, contact_name, website_url, notes } = body || {}
@@ -84,6 +84,7 @@ export async function POST(request: NextRequest) {
     const { data: client, error } = await (supabase
       .from('clients') as any)
       .insert({
+        user_id: user.id,
         email: email.trim(),
         company_name: company_name?.trim() || null,
         contact_name: contact_name?.trim() || null,

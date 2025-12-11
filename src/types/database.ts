@@ -15,6 +15,7 @@ export interface Database {
       clients: {
         Row: {
           id: string
+          user_id: string
           email: string
           company_name: string | null
           contact_name: string | null
@@ -25,6 +26,7 @@ export interface Database {
         }
         Insert: {
           id?: string
+          user_id: string
           email: string
           company_name?: string | null
           contact_name?: string | null
@@ -35,6 +37,7 @@ export interface Database {
         }
         Update: {
           id?: string
+          user_id?: string
           email?: string
           company_name?: string | null
           contact_name?: string | null

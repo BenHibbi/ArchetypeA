@@ -58,10 +58,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'GEMINI_API_KEY manquante' }, { status: 500 })
     }
 
-    const { questionnaire, voiceAnalysis, clientName, websiteUrl } = await request.json()
+    const { sessionId, questionnaire, voiceAnalysis, clientName, websiteUrl } = await request.json()
 
     if (!questionnaire) {
       return NextResponse.json({ error: 'Données questionnaire manquantes' }, { status: 400 })
+    }
+
+    if (!sessionId) {
+      return NextResponse.json({ error: 'sessionId manquant' }, { status: 400 })
     }
 
     const cleanedQuestionnaire: QuestionnaireData = {
@@ -105,6 +109,23 @@ Generate the Redesign Master Prompt following the exact structure specified.
     const result = await model.generateContent(ANALYST_SYSTEM_PROMPT + '\n\n' + userPrompt)
     const response = await result.response
     const brief = response.text()
+
+    // Sauvegarder le brief en base (upsert si déjà existant)
+    const { error: upsertError } = await supabase
+      .from('generated_prompts')
+      .upsert(
+        {
+          session_id: sessionId,
+          prompt_type: 'analyst_brief',
+          prompt_content: brief,
+        },
+        { onConflict: 'session_id,prompt_type' }
+      )
+
+    if (upsertError) {
+      console.error('Erreur sauvegarde brief:', upsertError)
+      // On continue quand même, le brief est généré
+    }
 
     return NextResponse.json({ brief })
   } catch (error) {

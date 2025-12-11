@@ -5,7 +5,7 @@ export type ValeurType = 'confiance' | 'creativite' | 'performance' | 'simplicit
 export type StructureType = 'simple' | 'standard' | 'rich' | 'fullscreen' | 'masonry' | 'bento'
 export type TypoType = 'fine' | 'bold' | 'serif' | 'modern' | 'variable' | 'retro'
 export type RatioType = 'image_heavy' | 'mix' | 'text_heavy'
-export type PaletteType = 'cold' | 'warm' | 'bw' | 'accent' | 'pastel' | 'neutral'
+export type PaletteType = 'cold' | 'warm' | 'bw' | 'accent' | 'pastel' | 'custom'
 
 export type SkeletonType =
   | 'hero' | 'split' | 'typo' | 'grid' | 'blocks' | 'pricing'
@@ -19,6 +19,7 @@ export interface QuestionOption {
   viz?: string
   style?: string
   colors?: string[]
+  isColorPicker?: boolean
 }
 
 export interface Question {
@@ -34,6 +35,14 @@ export interface Skeleton {
   id: string
   label: string
   type: SkeletonType
+}
+
+export interface Inspiration {
+  id: string
+  label: string
+  image: string
+  concept: string
+  prompt: string
 }
 
 export interface QuestionnaireAnswers {

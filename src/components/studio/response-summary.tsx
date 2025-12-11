@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Copy, Check, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { QUESTIONS, SKELETONS, COPY_FEEDBACK_DURATION } from '@/config'
+import { QUESTIONS, INSPIRATIONS, COPY_FEEDBACK_DURATION } from '@/config'
 
 interface Inspiration {
   nom: string
@@ -75,10 +75,15 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
       ratio: { id: response.ratio, label: getOptionLabel('ratio', response.ratio) },
       palette: { id: response.palette, label: getOptionLabel('palette', response.palette) },
     },
-    moodboard: response.moodboard_likes?.map(id => ({
-      id,
-      label: SKELETONS.find(s => s.id === id)?.label || id
-    })) || [],
+    moodboard: response.moodboard_likes?.map(id => {
+      const inspiration = INSPIRATIONS.find(i => i.id === id)
+      return {
+        id,
+        label: inspiration?.label || id,
+        concept: inspiration?.concept || '',
+        prompt: inspiration?.prompt || ''
+      }
+    }) || [],
     features: response.features || []
   }
 
@@ -189,22 +194,39 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               </div>
             </div>
 
-            {/* Moodboard */}
+            {/* Moodboard - Inspirations */}
             {response.moodboard_likes && response.moodboard_likes.length > 0 && (
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                   {t('moodboard')} ({response.moodboard_likes.length} {t('selections')})
                 </h4>
-                <div className="flex flex-wrap gap-2">
+                <div className="space-y-3">
                   {response.moodboard_likes.map((id) => {
-                    const skeleton = SKELETONS.find((s) => s.id === id)
+                    const inspiration = INSPIRATIONS.find((i) => i.id === id)
                     return (
-                      <span
+                      <div
                         key={id}
-                        className="text-sm font-medium bg-slate-900 text-white px-3 py-1.5 rounded-full"
+                        className="bg-slate-50 rounded-lg p-4 border border-slate-100"
                       >
-                        {skeleton?.label || id}
-                      </span>
+                        <div className="flex items-start gap-3">
+                          <span className="text-sm font-bold bg-slate-900 text-white px-3 py-1 rounded-full shrink-0">
+                            {inspiration?.label || id}
+                          </span>
+                          {inspiration?.concept && (
+                            <p className="text-sm text-slate-600 italic">
+                              {inspiration.concept}
+                            </p>
+                          )}
+                        </div>
+                        {inspiration?.prompt && (
+                          <div className="mt-3 bg-white rounded-md p-3 border border-slate-200">
+                            <span className="text-xs text-slate-400 uppercase font-medium block mb-1">Prompt</span>
+                            <p className="text-xs text-slate-700 leading-relaxed">
+                              {inspiration.prompt}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     )
                   })}
                 </div>

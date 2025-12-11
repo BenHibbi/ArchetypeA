@@ -145,7 +145,7 @@
           "bw": { "label": "Black & White", "desc": "Clean contrast" },
           "accent": { "label": "Minimal Colored", "desc": "Color accents" },
           "pastel": { "label": "Pastel", "desc": "Soft and light" },
-          "neutral": { "label": "Neutral / Corp.", "desc": "Sober and pro" }
+          "custom": { "label": "Custom", "desc": "Choose your colors" }
         }
       }
     },
@@ -180,7 +180,7 @@
     },
     "output": {
       "title": "Your Brief",
-      "subtitle": "Review your choices before sending.",
+      "subtitle": "These elements are for reference only. We will build your site according to your wishes and needs.",
       "vibe": "Vibe",
       "palette": "Palette",
       "identity": "Identity",
@@ -361,7 +361,8 @@
     "subtitle": "Click to select the design that suits you.",
     "designSelected": "Design selected",
     "interested": "I'm interested",
-    "signDiscount": "Coming soon",
+    "signQuote": "Sign quote",
+    "comingSoon": "Soon",
     "yourSelection": "Your selection",
     "email": "Email",
     "phone": "Phone",

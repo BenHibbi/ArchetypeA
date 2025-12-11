@@ -17,10 +17,22 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
   const [businessName, setBusinessName] = useState('')
   const [websiteUrl, setWebsiteUrl] = useState('')
 
+  const normalizeUrl = (url: string): string => {
+    if (!url) return ''
+    let normalized = url.trim().toLowerCase()
+    // Remove any existing protocol
+    normalized = normalized.replace(/^(https?:\/\/)?(www\.)?/, '')
+    // Add https://
+    if (normalized) {
+      normalized = `https://${normalized}`
+    }
+    return normalized
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (businessName.trim()) {
-      onStart(businessName.trim(), websiteUrl.trim())
+      onStart(businessName.trim(), normalizeUrl(websiteUrl))
     }
   }
 
@@ -63,8 +75,8 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
           </Label>
           <Input
             id="websiteUrl"
-            type="url"
-            placeholder={t('websitePlaceholder')}
+            type="text"
+            placeholder="www.example.com"
             value={websiteUrl}
             onChange={(e) => setWebsiteUrl(e.target.value)}
             className="h-12 text-lg"

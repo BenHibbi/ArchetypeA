@@ -3,8 +3,8 @@
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
-import { SKELETONS } from '@/config'
-import { SkeletonCard } from './visualizations'
+import { INSPIRATIONS } from '@/config'
+import { InspirationCard } from './visualizations'
 
 interface MoodboardScreenProps {
   likes: string[]
@@ -16,7 +16,7 @@ export function MoodboardScreen({ likes, onToggle, onConfirm }: MoodboardScreenP
   const t = useTranslations('questionnaire.moodboard')
 
   return (
-    <div className="max-w-5xl mx-auto w-full animate-zoom-in h-[calc(100vh-180px)] flex flex-col">
+    <div className="max-w-6xl mx-auto w-full animate-zoom-in h-[calc(100vh-180px)] flex flex-col">
       <div className="text-center mb-6 flex-shrink-0">
         <span className="text-teal-600 font-bold text-xs tracking-widest uppercase mb-2 block">
           Step 7
@@ -27,13 +27,13 @@ export function MoodboardScreen({ likes, onToggle, onConfirm }: MoodboardScreenP
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 flex-1 overflow-hidden">
-        {SKELETONS.map((skel) => (
-          <SkeletonCard
-            key={skel.id}
-            data={skel}
-            isSelected={likes.includes(skel.id)}
-            onToggle={() => onToggle(skel.id)}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 flex-1 overflow-y-auto pb-4">
+        {INSPIRATIONS.map((inspiration) => (
+          <InspirationCard
+            key={inspiration.id}
+            data={inspiration}
+            isSelected={likes.includes(inspiration.id)}
+            onToggle={() => onToggle(inspiration.id)}
           />
         ))}
       </div>

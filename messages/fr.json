@@ -145,7 +145,7 @@
           "bw": { "label": "Noir & Blanc", "desc": "Contraste épuré" },
           "accent": { "label": "Minimal Coloré", "desc": "Touches de couleur" },
           "pastel": { "label": "Pastel", "desc": "Doux et léger" },
-          "neutral": { "label": "Neutre / Corp.", "desc": "Sobre et pro" }
+          "custom": { "label": "Custom", "desc": "Choisis tes couleurs" }
         }
       }
     },
@@ -180,7 +180,7 @@
     },
     "output": {
       "title": "Votre Brief",
-      "subtitle": "Vérifiez vos choix avant d'envoyer.",
+      "subtitle": "Ces éléments sont à titre informatif. Nous construirons votre site selon vos envies et besoins.",
       "vibe": "Vibe",
       "palette": "Palette",
       "identity": "Identité",
@@ -361,7 +361,8 @@
     "subtitle": "Cliquez pour s\u00e9lectionner le design qui vous correspond.",
     "designSelected": "Design s\u00e9lectionn\u00e9",
     "interested": "Je suis int\u00e9ress\u00e9",
-    "signDiscount": "Bientôt",
+    "signQuote": "Signer le devis",
+    "comingSoon": "Bientôt",
     "yourSelection": "Votre s\u00e9lection",
     "email": "Email",
     "phone": "T\u00e9l\u00e9phone",

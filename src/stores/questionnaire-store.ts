@@ -15,6 +15,7 @@ interface QuestionnaireStore {
   answers: QuestionnaireAnswers
   moodboardLikes: string[]
   features: string[]
+  customColors: string[]
   voiceTranscription: string | null
   voiceAnalysis: string | null
 
@@ -31,6 +32,7 @@ interface QuestionnaireStore {
   setAnswer: (questionId: string, value: string) => void
   toggleMoodboard: (id: string) => void
   toggleFeature: (feature: string) => void
+  setCustomColors: (colors: string[]) => void
   setVoiceData: (transcription: string, analysis: string) => void
   setSubmitting: (value: boolean) => void
   setCompleted: (value: boolean) => void
@@ -48,6 +50,7 @@ const initialState = {
   answers: {},
   moodboardLikes: [],
   features: [],
+  customColors: [],
   voiceTranscription: null,
   voiceAnalysis: null,
   isSubmitting: false,
@@ -88,6 +91,8 @@ export const useQuestionnaireStore = create<QuestionnaireStore>()(
             : [...state.features, feature],
         })),
 
+      setCustomColors: (colors) => set({ customColors: colors }),
+
       setVoiceData: (transcription, analysis) =>
         set({ voiceTranscription: transcription, voiceAnalysis: analysis }),
 
@@ -111,6 +116,7 @@ export const useQuestionnaireStore = create<QuestionnaireStore>()(
         answers: state.answers,
         moodboardLikes: state.moodboardLikes,
         features: state.features,
+        customColors: state.customColors,
         isCompleted: state.isCompleted,
       }),
     }
