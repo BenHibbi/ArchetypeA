@@ -184,13 +184,17 @@ export default async function DashboardPage() {
                                 {businessName || client.email}
                               </span>
                               {client.contact_name && (
-                                <p className="text-xs text-slate-500 truncate">{client.contact_name}</p>
+                                <p className="text-xs text-slate-500 truncate">
+                                  {client.contact_name}
+                                </p>
                               )}
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="text-sm text-slate-600 truncate block">{client.email}</span>
+                          <span className="text-sm text-slate-600 truncate block">
+                            {client.email}
+                          </span>
                         </td>
                         <td className="px-4 py-3">
                           {websiteUrl ? (
