@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Mail, Globe, Calendar, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Mail, Globe, Calendar, CheckCircle, Link2 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import {
@@ -191,11 +191,21 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
             <CardContent className="py-12 text-center">
               <p className="text-slate-500 mb-4">{t('notYetResponded')}</p>
               {latestSession && (
-                <div className="flex items-center justify-center gap-2">
-                  <code className="text-sm font-mono text-teal-600 bg-slate-100 px-3 py-2 rounded">
-                    {sessionUrl}
-                  </code>
-                  <CopyButton text={sessionUrl} />
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-2">
+                    <code className="text-sm font-mono text-teal-600 bg-slate-100 px-3 py-2 rounded">
+                      {sessionUrl}
+                    </code>
+                    <CopyButton text={sessionUrl} />
+                  </div>
+                  <CopyButton
+                    text={sessionUrl}
+                    variant="orange"
+                    className="gap-2"
+                  >
+                    <Link2 size={16} />
+                    Copier le lien du questionnaire
+                  </CopyButton>
                 </div>
               )}
             </CardContent>

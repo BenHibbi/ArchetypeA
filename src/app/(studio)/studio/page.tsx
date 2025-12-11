@@ -6,7 +6,9 @@ import {
   CreateClientDialog,
   DeleteClientButton,
   ClickableRow,
+  CopyLinkIcon,
 } from '@/components/studio'
+import { generateSessionUrl } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Check } from 'lucide-react'
@@ -219,7 +221,12 @@ export default async function DashboardPage() {
                           )}
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <DeleteClientButton clientId={client.id} />
+                          <div className="flex items-center justify-end gap-2">
+                            {latestSession && status !== 'completed' && (
+                              <CopyLinkIcon url={generateSessionUrl(latestSession.id)} />
+                            )}
+                            <DeleteClientButton clientId={client.id} />
+                          </div>
                         </td>
                       </ClickableRow>
                     )
