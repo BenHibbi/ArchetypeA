@@ -8,17 +8,17 @@ async function requireAuth() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { supabase: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+    return {
+      supabase: null,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    }
   }
 
   return { supabase, response: null }
 }
 
 // GET /api/sessions/[id] - Obtenir une session par ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -28,11 +28,13 @@ export async function GET(
 
     const { data: session, error } = await supabase
       .from('sessions')
-      .select(`
+      .select(
+        `
         *,
         clients (*),
         responses (*)
-      `)
+      `
+      )
       .eq('id', id)
       .single()
 
@@ -42,18 +44,12 @@ export async function GET(
 
     return NextResponse.json(session)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 // PATCH /api/sessions/[id] - Mettre à jour une session
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -63,8 +59,7 @@ export async function PATCH(
     const body = await request.json()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: session, error } = await (supabase
-      .from('sessions') as any)
+    const { data: session, error } = await (supabase.from('sessions') as any)
       .update(body)
       .eq('id', id)
       .select()
@@ -76,18 +71,12 @@ export async function PATCH(
 
     return NextResponse.json(session)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 // DELETE /api/sessions/[id] - Supprimer une session
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -103,9 +92,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -96,11 +96,7 @@ export default function SignupPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button
-              variant="orange"
-              className="w-full"
-              onClick={() => router.push('/auth/login')}
-            >
+            <Button variant="orange" className="w-full" onClick={() => router.push('/auth/login')}>
               Aller à la connexion
             </Button>
           </CardContent>
@@ -117,17 +113,11 @@ export default function SignupPage() {
             <Logo size="md" />
           </div>
           <CardTitle className="text-2xl">Créer un compte</CardTitle>
-          <CardDescription>
-            Accédez au Studio Archetype
-          </CardDescription>
+          <CardDescription>Accédez au Studio Archetype</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">
-                {error}
-              </div>
-            )}
+            {error && <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>}
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -153,12 +143,7 @@ export default function SignupPage() {
               />
             </div>
 
-            <Button
-              type="submit"
-              variant="orange"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" variant="orange" className="w-full" disabled={isLoading}>
               {isLoading ? 'Création...' : 'Créer mon compte'}
             </Button>
 

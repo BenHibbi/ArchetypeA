@@ -8,10 +8,7 @@ export async function POST(request: NextRequest) {
     const { session_id, ...responseData } = body
 
     if (!session_id || typeof session_id !== 'string') {
-      return NextResponse.json(
-        { error: 'session_id is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'session_id is required' }, { status: 400 })
     }
 
     // Sanitise payload to avoid unexpected types
@@ -46,10 +43,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -60,10 +54,7 @@ export async function GET(request: NextRequest) {
     const sessionId = searchParams.get('session_id')
 
     if (!sessionId) {
-      return NextResponse.json(
-        { error: 'session_id is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'session_id is required' }, { status: 400 })
     }
 
     const supabase = await createClient()
@@ -80,9 +71,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

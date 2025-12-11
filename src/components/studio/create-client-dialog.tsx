@@ -81,10 +81,13 @@ export function CreateClientDialog() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      if (!isOpen) handleClose()
-      else setOpen(true)
-    }}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) handleClose()
+        else setOpen(true)
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="orange">
           <Rocket size={18} className="mr-2" />
@@ -97,9 +100,7 @@ export function CreateClientDialog() {
           <form onSubmit={handleSubmit}>
             <DialogHeader>
               <DialogTitle>{t('newProspect')}</DialogTitle>
-              <DialogDescription>
-                {t('enterProspectEmail')}
-              </DialogDescription>
+              <DialogDescription>{t('enterProspectEmail')}</DialogDescription>
             </DialogHeader>
 
             <div className="py-6">
@@ -157,11 +158,7 @@ export function CreateClientDialog() {
                   {createdSession.url}
                 </code>
                 <div className="flex gap-2">
-                  <Button
-                    variant="orange"
-                    className="flex-1"
-                    onClick={handleCopy}
-                  >
+                  <Button variant="orange" className="flex-1" onClick={handleCopy}>
                     {copied ? (
                       <>
                         <Check size={16} className="mr-2" />
@@ -174,11 +171,7 @@ export function CreateClientDialog() {
                       </>
                     )}
                   </Button>
-                  <a
-                    href={createdSession.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={createdSession.url} target="_blank" rel="noopener noreferrer">
                     <Button variant="outline">
                       <ExternalLink size={16} />
                     </Button>
@@ -187,11 +180,7 @@ export function CreateClientDialog() {
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleClose}
-            >
+            <Button variant="outline" className="w-full" onClick={handleClose}>
               {tCommon('close')}
             </Button>
           </>

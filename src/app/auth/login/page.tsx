@@ -85,17 +85,11 @@ export default function LoginPage() {
             <Logo size="md" />
           </div>
           <CardTitle className="text-2xl">Connexion au Studio</CardTitle>
-          <CardDescription>
-            Accédez à votre espace de gestion
-          </CardDescription>
+          <CardDescription>Accédez à votre espace de gestion</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">
-                {error}
-              </div>
-            )}
+            {error && <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>}
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -120,12 +114,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button
-              type="submit"
-              variant="orange"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" variant="orange" className="w-full" disabled={isLoading}>
               {isLoading ? 'Connexion...' : 'Se connecter'}
             </Button>
 

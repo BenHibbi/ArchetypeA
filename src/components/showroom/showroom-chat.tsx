@@ -64,10 +64,7 @@ export function ShowroomChat({ sessionId, designBrief }: ShowroomChatProps) {
       const data = await res.json()
       setMessages([...newMessages, { role: 'assistant', content: data.reply }])
     } catch {
-      setMessages([
-        ...newMessages,
-        { role: 'assistant', content: t('errorMessage') },
-      ])
+      setMessages([...newMessages, { role: 'assistant', content: t('errorMessage') }])
     } finally {
       setIsLoading(false)
     }
@@ -136,10 +133,7 @@ export function ShowroomChat({ sessionId, designBrief }: ShowroomChatProps) {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={cn(
-                'flex',
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              )}
+              className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}
             >
               <div
                 className={cn(

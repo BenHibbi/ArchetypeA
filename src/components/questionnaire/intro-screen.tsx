@@ -49,9 +49,7 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
         </p>
       </div>
 
-      <p className="max-w-md text-slate-400">
-        {t('subtitle')}
-      </p>
+      <p className="max-w-md text-slate-400">{t('subtitle')}</p>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <div className="text-left space-y-2">

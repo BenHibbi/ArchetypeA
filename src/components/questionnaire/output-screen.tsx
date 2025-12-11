@@ -82,13 +82,14 @@ export function OutputScreen({
 
   // Get selected inspirations
   const selectedInspirations = moodboardLikes
-    .map(id => INSPIRATIONS.find(i => i.id === id))
+    .map((id) => INSPIRATIONS.find((i) => i.id === id))
     .filter(Boolean)
 
   // Get palette colors
-  const paletteColors = answers.palette === 'custom' && customColors?.length
-    ? customColors
-    : PALETTE_COLORS[answers.palette || 'accent'] || PALETTE_COLORS.accent
+  const paletteColors =
+    answers.palette === 'custom' && customColors?.length
+      ? customColors
+      : PALETTE_COLORS[answers.palette || 'accent'] || PALETTE_COLORS.accent
 
   // Get typo style
   const typoStyle = TYPO_STYLES[answers.typo || 'modern'] || TYPO_STYLES.modern
@@ -97,7 +98,7 @@ export function OutputScreen({
   const ambianceStyle = AMBIANCE_STYLES[answers.ambiance || 'minimal'] || AMBIANCE_STYLES.minimal
 
   // Get valeurs (can be comma-separated for multi-select)
-  const valeurs = answers.valeurs?.split(',').map(v => v.trim()) || []
+  const valeurs = answers.valeurs?.split(',').map((v) => v.trim()) || []
 
   if (sent) {
     return (
@@ -107,15 +108,9 @@ export function OutputScreen({
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <PartyPopper className="text-green-600" size={40} />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              {t('briefSent')}
-            </h2>
-            <p className="text-slate-500 text-lg mb-2">
-              {t('thankYouMessage')}
-            </p>
-            <p className="text-slate-400">
-              {t('teamAnalyzeMessage')}
-            </p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('briefSent')}</h2>
+            <p className="text-slate-500 text-lg mb-2">{t('thankYouMessage')}</p>
+            <p className="text-slate-400">{t('teamAnalyzeMessage')}</p>
           </div>
         </div>
       </div>
@@ -130,9 +125,7 @@ export function OutputScreen({
           <Sparkles size={14} />
           {t('title')}
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
-          Votre Brief Visuel
-        </h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Votre Brief Visuel</h1>
         <p className="text-slate-500 text-sm">{t('subtitle')}</p>
       </div>
 
@@ -143,14 +136,18 @@ export function OutputScreen({
           {/* Ambiance Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Ambiance</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Ambiance
+              </span>
             </div>
-            <div className={cn(
-              "h-full flex items-center justify-center border-l-4",
-              ambianceStyle.bg,
-              ambianceStyle.accent
-            )}>
-              <span className={cn("text-xl font-bold", ambianceStyle.text)}>
+            <div
+              className={cn(
+                'h-full flex items-center justify-center border-l-4',
+                ambianceStyle.bg,
+                ambianceStyle.accent
+              )}
+            >
+              <span className={cn('text-xl font-bold', ambianceStyle.text)}>
                 {getOptionLabel('ambiance', answers.ambiance)}
               </span>
             </div>
@@ -159,11 +156,13 @@ export function OutputScreen({
           {/* Typography Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Typographie</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Typographie
+              </span>
             </div>
             <div className="p-3 h-full flex items-center justify-center">
               <div className="bg-slate-50 rounded-lg p-3 text-center w-full">
-                <span className={cn("text-3xl block", typoStyle.className)}>
+                <span className={cn('text-3xl block', typoStyle.className)}>
                   {typoStyle.sample}
                 </span>
                 <span className="text-xs text-slate-500 font-medium">
@@ -179,8 +178,12 @@ export function OutputScreen({
           {/* Palette Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100 flex justify-between items-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Palette</span>
-              <span className="text-[10px] text-slate-500">{getOptionLabel('palette', answers.palette)}</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Palette
+              </span>
+              <span className="text-[10px] text-slate-500">
+                {getOptionLabel('palette', answers.palette)}
+              </span>
             </div>
             <div className="p-3">
               <div className="flex gap-1.5 mb-2">
@@ -189,7 +192,12 @@ export function OutputScreen({
                     key={i}
                     className="flex-1 aspect-square rounded-lg shadow-inner border border-slate-200"
                     style={{ backgroundColor: color.startsWith('bg-') ? undefined : color }}
-                    {...(color.startsWith('bg-') && { className: cn("flex-1 aspect-square rounded-lg shadow-inner border border-slate-200", color) })}
+                    {...(color.startsWith('bg-') && {
+                      className: cn(
+                        'flex-1 aspect-square rounded-lg shadow-inner border border-slate-200',
+                        color
+                      ),
+                    })}
                   />
                 ))}
               </div>
@@ -206,17 +214,21 @@ export function OutputScreen({
           {/* Valeurs Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Valeurs</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Valeurs
+              </span>
             </div>
             <div className="p-3 flex flex-wrap gap-1.5 content-start">
-              {valeurs.length > 0 ? valeurs.map((v) => (
-                <span
-                  key={v}
-                  className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-2 py-1 rounded-full text-xs font-medium"
-                >
-                  {getOptionLabel('valeurs', v)}
-                </span>
-              )) : (
+              {valeurs.length > 0 ? (
+                valeurs.map((v) => (
+                  <span
+                    key={v}
+                    className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-2 py-1 rounded-full text-xs font-medium"
+                  >
+                    {getOptionLabel('valeurs', v)}
+                  </span>
+                ))
+              ) : (
                 <span className="text-xs text-slate-400">Non renseigné</span>
               )}
             </div>
@@ -228,7 +240,9 @@ export function OutputScreen({
           {/* Structure Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Structure</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Structure
+              </span>
             </div>
             <div className="p-3 flex flex-col h-full">
               <div className="bg-slate-900 rounded-lg p-2 aspect-[4/3] flex items-center justify-center flex-1">
@@ -243,7 +257,9 @@ export function OutputScreen({
           {/* Ratio Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Ratio</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Ratio
+              </span>
             </div>
             <div className="p-3 flex flex-col h-full justify-center">
               <RatioPreview type={answers.ratio || 'mix'} />
@@ -259,7 +275,9 @@ export function OutputScreen({
           {/* Moodboard Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100 flex justify-between items-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Moodboard</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Moodboard
+              </span>
               <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded-full text-slate-600">
                 {selectedInspirations.length}
               </span>
@@ -267,13 +285,11 @@ export function OutputScreen({
             <div className="p-2">
               <div className="grid grid-cols-2 gap-1.5">
                 {selectedInspirations.slice(0, 4).map((insp) => (
-                  <div key={insp!.id} className="relative aspect-[4/3] rounded-md overflow-hidden group">
-                    <Image
-                      src={insp!.image}
-                      alt={insp!.label}
-                      fill
-                      className="object-cover"
-                    />
+                  <div
+                    key={insp!.id}
+                    className="relative aspect-[4/3] rounded-md overflow-hidden group"
+                  >
+                    <Image src={insp!.image} alt={insp!.label} fill className="object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <span className="absolute bottom-0.5 left-0.5 right-0.5 text-[8px] font-bold text-white truncate">
                       {insp!.label}
@@ -283,7 +299,8 @@ export function OutputScreen({
               </div>
               {selectedInspirations.length > 4 && (
                 <p className="text-center text-[10px] text-slate-400 mt-1">
-                  +{selectedInspirations.length - 4} autre{selectedInspirations.length - 4 > 1 ? 's' : ''}
+                  +{selectedInspirations.length - 4} autre
+                  {selectedInspirations.length - 4 > 1 ? 's' : ''}
                 </p>
               )}
             </div>
@@ -292,7 +309,9 @@ export function OutputScreen({
           {/* Features Card */}
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex-1">
             <div className="px-3 py-2 border-b border-slate-100 flex justify-between items-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Features</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Features
+              </span>
               <span className="text-[10px] bg-teal-100 text-teal-700 px-1.5 py-0.5 rounded-full">
                 {features.length}
               </span>
@@ -339,23 +358,23 @@ export function OutputScreen({
 
 // Mini component for structure preview
 function StructurePreview({ type }: { type: string }) {
-  const baseClass = "bg-teal-500/80 rounded"
+  const baseClass = 'bg-teal-500/80 rounded'
 
   switch (type) {
     case 'simple':
       return (
         <div className="w-full h-full flex flex-col gap-1 p-1">
-          <div className={cn(baseClass, "h-2/3")} />
-          <div className={cn(baseClass, "h-1/3 opacity-50")} />
+          <div className={cn(baseClass, 'h-2/3')} />
+          <div className={cn(baseClass, 'h-1/3 opacity-50')} />
         </div>
       )
     case 'standard':
       return (
         <div className="w-full h-full flex flex-col gap-1 p-1">
-          <div className={cn(baseClass, "h-1/4")} />
-          <div className={cn(baseClass, "h-1/4")} />
-          <div className={cn(baseClass, "h-1/4")} />
-          <div className={cn(baseClass, "h-1/4 opacity-50")} />
+          <div className={cn(baseClass, 'h-1/4')} />
+          <div className={cn(baseClass, 'h-1/4')} />
+          <div className={cn(baseClass, 'h-1/4')} />
+          <div className={cn(baseClass, 'h-1/4 opacity-50')} />
         </div>
       )
     case 'rich':
@@ -369,7 +388,7 @@ function StructurePreview({ type }: { type: string }) {
     case 'fullscreen':
       return (
         <div className="w-full h-full p-1">
-          <div className={cn(baseClass, "w-full h-full flex items-center justify-center")}>
+          <div className={cn(baseClass, 'w-full h-full flex items-center justify-center')}>
             <div className="w-1/2 h-1/3 bg-white/30 rounded" />
           </div>
         </div>
@@ -377,27 +396,27 @@ function StructurePreview({ type }: { type: string }) {
     case 'masonry':
       return (
         <div className="w-full h-full grid grid-cols-3 gap-0.5 p-1">
-          <div className={cn(baseClass, "row-span-2")} />
+          <div className={cn(baseClass, 'row-span-2')} />
           <div className={cn(baseClass)} />
-          <div className={cn(baseClass, "row-span-2")} />
+          <div className={cn(baseClass, 'row-span-2')} />
           <div className={cn(baseClass)} />
         </div>
       )
     case 'bento':
       return (
         <div className="w-full h-full grid grid-cols-3 grid-rows-2 gap-0.5 p-1">
-          <div className={cn(baseClass, "col-span-2")} />
+          <div className={cn(baseClass, 'col-span-2')} />
           <div className={cn(baseClass)} />
           <div className={cn(baseClass)} />
-          <div className={cn(baseClass, "col-span-2")} />
+          <div className={cn(baseClass, 'col-span-2')} />
         </div>
       )
     default:
       return (
         <div className="w-full h-full flex flex-col gap-1 p-1">
-          <div className={cn(baseClass, "h-1/3")} />
-          <div className={cn(baseClass, "h-1/3")} />
-          <div className={cn(baseClass, "h-1/3")} />
+          <div className={cn(baseClass, 'h-1/3')} />
+          <div className={cn(baseClass, 'h-1/3')} />
+          <div className={cn(baseClass, 'h-1/3')} />
         </div>
       )
   }

@@ -15,91 +15,107 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     category: 'Général',
     question: "Qu'est-ce qu'Archetype ?",
-    answer: "Archetype est une plateforme SaaS conçue pour les freelances et agences web. Elle permet de créer des questionnaires visuels pour qualifier les préférences design de vos clients, puis de générer automatiquement des prompts IA personnalisés pour créer des sites web sur-mesure avec des outils comme V0, Lovable ou Bolt.new."
+    answer:
+      'Archetype est une plateforme SaaS conçue pour les freelances et agences web. Elle permet de créer des questionnaires visuels pour qualifier les préférences design de vos clients, puis de générer automatiquement des prompts IA personnalisés pour créer des sites web sur-mesure avec des outils comme V0, Lovable ou Bolt.new.',
   },
   {
     category: 'Général',
     question: "À qui s'adresse Archetype ?",
-    answer: "Archetype s'adresse principalement aux web designers freelances, agences digitales, et développeurs no-code qui souhaitent professionnaliser leur processus de qualification client et accélérer la création de maquettes grâce à l'IA."
+    answer:
+      "Archetype s'adresse principalement aux web designers freelances, agences digitales, et développeurs no-code qui souhaitent professionnaliser leur processus de qualification client et accélérer la création de maquettes grâce à l'IA.",
   },
   {
     category: 'Général',
-    question: "Comment fonctionne le questionnaire ?",
-    answer: "Vous créez un client dans votre Studio, puis vous obtenez un lien unique à envoyer. Votre client répond à 6 questions visuelles sur ses préférences (ambiance, typographie, couleurs, etc.), sélectionne des inspirations dans un moodboard, et peut optionnellement décrire son projet à l'oral. Toutes les réponses sont compilées dans un brief design structuré."
+    question: 'Comment fonctionne le questionnaire ?',
+    answer:
+      "Vous créez un client dans votre Studio, puis vous obtenez un lien unique à envoyer. Votre client répond à 6 questions visuelles sur ses préférences (ambiance, typographie, couleurs, etc.), sélectionne des inspirations dans un moodboard, et peut optionnellement décrire son projet à l'oral. Toutes les réponses sont compilées dans un brief design structuré.",
   },
 
   // Fonctionnalités
   {
     category: 'Fonctionnalités',
     question: "Qu'est-ce que le Showroom ?",
-    answer: "Le Showroom est une galerie privée que vous pouvez envoyer à votre client pour lui présenter vos propositions de design. Il peut visualiser les maquettes, sélectionner celle qu'il préfère, et même signer directement un devis dans l'application."
+    answer:
+      "Le Showroom est une galerie privée que vous pouvez envoyer à votre client pour lui présenter vos propositions de design. Il peut visualiser les maquettes, sélectionner celle qu'il préfère, et même signer directement un devis dans l'application.",
   },
   {
     category: 'Fonctionnalités',
-    question: "Comment sont générés les prompts IA ?",
-    answer: "Notre agent ANALYST analyse toutes les réponses du questionnaire (préférences visuelles, inspirations, description vocale) et génère un prompt optimisé et structuré que vous pouvez copier-coller directement dans V0, Lovable, Bolt.new ou d'autres outils de création IA."
+    question: 'Comment sont générés les prompts IA ?',
+    answer:
+      "Notre agent ANALYST analyse toutes les réponses du questionnaire (préférences visuelles, inspirations, description vocale) et génère un prompt optimisé et structuré que vous pouvez copier-coller directement dans V0, Lovable, Bolt.new ou d'autres outils de création IA.",
   },
   {
     category: 'Fonctionnalités',
     question: "L'enregistrement vocal est-il obligatoire ?",
-    answer: "Non, l'étape d'enregistrement vocal est entièrement optionnelle. Elle permet simplement à vos clients de décrire leur vision de manière plus libre et naturelle. L'IA transcrit et analyse automatiquement le contenu pour enrichir le brief."
+    answer:
+      "Non, l'étape d'enregistrement vocal est entièrement optionnelle. Elle permet simplement à vos clients de décrire leur vision de manière plus libre et naturelle. L'IA transcrit et analyse automatiquement le contenu pour enrichir le brief.",
   },
   {
     category: 'Fonctionnalités',
-    question: "Puis-je personnaliser le questionnaire ?",
-    answer: "Actuellement, le questionnaire utilise un set de questions optimisées pour la qualification design. La personnalisation avancée (ajout de questions, modification des options) est prévue dans une future mise à jour."
+    question: 'Puis-je personnaliser le questionnaire ?',
+    answer:
+      'Actuellement, le questionnaire utilise un set de questions optimisées pour la qualification design. La personnalisation avancée (ajout de questions, modification des options) est prévue dans une future mise à jour.',
   },
 
   // Tarification
   {
     category: 'Tarification',
-    question: "Combien coûte Archetype ?",
-    answer: "L'abonnement Archetype est à 19,90€ HT/mois, avec un système de facturation à l'usage pour les fonctionnalités IA (transcription vocale, génération de prompts). Vous ne payez que ce que vous utilisez réellement."
+    question: 'Combien coûte Archetype ?',
+    answer:
+      "L'abonnement Archetype est à 19,90€ HT/mois, avec un système de facturation à l'usage pour les fonctionnalités IA (transcription vocale, génération de prompts). Vous ne payez que ce que vous utilisez réellement.",
   },
   {
     category: 'Tarification',
-    question: "Y a-t-il un essai gratuit ?",
-    answer: "Vous pouvez tester la démo publique pour découvrir l'expérience questionnaire. Pour accéder au Studio complet avec vos propres clients, un abonnement est nécessaire."
+    question: 'Y a-t-il un essai gratuit ?',
+    answer:
+      "Vous pouvez tester la démo publique pour découvrir l'expérience questionnaire. Pour accéder au Studio complet avec vos propres clients, un abonnement est nécessaire.",
   },
   {
     category: 'Tarification',
-    question: "Comment fonctionne la facturation ?",
-    answer: "L'abonnement est facturé mensuellement par carte bancaire via Stripe. Les frais d'usage (API IA) sont calculés à la fin de chaque mois et ajoutés à votre facture suivante."
+    question: 'Comment fonctionne la facturation ?',
+    answer:
+      "L'abonnement est facturé mensuellement par carte bancaire via Stripe. Les frais d'usage (API IA) sont calculés à la fin de chaque mois et ajoutés à votre facture suivante.",
   },
   {
     category: 'Tarification',
-    question: "Puis-je annuler mon abonnement ?",
-    answer: "Oui, vous pouvez annuler à tout moment depuis les paramètres de votre compte. L'annulation prendra effet à la fin de la période de facturation en cours. Vos données restent accessibles pendant 30 jours après l'annulation."
+    question: 'Puis-je annuler mon abonnement ?',
+    answer:
+      "Oui, vous pouvez annuler à tout moment depuis les paramètres de votre compte. L'annulation prendra effet à la fin de la période de facturation en cours. Vos données restent accessibles pendant 30 jours après l'annulation.",
   },
 
   // Technique
   {
     category: 'Technique',
-    question: "Mes données sont-elles sécurisées ?",
-    answer: "Absolument. Nous utilisons le chiffrement SSL/TLS pour toutes les communications, vos données sont hébergées sur des serveurs sécurisés (Supabase), et nous sommes conformes au RGPD. Consultez notre Politique de confidentialité pour plus de détails."
+    question: 'Mes données sont-elles sécurisées ?',
+    answer:
+      'Absolument. Nous utilisons le chiffrement SSL/TLS pour toutes les communications, vos données sont hébergées sur des serveurs sécurisés (Supabase), et nous sommes conformes au RGPD. Consultez notre Politique de confidentialité pour plus de détails.',
   },
   {
     category: 'Technique',
-    question: "Quels navigateurs sont supportés ?",
-    answer: "Archetype fonctionne sur tous les navigateurs modernes : Chrome, Firefox, Safari, Edge. Pour une expérience optimale, nous recommandons d'utiliser la dernière version de votre navigateur."
+    question: 'Quels navigateurs sont supportés ?',
+    answer:
+      "Archetype fonctionne sur tous les navigateurs modernes : Chrome, Firefox, Safari, Edge. Pour une expérience optimale, nous recommandons d'utiliser la dernière version de votre navigateur.",
   },
   {
     category: 'Technique',
     question: "L'application fonctionne-t-elle sur mobile ?",
-    answer: "Oui, Archetype est entièrement responsive. Vos clients peuvent remplir le questionnaire sur mobile, tablette ou ordinateur. Le Studio est optimisé pour une utilisation sur desktop."
+    answer:
+      'Oui, Archetype est entièrement responsive. Vos clients peuvent remplir le questionnaire sur mobile, tablette ou ordinateur. Le Studio est optimisé pour une utilisation sur desktop.',
   },
 
   // Support
   {
     category: 'Support',
-    question: "Comment contacter le support ?",
-    answer: "Vous pouvez nous contacter par email à support@archetype.design. Nous nous engageons à répondre sous 24h ouvrées."
+    question: 'Comment contacter le support ?',
+    answer:
+      'Vous pouvez nous contacter par email à support@archetype.design. Nous nous engageons à répondre sous 24h ouvrées.',
   },
   {
     category: 'Support',
-    question: "Proposez-vous des formations ?",
-    answer: "Nous préparons une série de tutoriels vidéo et une documentation complète pour vous aider à tirer le meilleur parti d'Archetype. Abonnez-vous à notre newsletter pour être informé de leur disponibilité."
-  }
+    question: 'Proposez-vous des formations ?',
+    answer:
+      "Nous préparons une série de tutoriels vidéo et une documentation complète pour vous aider à tirer le meilleur parti d'Archetype. Abonnez-vous à notre newsletter pour être informé de leur disponibilité.",
+  },
 ]
 
 const CATEGORIES = ['Tous', 'Général', 'Fonctionnalités', 'Tarification', 'Technique', 'Support']
@@ -109,9 +125,10 @@ export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('Tous')
 
-  const filteredFAQ = FAQ_ITEMS.filter(item => {
-    const matchesSearch = item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFAQ = FAQ_ITEMS.filter((item) => {
+    const matchesSearch =
+      item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.answer.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === 'Tous' || item.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -205,10 +222,10 @@ export default function FAQPage() {
 
         {/* Contact Section */}
         <div className="mt-16 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Vous n'avez pas trouvé votre réponse ?</h2>
-          <p className="text-slate-300 mb-6">
-            Notre équipe support est là pour vous aider
-          </p>
+          <h2 className="text-2xl font-bold text-white mb-3">
+            Vous n'avez pas trouvé votre réponse ?
+          </h2>
+          <p className="text-slate-300 mb-6">Notre équipe support est là pour vous aider</p>
           <a
             href="mailto:support@archetype.design"
             className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-white font-medium px-6 py-3 rounded-lg transition-colors"

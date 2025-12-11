@@ -46,9 +46,7 @@ export function InspirationCard({ data, isSelected, onToggle }: InspirationCardP
         <span className="text-xs font-bold tracking-wide text-white drop-shadow-md">
           {data.label}
         </span>
-        <p className="text-[10px] text-white/80 mt-0.5 line-clamp-2">
-          {data.concept}
-        </p>
+        <p className="text-[10px] text-white/80 mt-0.5 line-clamp-2">{data.concept}</p>
       </div>
     </div>
   )

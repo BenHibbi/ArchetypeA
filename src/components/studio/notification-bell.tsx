@@ -53,7 +53,8 @@ export function NotificationBell() {
 
     const { data: sessions, error } = await supabase
       .from('sessions')
-      .select(`
+      .select(
+        `
         id,
         completed_at,
         client_id,
@@ -62,7 +63,8 @@ export function NotificationBell() {
           email,
           company_name
         )
-      `)
+      `
+      )
       .eq('status', 'completed')
       .not('completed_at', 'is', null)
       .gte('completed_at', sevenDaysAgo.toISOString())
@@ -88,7 +90,7 @@ export function NotificationBell() {
     }))
 
     setNotifications(notifs)
-    setHasUnread(notifs.some(n => !n.isRead))
+    setHasUnread(notifs.some((n) => !n.isRead))
     setIsLoading(false)
   }
 
@@ -119,9 +121,9 @@ export function NotificationBell() {
   }, [])
 
   const markAllAsRead = () => {
-    const allIds = notifications.map(n => n.id)
+    const allIds = notifications.map((n) => n.id)
     localStorage.setItem('readNotifications', JSON.stringify(allIds))
-    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
     setHasUnread(false)
   }
 
@@ -131,13 +133,11 @@ export function NotificationBell() {
       readIds.push(id)
       localStorage.setItem('readNotifications', JSON.stringify(readIds))
     }
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, isRead: true } : n))
-    )
-    setHasUnread(notifications.some(n => n.id !== id && !n.isRead))
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)))
+    setHasUnread(notifications.some((n) => n.id !== id && !n.isRead))
   }
 
-  const unreadCount = notifications.filter(n => !n.isRead).length
+  const unreadCount = notifications.filter((n) => !n.isRead).length
 
   return (
     <DropdownMenu>
@@ -176,9 +176,7 @@ export function NotificationBell() {
         <DropdownMenuSeparator />
 
         {isLoading ? (
-          <div className="py-6 text-center text-sm text-muted-foreground">
-            Loading...
-          </div>
+          <div className="py-6 text-center text-sm text-muted-foreground">Loading...</div>
         ) : notifications.length === 0 ? (
           <div className="py-6 text-center text-sm text-muted-foreground">
             {t('noNotifications')}
@@ -186,23 +184,26 @@ export function NotificationBell() {
         ) : (
           <div className="max-h-[300px] overflow-y-auto">
             {notifications.map((notif) => (
-              <DropdownMenuItem
-                key={notif.id}
-                className="cursor-pointer p-0"
-                asChild
-              >
+              <DropdownMenuItem key={notif.id} className="cursor-pointer p-0" asChild>
                 <Link
                   href={`/studio/clients/${notif.clientId}`}
                   onClick={() => markAsRead(notif.id)}
                   className="flex items-start gap-3 p-3 w-full"
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    notif.isRead ? 'bg-slate-100' : 'bg-orange-100'
-                  }`}>
-                    <User size={16} className={notif.isRead ? 'text-slate-500' : 'text-orange-600'} />
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      notif.isRead ? 'bg-slate-100' : 'bg-orange-100'
+                    }`}
+                  >
+                    <User
+                      size={16}
+                      className={notif.isRead ? 'text-slate-500' : 'text-orange-600'}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${notif.isRead ? 'text-muted-foreground' : 'font-medium'}`}>
+                    <p
+                      className={`text-sm ${notif.isRead ? 'text-muted-foreground' : 'font-medium'}`}
+                    >
                       <span className="font-semibold">
                         {notif.companyName || notif.clientEmail}
                       </span>{' '}

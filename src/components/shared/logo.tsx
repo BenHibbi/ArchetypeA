@@ -20,12 +20,7 @@ export function Logo({ size = 'md', showText = true, className }: LogoProps) {
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <div className={cn('flex', s.spacing)}>
-        <div
-          className={cn(
-            s.circle,
-            'rounded-full bg-teal-500 ring-2 ring-white z-10'
-          )}
-        />
+        <div className={cn(s.circle, 'rounded-full bg-teal-500 ring-2 ring-white z-10')} />
         <div
           className={cn(
             s.circle,
@@ -33,22 +28,10 @@ export function Logo({ size = 'md', showText = true, className }: LogoProps) {
             size === 'lg' ? '-mt-2' : '-mt-1'
           )}
         />
-        <div
-          className={cn(
-            s.circle,
-            'rounded-full bg-yellow-400 ring-2 ring-white z-10'
-          )}
-        />
+        <div className={cn(s.circle, 'rounded-full bg-yellow-400 ring-2 ring-white z-10')} />
       </div>
       {showText && (
-        <span
-          className={cn(
-            'font-black tracking-tight text-slate-900',
-            s.text
-          )}
-        >
-          archetype
-        </span>
+        <span className={cn('font-black tracking-tight text-slate-900', s.text)}>archetype</span>
       )}
     </div>
   )

@@ -17,9 +17,7 @@ export default async function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>{t('profile')}</CardTitle>
-            <CardDescription>
-              {t('profileDesc')}
-            </CardDescription>
+            <CardDescription>{t('profileDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-2">
@@ -33,9 +31,7 @@ export default async function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>{t('branding')}</CardTitle>
-            <CardDescription>
-              {t('brandingDesc')}
-            </CardDescription>
+            <CardDescription>{t('brandingDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-2">
@@ -59,9 +55,7 @@ export default async function SettingsPage() {
         <Card className="border-red-200">
           <CardHeader>
             <CardTitle className="text-red-600">{t('dangerZone')}</CardTitle>
-            <CardDescription>
-              {t('dangerZoneDesc')}
-            </CardDescription>
+            <CardDescription>{t('dangerZoneDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button variant="destructive">{t('deleteAllData')}</Button>

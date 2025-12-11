@@ -71,11 +71,7 @@ export default function DemoPage() {
         )}
 
         {step === 7 && (
-          <MoodboardScreen
-            likes={moodboardLikes}
-            onToggle={toggleMoodboard}
-            onConfirm={nextStep}
-          />
+          <MoodboardScreen likes={moodboardLikes} onToggle={toggleMoodboard} onConfirm={nextStep} />
         )}
 
         {step === 8 && (

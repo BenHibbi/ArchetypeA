@@ -11,35 +11,83 @@ import { Button } from '@/components/ui/button'
 // Couleurs disponibles pour le color picker - palette étendue
 const COLOR_PICKER_OPTIONS = [
   // Reds
-  '#dc2626', '#ef4444', '#f87171', '#fca5a5',
+  '#dc2626',
+  '#ef4444',
+  '#f87171',
+  '#fca5a5',
   // Pinks
-  '#db2777', '#ec4899', '#f472b6', '#f9a8d4',
+  '#db2777',
+  '#ec4899',
+  '#f472b6',
+  '#f9a8d4',
   // Oranges
-  '#ea580c', '#f97316', '#fb923c', '#fdba74',
+  '#ea580c',
+  '#f97316',
+  '#fb923c',
+  '#fdba74',
   // Yellows
-  '#ca8a04', '#eab308', '#facc15', '#fde047',
+  '#ca8a04',
+  '#eab308',
+  '#facc15',
+  '#fde047',
   // Limes
-  '#65a30d', '#84cc16', '#a3e635', '#bef264',
+  '#65a30d',
+  '#84cc16',
+  '#a3e635',
+  '#bef264',
   // Greens
-  '#16a34a', '#22c55e', '#4ade80', '#86efac',
+  '#16a34a',
+  '#22c55e',
+  '#4ade80',
+  '#86efac',
   // Teals
-  '#0d9488', '#14b8a6', '#2dd4bf', '#5eead4',
+  '#0d9488',
+  '#14b8a6',
+  '#2dd4bf',
+  '#5eead4',
   // Cyans
-  '#0891b2', '#06b6d4', '#22d3ee', '#67e8f9',
+  '#0891b2',
+  '#06b6d4',
+  '#22d3ee',
+  '#67e8f9',
   // Blues
-  '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd',
+  '#2563eb',
+  '#3b82f6',
+  '#60a5fa',
+  '#93c5fd',
   // Indigos
-  '#4f46e5', '#6366f1', '#818cf8', '#a5b4fc',
+  '#4f46e5',
+  '#6366f1',
+  '#818cf8',
+  '#a5b4fc',
   // Purples
-  '#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd',
+  '#7c3aed',
+  '#8b5cf6',
+  '#a78bfa',
+  '#c4b5fd',
   // Fuchsias
-  '#c026d3', '#d946ef', '#e879f9', '#f0abfc',
+  '#c026d3',
+  '#d946ef',
+  '#e879f9',
+  '#f0abfc',
   // Roses
-  '#e11d48', '#f43f5e', '#fb7185', '#fda4af',
+  '#e11d48',
+  '#f43f5e',
+  '#fb7185',
+  '#fda4af',
   // Neutrals
-  '#000000', '#1f2937', '#374151', '#4b5563',
-  '#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb',
-  '#f3f4f6', '#f9fafb', '#ffffff', '#fafaf9',
+  '#000000',
+  '#1f2937',
+  '#374151',
+  '#4b5563',
+  '#6b7280',
+  '#9ca3af',
+  '#d1d5db',
+  '#e5e7eb',
+  '#f3f4f6',
+  '#f9fafb',
+  '#ffffff',
+  '#fafaf9',
 ]
 
 // Icon pour Performance (TrendingUp personnalisé)
@@ -69,38 +117,39 @@ const ICONS: Record<string, React.ReactNode> = {
 }
 
 // Styles de typographie représentatifs
-const TYPO_STYLES: Record<string, { labelStyle: string; sampleText: string; sampleStyle: string }> = {
-  fine: {
-    labelStyle: 'font-light tracking-wide',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-extralight tracking-widest text-slate-400',
-  },
-  bold: {
-    labelStyle: 'font-black tracking-tight uppercase',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-black tracking-tighter uppercase text-slate-900',
-  },
-  serif: {
-    labelStyle: 'font-serif italic',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-serif italic text-slate-700',
-  },
-  modern: {
-    labelStyle: 'font-medium',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-medium text-slate-600',
-  },
-  variable: {
-    labelStyle: 'font-mono tracking-tight',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-mono font-bold text-slate-800 tracking-tight',
-  },
-  retro: {
-    labelStyle: 'font-serif',
-    sampleText: 'Aa',
-    sampleStyle: 'text-4xl font-serif font-bold text-amber-700',
-  },
-}
+const TYPO_STYLES: Record<string, { labelStyle: string; sampleText: string; sampleStyle: string }> =
+  {
+    fine: {
+      labelStyle: 'font-light tracking-wide',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-extralight tracking-widest text-slate-400',
+    },
+    bold: {
+      labelStyle: 'font-black tracking-tight uppercase',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-black tracking-tighter uppercase text-slate-900',
+    },
+    serif: {
+      labelStyle: 'font-serif italic',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-serif italic text-slate-700',
+    },
+    modern: {
+      labelStyle: 'font-medium',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-medium text-slate-600',
+    },
+    variable: {
+      labelStyle: 'font-mono tracking-tight',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-mono font-bold text-slate-800 tracking-tight',
+    },
+    retro: {
+      labelStyle: 'font-serif',
+      sampleText: 'Aa',
+      sampleStyle: 'text-4xl font-serif font-bold text-amber-700',
+    },
+  }
 
 interface QuestionScreenProps {
   question: Question
@@ -126,9 +175,8 @@ export function QuestionScreen({
   const [showColorPicker, setShowColorPicker] = useState(false)
 
   // Parse multi-select values
-  const selectedValues = question.multiSelect && currentAnswer
-    ? currentAnswer.split(',').filter(Boolean)
-    : []
+  const selectedValues =
+    question.multiSelect && currentAnswer ? currentAnswer.split(',').filter(Boolean) : []
 
   const handleSelect = (optionId: string, isColorPicker?: boolean) => {
     if (isColorPicker) {
@@ -140,7 +188,7 @@ export function QuestionScreen({
     if (question.multiSelect) {
       // Toggle selection for multi-select
       const newValues = selectedValues.includes(optionId)
-        ? selectedValues.filter(v => v !== optionId)
+        ? selectedValues.filter((v) => v !== optionId)
         : [...selectedValues, optionId]
       onAnswer(question.id, newValues.join(','))
     } else {
@@ -153,7 +201,7 @@ export function QuestionScreen({
   const handleColorToggle = (color: string) => {
     if (!onCustomColorsChange) return
     const newColors = customColors.includes(color)
-      ? customColors.filter(c => c !== color)
+      ? customColors.filter((c) => c !== color)
       : customColors.length < 5
         ? [...customColors, color]
         : customColors // Max 5 colors
@@ -289,10 +337,12 @@ export function QuestionScreen({
 
               <div className="flex justify-between items-center w-full mt-auto">
                 <div>
-                  <span className={cn(
-                    'text-lg font-bold block text-slate-800',
-                    isTypoQuestion && typoStyle ? typoStyle.labelStyle : ''
-                  )}>
+                  <span
+                    className={cn(
+                      'text-lg font-bold block text-slate-800',
+                      isTypoQuestion && typoStyle ? typoStyle.labelStyle : ''
+                    )}
+                  >
                     {translation.label}
                   </span>
                   {translation.desc && (
@@ -317,9 +367,7 @@ export function QuestionScreen({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl animate-slide-in-from-bottom">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-slate-900">
-                Choisis tes couleurs
-              </h3>
+              <h3 className="text-xl font-bold text-slate-900">Choisis tes couleurs</h3>
               <button
                 onClick={() => setShowColorPicker(false)}
                 className="text-slate-400 hover:text-slate-600"
@@ -370,12 +418,29 @@ export function QuestionScreen({
                     style={{ backgroundColor: color }}
                   >
                     {isColorSelected && (
-                      <Check size={16} className={cn(
-                        'mx-auto',
-                        ['#ffffff', '#e5e7eb', '#fde047', '#facc15', '#fca5a5', '#f9a8d4', '#fdba74', '#86efac', '#5eead4', '#93c5fd', '#67e8f9', '#c4b5fd', '#d8b4fe'].includes(color)
-                          ? 'text-slate-800'
-                          : 'text-white'
-                      )} />
+                      <Check
+                        size={16}
+                        className={cn(
+                          'mx-auto',
+                          [
+                            '#ffffff',
+                            '#e5e7eb',
+                            '#fde047',
+                            '#facc15',
+                            '#fca5a5',
+                            '#f9a8d4',
+                            '#fdba74',
+                            '#86efac',
+                            '#5eead4',
+                            '#93c5fd',
+                            '#67e8f9',
+                            '#c4b5fd',
+                            '#d8b4fe',
+                          ].includes(color)
+                            ? 'text-slate-800'
+                            : 'text-white'
+                        )}
+                      />
                     )}
                   </button>
                 )
@@ -407,12 +472,7 @@ export function QuestionScreen({
       {/* Continue button for multi-select */}
       {question.multiSelect && selectedValues.length > 0 && onMultiSelectConfirm && (
         <div className="mt-8 text-center">
-          <Button
-            onClick={onMultiSelectConfirm}
-            variant="orange"
-            size="lg"
-            className="gap-2"
-          >
+          <Button onClick={onMultiSelectConfirm} variant="orange" size="lg" className="gap-2">
             {tCommon('continue')}
             <ChevronRight size={18} />
           </Button>

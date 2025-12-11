@@ -28,16 +28,9 @@ export default function ShowroomError({
         <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-amber-100 flex items-center justify-center">
           <AlertTriangle className="w-7 h-7 text-amber-600" />
         </div>
-        <h1 className="text-xl font-bold text-slate-900 mb-2">
-          {t('showroomTitle')}
-        </h1>
-        <p className="text-slate-500 text-sm mb-6">
-          {t('showroomDescription')}
-        </p>
-        <Button
-          onClick={reset}
-          className="gap-2 bg-amber-500 hover:bg-amber-600"
-        >
+        <h1 className="text-xl font-bold text-slate-900 mb-2">{t('showroomTitle')}</h1>
+        <p className="text-slate-500 text-sm mb-6">{t('showroomDescription')}</p>
+        <Button onClick={reset} className="gap-2 bg-amber-500 hover:bg-amber-600">
           <RefreshCw size={16} />
           {t('retry')}
         </Button>

@@ -9,7 +9,10 @@ async function requireAuth() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { supabase: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+    return {
+      supabase: null,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    }
   }
 
   return { supabase, response: null }
@@ -28,17 +31,17 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0')
 
     // Build base query for both count and data
-    let countQuery = supabase
-      .from('sessions')
-      .select('*', { count: 'exact', head: true })
+    let countQuery = supabase.from('sessions').select('*', { count: 'exact', head: true })
 
     let dataQuery = supabase
       .from('sessions')
-      .select(`
+      .select(
+        `
         *,
         clients (*),
         responses (*)
-      `)
+      `
+      )
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
 
@@ -53,10 +56,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Execute both queries in parallel
-    const [{ count }, { data: sessions, error }] = await Promise.all([
-      countQuery,
-      dataQuery,
-    ])
+    const [{ count }, { data: sessions, error }] = await Promise.all([countQuery, dataQuery])
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
@@ -72,10 +72,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -89,10 +86,7 @@ export async function POST(request: NextRequest) {
     const { client_id } = body
 
     if (!client_id || typeof client_id !== 'string') {
-      return NextResponse.json(
-        { error: 'client_id is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'client_id is required' }, { status: 400 })
     }
 
     // Générer un ID court et unique pour l'URL
@@ -105,10 +99,12 @@ export async function POST(request: NextRequest) {
         client_id,
         status: 'pending',
       })
-      .select(`
+      .select(
+        `
         *,
         clients (*)
-      `)
+      `
+      )
       .single()
 
     if (error) {
@@ -124,9 +120,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(session, { status: 201 })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

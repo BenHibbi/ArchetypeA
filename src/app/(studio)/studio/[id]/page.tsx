@@ -75,9 +75,10 @@ async function getClient(id: string) {
   const client = clientData as ClientDB
 
   // Récupérer la session la plus récente avec ses réponses
-  const { data: sessions } = await supabase
+  const { data: sessions } = (await supabase
     .from('sessions')
-    .select(`
+    .select(
+      `
       id,
       status,
       started_at,
@@ -86,10 +87,11 @@ async function getClient(id: string) {
       showroom_status,
       showroom_sent_at,
       responses (*)
-    `)
+    `
+    )
     .eq('client_id', id)
     .order('created_at', { ascending: false })
-    .limit(1) as { data: SessionDB[] | null }
+    .limit(1)) as { data: SessionDB[] | null }
 
   const latestSession = sessions?.[0] || null
 
@@ -120,11 +122,7 @@ async function getClient(id: string) {
   return { ...client, latestSession, designProposals, generatedBrief }
 }
 
-export default async function ClientDetailPage({
-  params,
-}: {
-  params: { id: string }
-}) {
+export default async function ClientDetailPage({ params }: { params: { id: string } }) {
   const { id } = params
   const client = await getClient(id)
   const t = await getTranslations('studio.clients')
@@ -140,11 +138,7 @@ export default async function ClientDetailPage({
     : latestSession?.responses
   const status = latestSession?.status || 'no_session'
   const statusVariant =
-    status === 'completed'
-      ? 'success'
-      : status === 'in_progress'
-      ? 'warning'
-      : 'pending'
+    status === 'completed' ? 'success' : status === 'in_progress' ? 'warning' : 'pending'
 
   const sessionUrl = latestSession ? generateSessionUrl(latestSession.id) : ''
 
@@ -169,12 +163,16 @@ export default async function ClientDetailPage({
               <div className="flex items-center gap-4 text-sm text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <Calendar size={14} />
-                  <span>{t('sentAt')} {formatDateTime(latestSession.created_at)}</span>
+                  <span>
+                    {t('sentAt')} {formatDateTime(latestSession.created_at)}
+                  </span>
                 </div>
                 {latestSession.completed_at && (
                   <div className="flex items-center gap-1.5 text-green-600">
                     <CheckCircle size={14} />
-                    <span>{t('completedAt')} {formatDateTime(latestSession.completed_at)}</span>
+                    <span>
+                      {t('completedAt')} {formatDateTime(latestSession.completed_at)}
+                    </span>
                   </div>
                 )}
               </div>
@@ -191,9 +189,7 @@ export default async function ClientDetailPage({
         ) : (
           <Card>
             <CardContent className="py-12 text-center">
-              <p className="text-slate-500 mb-4">
-                {t('notYetResponded')}
-              </p>
+              <p className="text-slate-500 mb-4">{t('notYetResponded')}</p>
               {latestSession && (
                 <div className="flex items-center justify-center gap-2">
                   <code className="text-sm font-mono text-teal-600 bg-slate-100 px-3 py-2 rounded">
@@ -246,10 +242,7 @@ export default async function ClientDetailPage({
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3 text-sm">
                 <Mail size={16} className="text-slate-400" />
-                <a
-                  href={`mailto:${client.email}`}
-                  className="text-teal-600 hover:underline"
-                >
+                <a href={`mailto:${client.email}`} className="text-teal-600 hover:underline">
                   {client.email}
                 </a>
               </div>
@@ -270,7 +263,9 @@ export default async function ClientDetailPage({
 
               {client.notes && (
                 <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">{t('notes')}</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">
+                    {t('notes')}
+                  </p>
                   <p className="text-sm text-slate-600">{client.notes}</p>
                 </div>
               )}

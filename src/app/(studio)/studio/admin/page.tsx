@@ -53,7 +53,7 @@ export default function AdminPage() {
       const res = await fetch('/api/admin/users', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status })
+        body: JSON.stringify({ id, status }),
       })
       if (res.ok) {
         // Rafraîchir la liste
@@ -66,9 +66,9 @@ export default function AdminPage() {
     }
   }
 
-  const pendingProfiles = profiles.filter(p => p.status === 'pending')
-  const approvedProfiles = profiles.filter(p => p.status === 'approved')
-  const rejectedProfiles = profiles.filter(p => p.status === 'rejected')
+  const pendingProfiles = profiles.filter((p) => p.status === 'pending')
+  const approvedProfiles = profiles.filter((p) => p.status === 'approved')
+  const rejectedProfiles = profiles.filter((p) => p.status === 'rejected')
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('fr-FR', {
@@ -76,7 +76,7 @@ export default function AdminPage() {
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     })
   }
 
@@ -155,16 +155,16 @@ export default function AdminPage() {
           {loading ? (
             <div className="p-8 text-center text-slate-500">Chargement...</div>
           ) : pendingProfiles.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">
-              Aucune demande en attente
-            </div>
+            <div className="p-8 text-center text-slate-500">Aucune demande en attente</div>
           ) : (
             <div className="divide-y divide-slate-100">
               {pendingProfiles.map((profile) => (
                 <div key={profile.id} className="px-6 py-4 flex items-center justify-between">
                   <div>
                     <p className="font-medium text-slate-900">{profile.email}</p>
-                    <p className="text-sm text-slate-500">Inscrit le {formatDate(profile.requested_at)}</p>
+                    <p className="text-sm text-slate-500">
+                      Inscrit le {formatDate(profile.requested_at)}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -201,9 +201,7 @@ export default function AdminPage() {
             </h2>
           </div>
           {approvedProfiles.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">
-              Aucun utilisateur approuvé
-            </div>
+            <div className="p-8 text-center text-slate-500">Aucun utilisateur approuvé</div>
           ) : (
             <div className="divide-y divide-slate-100 max-h-64 overflow-y-auto">
               {approvedProfiles.map((profile) => (

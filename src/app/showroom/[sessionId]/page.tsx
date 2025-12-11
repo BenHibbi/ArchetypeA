@@ -87,11 +87,13 @@ export default function ShowroomPage() {
           return
         }
 
-        const { data: response } = await supabase
+        const { data: response } = (await supabase
           .from('responses')
           .select('business_name, generated_brief')
           .eq('session_id', sessionId)
-          .single() as { data: { business_name: string | null; generated_brief: string | null } | null }
+          .single()) as {
+          data: { business_name: string | null; generated_brief: string | null } | null
+        }
 
         const { data: designs } = await supabase
           .from('design_proposals')
@@ -379,22 +381,19 @@ export default function ShowroomPage() {
         )}
       </header>
 
-      <main className={cn(
-        'px-4 md:px-8',
-        selectedDesign ? 'pt-20 pb-32' : 'pt-24 pb-40'
-      )}>
+      <main className={cn('px-4 md:px-8', selectedDesign ? 'pt-20 pb-32' : 'pt-24 pb-40')}>
         <div className="max-w-[95vw] mx-auto">
           {/* Hero - Compact, hidden when design selected */}
-          <div className={cn(
-            'text-center transition-all duration-300 overflow-hidden',
-            selectedDesign ? 'h-0 opacity-0 mb-0' : 'mb-8'
-          )}>
+          <div
+            className={cn(
+              'text-center transition-all duration-300 overflow-hidden',
+              selectedDesign ? 'h-0 opacity-0 mb-0' : 'mb-8'
+            )}
+          >
             <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-2">
               {t('title')}
             </h1>
-            <p className="text-base text-slate-500">
-              {t('subtitle')}
-            </p>
+            <p className="text-base text-slate-500">{t('subtitle')}</p>
           </div>
 
           {/* Designs Grid - Full width with dynamic sizing */}
@@ -422,8 +421,12 @@ export default function ShowroomPage() {
                     designCount === 1 && 'w-full',
                     // Multiple designs: dynamic sizing based on selection
                     designCount > 1 && isSelected && 'md:flex-none md:w-[60%] z-10',
-                    designCount > 1 && isNotSelected && 'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95 overflow-hidden',
-                    designCount > 1 && !hasSelection && 'md:flex-1 hover:-translate-y-2 overflow-hidden',
+                    designCount > 1 &&
+                      isNotSelected &&
+                      'md:flex-[0.5] opacity-50 hover:opacity-80 scale-95 overflow-hidden',
+                    designCount > 1 &&
+                      !hasSelection &&
+                      'md:flex-1 hover:-translate-y-2 overflow-hidden',
                     // Ring styling
                     isSelected
                       ? 'ring-4 ring-orange-500 shadow-2xl shadow-orange-500/30'
@@ -442,7 +445,7 @@ export default function ShowroomPage() {
                   <div
                     className={cn(
                       'relative bg-slate-100 transition-all duration-500 rounded-xl overflow-hidden',
-                      'aspect-video min-h-[40vh] max-h-[70vh]',
+                      'aspect-video min-h-[40vh] max-h-[70vh]'
                     )}
                   >
                     {design.image_url ? (

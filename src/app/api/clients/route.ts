@@ -3,9 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { Tables } from '@/types/database'
 
 interface ClientWithSessions extends Tables<'clients'> {
-  sessions?: Array<Tables<'sessions'> & {
-    responses?: Tables<'responses'>[]
-  }>
+  sessions?: Array<
+    Tables<'sessions'> & {
+      responses?: Tables<'responses'>[]
+    }
+  >
 }
 
 async function requireAuth() {
@@ -15,7 +17,11 @@ async function requireAuth() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { supabase: null, user: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+    return {
+      supabase: null,
+      user: null,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    }
   }
 
   return { supabase, user, response: null }
@@ -29,7 +35,8 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from('clients')
-      .select(`
+      .select(
+        `
         *,
         sessions (
           id,
@@ -39,7 +46,8 @@ export async function GET() {
           created_at,
           responses (*)
         )
-      `)
+      `
+      )
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -57,10 +65,7 @@ export async function GET() {
 
     return NextResponse.json(clientsWithLatest)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -74,15 +79,11 @@ export async function POST(request: NextRequest) {
     const { email, company_name, contact_name, website_url, notes } = body || {}
 
     if (!email || typeof email !== 'string' || !email.includes('@')) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: client, error } = await (supabase
-      .from('clients') as any)
+    const { data: client, error } = await (supabase.from('clients') as any)
       .insert({
         user_id: user.id,
         email: email.trim(),
@@ -100,9 +101,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(client, { status: 201 })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

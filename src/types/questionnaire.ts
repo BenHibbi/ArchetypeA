@@ -1,15 +1,31 @@
 import { ReactNode } from 'react'
 
 export type AmbianceType = 'minimal' | 'bold' | 'corporate' | 'soft' | 'futuristic' | 'editorial'
-export type ValeurType = 'confiance' | 'creativite' | 'performance' | 'simplicite' | 'luxe' | 'accessibilite'
+export type ValeurType =
+  | 'confiance'
+  | 'creativite'
+  | 'performance'
+  | 'simplicite'
+  | 'luxe'
+  | 'accessibilite'
 export type StructureType = 'simple' | 'standard' | 'rich' | 'fullscreen' | 'masonry' | 'bento'
 export type TypoType = 'fine' | 'bold' | 'serif' | 'modern' | 'variable' | 'retro'
 export type RatioType = 'image_heavy' | 'mix' | 'text_heavy'
 export type PaletteType = 'cold' | 'warm' | 'bw' | 'accent' | 'pastel' | 'custom'
 
 export type SkeletonType =
-  | 'hero' | 'split' | 'typo' | 'grid' | 'blocks' | 'pricing'
-  | 'quote' | 'footer' | 'nav' | 'asym' | 'full' | 'col'
+  | 'hero'
+  | 'split'
+  | 'typo'
+  | 'grid'
+  | 'blocks'
+  | 'pricing'
+  | 'quote'
+  | 'footer'
+  | 'nav'
+  | 'asym'
+  | 'full'
+  | 'col'
 
 export interface QuestionOption {
   id: string

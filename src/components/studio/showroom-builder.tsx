@@ -2,7 +2,18 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { Upload, Code, X, Send, Loader2, Check, Euro, Image as ImageIcon, Copy, Link } from 'lucide-react'
+import {
+  Upload,
+  Code,
+  X,
+  Send,
+  Loader2,
+  Check,
+  Euro,
+  Image as ImageIcon,
+  Copy,
+  Link,
+} from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -46,13 +57,15 @@ export function ShowroomBuilder({
     // Initialize 3 slots
     const slots: DesignSlot[] = [1, 2, 3].map((num) => {
       const existing = initialDesigns.find((d) => d.slotNumber === num)
-      return existing || {
-        slotNumber: num,
-        imageUrl: null,
-        htmlCode: null,
-        price: null,
-        title: `Design ${num}`,
-      }
+      return (
+        existing || {
+          slotNumber: num,
+          imageUrl: null,
+          htmlCode: null,
+          price: null,
+          title: `Design ${num}`,
+        }
+      )
     })
     return slots
   })
@@ -95,9 +108,7 @@ export function ShowroomBuilder({
   }
 
   const updateSlot = (slotNumber: number, updates: Partial<DesignSlot>) => {
-    setDesigns((prev) =>
-      prev.map((d) => (d.slotNumber === slotNumber ? { ...d, ...updates } : d))
-    )
+    setDesigns((prev) => prev.map((d) => (d.slotNumber === slotNumber ? { ...d, ...updates } : d)))
     setSaved(false)
   }
 
@@ -271,11 +282,11 @@ export function ShowroomBuilder({
               ) : activeTab[design.slotNumber] === 'image' ? (
                 <label className="flex flex-col items-center justify-center h-full cursor-pointer hover:bg-slate-100 transition-colors">
                   <Upload size={24} className="text-slate-400 mb-2" />
-                  <span className="text-xs text-slate-500">
-                    {t('dragOrPaste')}
-                  </span>
+                  <span className="text-xs text-slate-500">{t('dragOrPaste')}</span>
                   <input
-                    ref={(el) => { fileInputRefs.current[design.slotNumber] = el }}
+                    ref={(el) => {
+                      fileInputRefs.current[design.slotNumber] = el
+                    }}
                     type="file"
                     accept="image/*"
                     className="hidden"
@@ -289,7 +300,9 @@ export function ShowroomBuilder({
                 <textarea
                   placeholder={t('pasteHtml')}
                   className="w-full h-full p-3 text-xs font-mono bg-transparent resize-none focus:outline-none"
-                  onChange={(e) => updateSlot(design.slotNumber, { htmlCode: e.target.value, imageUrl: null })}
+                  onChange={(e) =>
+                    updateSlot(design.slotNumber, { htmlCode: e.target.value, imageUrl: null })
+                  }
                 />
               )}
             </div>
@@ -301,7 +314,9 @@ export function ShowroomBuilder({
                 type="number"
                 placeholder={t('price')}
                 value={design.price || ''}
-                onChange={(e) => updateSlot(design.slotNumber, { price: parseFloat(e.target.value) || null })}
+                onChange={(e) =>
+                  updateSlot(design.slotNumber, { price: parseFloat(e.target.value) || null })
+                }
                 className="h-8 text-sm"
               />
             </div>
@@ -322,11 +337,7 @@ export function ShowroomBuilder({
         </div>
 
         <div className="flex gap-3">
-          <Button
-            variant="outline"
-            onClick={saveDesigns}
-            disabled={isSaving || !hasDesigns}
-          >
+          <Button variant="outline" onClick={saveDesigns} disabled={isSaving || !hasDesigns}>
             {isSaving ? (
               <Loader2 size={16} className="animate-spin mr-2" />
             ) : saved ? (
@@ -335,11 +346,7 @@ export function ShowroomBuilder({
             {saved ? tCommon('saved') : tCommon('save')}
           </Button>
 
-          <Button
-            onClick={sendShowroom}
-            disabled={isSending || !hasDesigns}
-            variant="orange"
-          >
+          <Button onClick={sendShowroom} disabled={isSending || !hasDesigns} variant="orange">
             {isSending ? (
               <Loader2 size={16} className="animate-spin mr-2" />
             ) : (
@@ -359,11 +366,7 @@ export function ShowroomBuilder({
             className="relative"
             title={t('showroomLink')}
           >
-            {linkCopied ? (
-              <Check size={16} className="text-green-500" />
-            ) : (
-              <Link size={16} />
-            )}
+            {linkCopied ? <Check size={16} className="text-green-500" /> : <Link size={16} />}
           </Button>
         </div>
       </div>

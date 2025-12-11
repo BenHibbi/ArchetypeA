@@ -90,7 +90,9 @@ Design specs:
 Must include: ${(response.features || []).join(', ')}
 
 Key layouts to include:
-${getSkeletonLabels(response.moodboard_likes || []).map((l) => `- ${l}`).join('\n')}
+${getSkeletonLabels(response.moodboard_likes || [])
+  .map((l) => `- ${l}`)
+  .join('\n')}
 
 Core message: ${getOptionLabel('valeurs', response.valeurs)}
 
@@ -148,7 +150,9 @@ export function generateCustomPrompt(ctx: PromptContext): string {
 | Image/Text | ${getOptionLabel('ratio', response.ratio)} |
 
 ### Layout Inspirations
-${getSkeletonLabels(response.moodboard_likes || []).map((l) => `- ${l}`).join('\n')}
+${getSkeletonLabels(response.moodboard_likes || [])
+  .map((l) => `- ${l}`)
+  .join('\n')}
 
 ### Required Features
 ${(response.features || []).map((f) => `- ${f}`).join('\n')}

@@ -50,12 +50,7 @@ export function FeaturesScreen({
       </div>
 
       <div className="flex justify-center">
-        <Button
-          onClick={onGenerate}
-          disabled={isSubmitting}
-          variant="orange"
-          size="xl"
-        >
+        <Button onClick={onGenerate} disabled={isSubmitting} variant="orange" size="xl">
           {isSubmitting ? (
             tCommon('loading')
           ) : (

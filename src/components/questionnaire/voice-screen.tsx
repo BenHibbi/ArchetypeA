@@ -34,7 +34,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
 
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        stream.getTracks().forEach(track => track.stop())
+        stream.getTracks().forEach((track) => track.stop())
         await processAudio(audioBlob)
       }
 
@@ -83,7 +83,7 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
       setProcessingStep('analyzing')
 
       // Small delay to show the analyzing step
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       onComplete(data.transcription, data.analysis)
     } catch {
@@ -106,15 +106,16 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
           </h2>
 
           <div className="flex justify-center gap-2 mb-6">
-            <div className={`w-3 h-3 rounded-full transition-colors ${processingStep === 'transcribing' ? 'bg-orange-500 animate-pulse' : 'bg-teal-500'}`} />
-            <div className={`w-3 h-3 rounded-full transition-colors ${processingStep === 'analyzing' ? 'bg-orange-500 animate-pulse' : 'bg-slate-200'}`} />
+            <div
+              className={`w-3 h-3 rounded-full transition-colors ${processingStep === 'transcribing' ? 'bg-orange-500 animate-pulse' : 'bg-teal-500'}`}
+            />
+            <div
+              className={`w-3 h-3 rounded-full transition-colors ${processingStep === 'analyzing' ? 'bg-orange-500 animate-pulse' : 'bg-slate-200'}`}
+            />
           </div>
 
           <p className="text-slate-500">
-            {processingStep === 'transcribing'
-              ? t('whisperTranscribing')
-              : t('aiExtracting')
-            }
+            {processingStep === 'transcribing' ? t('whisperTranscribing') : t('aiExtracting')}
           </p>
         </div>
       </div>
@@ -138,14 +139,12 @@ export function VoiceScreen({ onComplete, onSkip }: VoiceScreenProps) {
         <div className="p-10 text-center">
           <div className="bg-slate-50 rounded-2xl p-6 mb-8 text-left border border-slate-100">
             <p className="text-slate-700 leading-relaxed">
-              {t('instruction')} <span className="font-semibold text-orange-500">"{t('recordButton')}"</span> {t('andDescribe')}
+              {t('instruction')}{' '}
+              <span className="font-semibold text-orange-500">"{t('recordButton')}"</span>{' '}
+              {t('andDescribe')}
             </p>
-            <p className="text-slate-500 mt-4 text-sm">
-              🔒 {t('privacyNote')}
-            </p>
-            <p className="text-orange-600 font-medium mt-4 text-sm">
-              ✨ {t('importantNote')}
-            </p>
+            <p className="text-slate-500 mt-4 text-sm">🔒 {t('privacyNote')}</p>
+            <p className="text-orange-600 font-medium mt-4 text-sm">✨ {t('importantNote')}</p>
           </div>
 
           {/* Recording Button */}

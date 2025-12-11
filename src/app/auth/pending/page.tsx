@@ -14,7 +14,9 @@ export default function PendingApprovalPage() {
   useEffect(() => {
     const checkStatus = async () => {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
       if (!user) {
         router.push('/auth/login')
@@ -98,13 +100,11 @@ export default function PendingApprovalPage() {
           <Clock size={40} className="text-orange-500" />
         </div>
 
-        <h1 className="text-2xl font-bold text-slate-900 mb-3">
-          En attente d'approbation
-        </h1>
+        <h1 className="text-2xl font-bold text-slate-900 mb-3">En attente d'approbation</h1>
 
         <p className="text-slate-600 mb-6">
-          Merci pour votre inscription ! Votre demande d'accès est en cours de validation.
-          Vous recevrez un email dès que votre compte sera approuvé.
+          Merci pour votre inscription ! Votre demande d'accès est en cours de validation. Vous
+          recevrez un email dès que votre compte sera approuvé.
         </p>
 
         <div className="bg-slate-50 rounded-xl p-4 mb-6">

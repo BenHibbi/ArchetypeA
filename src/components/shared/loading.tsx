@@ -31,9 +31,18 @@ export function LoadingScreen() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <div className="flex flex-col items-center gap-4">
         <div className="flex -space-x-2">
-          <div className="w-6 h-6 rounded-full bg-teal-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-6 h-6 rounded-full bg-orange-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-6 h-6 rounded-full bg-yellow-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div
+            className="w-6 h-6 rounded-full bg-teal-500 animate-bounce"
+            style={{ animationDelay: '0ms' }}
+          />
+          <div
+            className="w-6 h-6 rounded-full bg-orange-500 animate-bounce"
+            style={{ animationDelay: '150ms' }}
+          />
+          <div
+            className="w-6 h-6 rounded-full bg-yellow-400 animate-bounce"
+            style={{ animationDelay: '300ms' }}
+          />
         </div>
         <p className="text-sm text-slate-500">Chargement...</p>
       </div>

@@ -39,11 +39,7 @@ export function DeleteClientButton({ clientId }: DeleteClientButtonProps) {
       disabled={isDeleting}
       className="text-slate-400 hover:text-red-500 hover:bg-red-50"
     >
-      {isDeleting ? (
-        <Loader2 size={14} className="animate-spin" />
-      ) : (
-        <Trash2 size={14} />
-      )}
+      {isDeleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
     </Button>
   )
 }

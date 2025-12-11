@@ -18,9 +18,9 @@ export default function ConfidentialitePage() {
         <div className="prose prose-slate max-w-none">
           <div className="bg-teal-50 border border-teal-200 rounded-xl p-6 mb-8">
             <p className="text-teal-800 text-sm leading-relaxed">
-              Chez Archetype, nous prenons la protection de vos données personnelles très au sérieux.
-              Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons
-              vos informations lorsque vous utilisez notre plateforme.
+              Chez Archetype, nous prenons la protection de vos données personnelles très au
+              sérieux. Cette politique de confidentialité explique comment nous collectons,
+              utilisons et protégeons vos informations lorsque vous utilisez notre plateforme.
             </p>
           </div>
 
@@ -28,8 +28,10 @@ export default function ConfidentialitePage() {
             <h2 className="text-2xl font-bold text-slate-800 mb-4">1. Responsable du traitement</h2>
             <p className="text-slate-600 leading-relaxed">
               Le responsable du traitement des données personnelles est :<br />
-              <strong>Crush Digital Atelier LLC</strong><br />
-              Email : contact@archetype.design<br />
+              <strong>Crush Digital Atelier LLC</strong>
+              <br />
+              Email : contact@archetype.design
+              <br />
               Délégué à la protection des données (DPO) : [Nom] - dpo@archetype.design
             </p>
           </section>
@@ -37,7 +39,8 @@ export default function ConfidentialitePage() {
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-slate-800 mb-4">2. Données collectées</h2>
             <p className="text-slate-600 leading-relaxed mb-4">
-              Nous collectons les données suivantes dans le cadre de l'utilisation de notre service :
+              Nous collectons les données suivantes dans le cadre de l'utilisation de notre service
+              :
             </p>
 
             <div className="bg-white rounded-lg p-5 border border-slate-200 mb-4">
@@ -50,7 +53,9 @@ export default function ConfidentialitePage() {
             </div>
 
             <div className="bg-white rounded-lg p-5 border border-slate-200 mb-4">
-              <h4 className="font-semibold text-slate-800 mb-2">Données des questionnaires clients</h4>
+              <h4 className="font-semibold text-slate-800 mb-2">
+                Données des questionnaires clients
+              </h4>
               <ul className="list-disc pl-5 text-slate-600 space-y-1 text-sm">
                 <li>Préférences design (ambiance, couleurs, typographie, etc.)</li>
                 <li>Sélections du moodboard</li>
@@ -77,11 +82,24 @@ export default function ConfidentialitePage() {
               Vos données sont collectées et traitées pour les finalités suivantes :
             </p>
             <ul className="list-disc pl-6 text-slate-600 space-y-2">
-              <li><strong>Fourniture du service :</strong> Permettre la création et la gestion de questionnaires, la génération de prompts IA, et la création de showrooms</li>
-              <li><strong>Gestion de compte :</strong> Authentification, facturation, support client</li>
-              <li><strong>Amélioration du service :</strong> Analyse d'usage, développement de nouvelles fonctionnalités</li>
-              <li><strong>Communication :</strong> Notifications de service, newsletters (avec consentement)</li>
-              <li><strong>Sécurité :</strong> Détection des fraudes et protection contre les abus</li>
+              <li>
+                <strong>Fourniture du service :</strong> Permettre la création et la gestion de
+                questionnaires, la génération de prompts IA, et la création de showrooms
+              </li>
+              <li>
+                <strong>Gestion de compte :</strong> Authentification, facturation, support client
+              </li>
+              <li>
+                <strong>Amélioration du service :</strong> Analyse d'usage, développement de
+                nouvelles fonctionnalités
+              </li>
+              <li>
+                <strong>Communication :</strong> Notifications de service, newsletters (avec
+                consentement)
+              </li>
+              <li>
+                <strong>Sécurité :</strong> Détection des fraudes et protection contre les abus
+              </li>
             </ul>
           </section>
 
@@ -91,17 +109,29 @@ export default function ConfidentialitePage() {
               Nous traitons vos données sur les bases légales suivantes :
             </p>
             <ul className="list-disc pl-6 text-slate-600 space-y-2 mt-3">
-              <li><strong>Exécution du contrat :</strong> Traitement nécessaire à la fourniture du service</li>
-              <li><strong>Consentement :</strong> Pour les cookies non essentiels et les communications marketing</li>
-              <li><strong>Intérêt légitime :</strong> Amélioration du service et sécurité</li>
-              <li><strong>Obligation légale :</strong> Conservation des factures et documents comptables</li>
+              <li>
+                <strong>Exécution du contrat :</strong> Traitement nécessaire à la fourniture du
+                service
+              </li>
+              <li>
+                <strong>Consentement :</strong> Pour les cookies non essentiels et les
+                communications marketing
+              </li>
+              <li>
+                <strong>Intérêt légitime :</strong> Amélioration du service et sécurité
+              </li>
+              <li>
+                <strong>Obligation légale :</strong> Conservation des factures et documents
+                comptables
+              </li>
             </ul>
           </section>
 
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-slate-800 mb-4">5. Partage des données</h2>
             <p className="text-slate-600 leading-relaxed mb-4">
-              Nous pouvons partager vos données avec les tiers suivants, dans le respect strict du RGPD :
+              Nous pouvons partager vos données avec les tiers suivants, dans le respect strict du
+              RGPD :
             </p>
             <div className="grid gap-3">
               <div className="bg-slate-50 rounded-lg p-4">
@@ -110,15 +140,22 @@ export default function ConfidentialitePage() {
               </div>
               <div className="bg-slate-50 rounded-lg p-4">
                 <p className="font-semibold text-slate-800">Vercel</p>
-                <p className="text-sm text-slate-600">Hébergement de l'application - États-Unis (Clauses contractuelles types)</p>
+                <p className="text-sm text-slate-600">
+                  Hébergement de l'application - États-Unis (Clauses contractuelles types)
+                </p>
               </div>
               <div className="bg-slate-50 rounded-lg p-4">
                 <p className="font-semibold text-slate-800">Stripe</p>
-                <p className="text-sm text-slate-600">Traitement des paiements - États-Unis (Certifié Privacy Shield)</p>
+                <p className="text-sm text-slate-600">
+                  Traitement des paiements - États-Unis (Certifié Privacy Shield)
+                </p>
               </div>
               <div className="bg-slate-50 rounded-lg p-4">
                 <p className="font-semibold text-slate-800">OpenAI / Groq</p>
-                <p className="text-sm text-slate-600">Services IA pour la transcription et l'analyse - États-Unis (Clauses contractuelles types)</p>
+                <p className="text-sm text-slate-600">
+                  Services IA pour la transcription et l'analyse - États-Unis (Clauses
+                  contractuelles types)
+                </p>
               </div>
             </div>
             <p className="text-slate-600 leading-relaxed mt-4">
@@ -132,11 +169,24 @@ export default function ConfidentialitePage() {
               Nous conservons vos données pour les durées suivantes :
             </p>
             <ul className="list-disc pl-6 text-slate-600 space-y-2 mt-3">
-              <li><strong>Données de compte :</strong> Jusqu'à la suppression du compte + 3 ans (prescription)</li>
-              <li><strong>Données des questionnaires :</strong> Jusqu'à suppression par l'utilisateur ou fermeture du compte</li>
-              <li><strong>Enregistrements vocaux :</strong> 30 jours après transcription, puis supprimés</li>
-              <li><strong>Données de facturation :</strong> 10 ans (obligation légale)</li>
-              <li><strong>Logs techniques :</strong> 12 mois</li>
+              <li>
+                <strong>Données de compte :</strong> Jusqu'à la suppression du compte + 3 ans
+                (prescription)
+              </li>
+              <li>
+                <strong>Données des questionnaires :</strong> Jusqu'à suppression par l'utilisateur
+                ou fermeture du compte
+              </li>
+              <li>
+                <strong>Enregistrements vocaux :</strong> 30 jours après transcription, puis
+                supprimés
+              </li>
+              <li>
+                <strong>Données de facturation :</strong> 10 ans (obligation légale)
+              </li>
+              <li>
+                <strong>Logs techniques :</strong> 12 mois
+              </li>
             </ul>
           </section>
 
@@ -160,7 +210,9 @@ export default function ConfidentialitePage() {
               </div>
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <p className="font-semibold text-slate-800">Droit à la portabilité</p>
-                <p className="text-sm text-slate-600">Récupérer vos données dans un format lisible</p>
+                <p className="text-sm text-slate-600">
+                  Récupérer vos données dans un format lisible
+                </p>
               </div>
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <p className="font-semibold text-slate-800">Droit d'opposition</p>
@@ -175,14 +227,23 @@ export default function ConfidentialitePage() {
               Pour exercer ces droits, contactez-nous à : <strong>dpo@archetype.design</strong>
             </p>
             <p className="text-slate-600 leading-relaxed mt-2">
-              Vous pouvez également déposer une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" className="text-teal-600 hover:underline" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>
+              Vous pouvez également déposer une réclamation auprès de la CNIL :{' '}
+              <a
+                href="https://www.cnil.fr"
+                className="text-teal-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                www.cnil.fr
+              </a>
             </p>
           </section>
 
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-slate-800 mb-4">8. Cookies</h2>
             <p className="text-slate-600 leading-relaxed mb-4">
-              Notre site utilise des cookies pour fonctionner correctement et améliorer votre expérience :
+              Notre site utilise des cookies pour fonctionner correctement et améliorer votre
+              expérience :
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -231,8 +292,8 @@ export default function ConfidentialitePage() {
             <h2 className="text-2xl font-bold text-slate-800 mb-4">10. Modifications</h2>
             <p className="text-slate-600 leading-relaxed">
               Nous pouvons mettre à jour cette politique de confidentialité. En cas de modification
-              substantielle, nous vous en informerons par email ou via une notification sur la plateforme
-              au moins 30 jours avant l'entrée en vigueur des changements.
+              substantielle, nous vous en informerons par email ou via une notification sur la
+              plateforme au moins 30 jours avant l'entrée en vigueur des changements.
             </p>
           </section>
 
@@ -240,13 +301,19 @@ export default function ConfidentialitePage() {
             <h2 className="text-2xl font-bold text-slate-800 mb-4">11. Contact</h2>
             <p className="text-slate-600 leading-relaxed">
               Pour toute question concernant cette politique ou vos données personnelles :<br />
-              <strong>Email :</strong> dpo@archetype.design<br />
+              <strong>Email :</strong> dpo@archetype.design
+              <br />
               <strong>Adresse :</strong> [Adresse postale]
             </p>
           </section>
 
           <p className="text-sm text-slate-400 mt-12">
-            Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+            Dernière mise à jour :{' '}
+            {new Date().toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
           </p>
         </div>
       </div>

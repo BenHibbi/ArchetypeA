@@ -8,17 +8,17 @@ async function requireAuth() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return { supabase: null, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+    return {
+      supabase: null,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    }
   }
 
   return { supabase, response: null }
 }
 
 // GET /api/clients/[id] - Obtenir un client par ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -30,7 +30,8 @@ export async function GET(
 
     const { data: client, error } = await supabase
       .from('clients')
-      .select(`
+      .select(
+        `
         *,
         sessions (
           id,
@@ -40,7 +41,8 @@ export async function GET(
           created_at,
           responses (*)
         )
-      `)
+      `
+      )
       .eq('id', id)
       .single()
 
@@ -50,18 +52,12 @@ export async function GET(
 
     return NextResponse.json(client)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 // PATCH /api/clients/[id] - Mettre à jour un client
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -86,21 +82,23 @@ export async function PATCH(
       updateData.email = body.email.trim()
     }
     if ('company_name' in body) {
-      updateData.company_name = typeof body.company_name === 'string' ? body.company_name.trim() || null : null
+      updateData.company_name =
+        typeof body.company_name === 'string' ? body.company_name.trim() || null : null
     }
     if ('contact_name' in body) {
-      updateData.contact_name = typeof body.contact_name === 'string' ? body.contact_name.trim() || null : null
+      updateData.contact_name =
+        typeof body.contact_name === 'string' ? body.contact_name.trim() || null : null
     }
     if ('website_url' in body) {
-      updateData.website_url = typeof body.website_url === 'string' ? body.website_url.trim() || null : null
+      updateData.website_url =
+        typeof body.website_url === 'string' ? body.website_url.trim() || null : null
     }
     if ('notes' in body) {
       updateData.notes = typeof body.notes === 'string' ? body.notes.trim() || null : null
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: client, error } = await (supabase
-      .from('clients') as any)
+    const { data: client, error } = await (supabase.from('clients') as any)
       .update(updateData)
       .eq('id', id)
       .select()
@@ -112,18 +110,12 @@ export async function PATCH(
 
     return NextResponse.json(client)
   } catch {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 // DELETE /api/clients/[id] - Supprimer un client
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { supabase, response } = await requireAuth()
     if (!supabase) return response!
@@ -141,9 +133,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

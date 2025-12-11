@@ -8,11 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ClientWithSession } from '@/types'
-import {
-  formatDate,
-  getInitials,
-  generateSessionUrl,
-} from '@/lib/utils'
+import { formatDate, getInitials, generateSessionUrl } from '@/lib/utils'
 
 interface ClientCardProps {
   client: ClientWithSession
@@ -25,11 +21,7 @@ export function ClientCard({ client }: ClientCardProps) {
   const status = latestSession?.status || 'no_session'
 
   const statusVariant =
-    status === 'completed'
-      ? 'success'
-      : status === 'in_progress'
-      ? 'warning'
-      : 'pending'
+    status === 'completed' ? 'success' : status === 'in_progress' ? 'warning' : 'pending'
 
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -53,9 +45,7 @@ export function ClientCard({ client }: ClientCardProps) {
               )}
             </div>
           </div>
-          <Badge variant={statusVariant}>
-            {latestSession ? tStatus(status) : t('noSession')}
-          </Badge>
+          <Badge variant={statusVariant}>{latestSession ? tStatus(status) : t('noSession')}</Badge>
         </div>
       </CardHeader>
 
@@ -92,9 +82,7 @@ export function ClientCard({ client }: ClientCardProps) {
                   size="sm"
                   className="text-teal-600 hover:text-teal-700"
                   onClick={() => {
-                    navigator.clipboard.writeText(
-                      generateSessionUrl(latestSession.id)
-                    )
+                    navigator.clipboard.writeText(generateSessionUrl(latestSession.id))
                   }}
                 >
                   <ExternalLink size={14} className="mr-1" />

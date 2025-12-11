@@ -7,10 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
 
 // Load analyst prompt from external file
-const ANALYST_SYSTEM_PROMPT = readFileSync(
-  join(process.cwd(), 'src/prompts/analyst.md'),
-  'utf-8'
-)
+const ANALYST_SYSTEM_PROMPT = readFileSync(join(process.cwd(), 'src/prompts/analyst.md'), 'utf-8')
 
 interface QuestionnaireData {
   ambiance: string | null
@@ -83,11 +80,14 @@ export async function POST(request: Request) {
         : [],
     }
 
-    const safeVoiceAnalysis = voiceAnalysis && typeof voiceAnalysis === 'object' ? voiceAnalysis : null
+    const safeVoiceAnalysis =
+      voiceAnalysis && typeof voiceAnalysis === 'object' ? voiceAnalysis : null
 
     // Build the input for the analyst
     const questionnaireText = formatQuestionnaireData(cleanedQuestionnaire)
-    const voiceText = safeVoiceAnalysis ? formatVoiceAnalysis(safeVoiceAnalysis) : 'Aucune analyse vocale disponible.'
+    const voiceText = safeVoiceAnalysis
+      ? formatVoiceAnalysis(safeVoiceAnalysis)
+      : 'Aucune analyse vocale disponible.'
 
     const userPrompt = `
 # CLIENT: ${clientName || 'Unknown'}
@@ -111,16 +111,14 @@ Generate the Redesign Master Prompt following the exact structure specified.
     const brief = response.text()
 
     // Sauvegarder le brief en base (upsert si déjà existant)
-    const { error: upsertError } = await supabase
-      .from('generated_prompts')
-      .upsert(
-        {
-          session_id: sessionId,
-          prompt_type: 'analyst_brief',
-          prompt_content: brief,
-        },
-        { onConflict: 'session_id,prompt_type' }
-      )
+    const { error: upsertError } = await supabase.from('generated_prompts').upsert(
+      {
+        session_id: sessionId,
+        prompt_type: 'analyst_brief',
+        prompt_content: brief,
+      },
+      { onConflict: 'session_id,prompt_type' }
+    )
 
     if (upsertError) {
       console.error('Erreur sauvegarde brief:', upsertError)
@@ -130,10 +128,7 @@ Generate the Redesign Master Prompt following the exact structure specified.
     return NextResponse.json({ brief })
   } catch (error) {
     console.error('Erreur génération brief:', error)
-    return NextResponse.json(
-      { error: 'Erreur lors de la génération du brief' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Erreur lors de la génération du brief' }, { status: 500 })
   }
 }
 
@@ -166,17 +161,19 @@ function formatVoiceAnalysis(analysis: VoiceAnalysis): string {
   }
 
   if (analysis.inspirations?.length) {
-    const insps = analysis.inspirations.map(i =>
-      `${i.nom}${i.elements_apprecies ? ` (${i.elements_apprecies})` : ''}`
-    ).join(', ')
+    const insps = analysis.inspirations
+      .map((i) => `${i.nom}${i.elements_apprecies ? ` (${i.elements_apprecies})` : ''}`)
+      .join(', ')
     lines.push(`Inspirations: ${insps}`)
   }
 
   if (analysis.style_visuel) {
     const sv = analysis.style_visuel
     if (sv.ambiance) lines.push(`Ambiance souhaitée: ${sv.ambiance}`)
-    if (sv.couleurs_souhaitees?.length) lines.push(`Couleurs souhaitées: ${sv.couleurs_souhaitees.join(', ')}`)
-    if (sv.couleurs_a_eviter?.length) lines.push(`Couleurs à éviter: ${sv.couleurs_a_eviter.join(', ')}`)
+    if (sv.couleurs_souhaitees?.length)
+      lines.push(`Couleurs souhaitées: ${sv.couleurs_souhaitees.join(', ')}`)
+    if (sv.couleurs_a_eviter?.length)
+      lines.push(`Couleurs à éviter: ${sv.couleurs_a_eviter.join(', ')}`)
     if (sv.typographie) lines.push(`Typographie: ${sv.typographie}`)
   }
 

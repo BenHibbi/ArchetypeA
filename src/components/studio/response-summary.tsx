@@ -75,16 +75,17 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
       ratio: { id: response.ratio, label: getOptionLabel('ratio', response.ratio) },
       palette: { id: response.palette, label: getOptionLabel('palette', response.palette) },
     },
-    moodboard: response.moodboard_likes?.map(id => {
-      const inspiration = INSPIRATIONS.find(i => i.id === id)
-      return {
-        id,
-        label: inspiration?.label || id,
-        concept: inspiration?.concept || '',
-        prompt: inspiration?.prompt || ''
-      }
-    }) || [],
-    features: response.features || []
+    moodboard:
+      response.moodboard_likes?.map((id) => {
+        const inspiration = INSPIRATIONS.find((i) => i.id === id)
+        return {
+          id,
+          label: inspiration?.label || id,
+          concept: inspiration?.concept || '',
+          prompt: inspiration?.prompt || '',
+        }
+      }) || [],
+    features: response.features || [],
   }
 
   // Parser l'analyse vocale si disponible
@@ -98,12 +99,24 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
   }
 
   const items = [
-    { label: t('ambiance'), value: getOptionLabel('ambiance', response.ambiance), id: response.ambiance },
+    {
+      label: t('ambiance'),
+      value: getOptionLabel('ambiance', response.ambiance),
+      id: response.ambiance,
+    },
     { label: t('value'), value: getOptionLabel('valeurs', response.valeurs), id: response.valeurs },
-    { label: t('structure'), value: getOptionLabel('structure', response.structure), id: response.structure },
+    {
+      label: t('structure'),
+      value: getOptionLabel('structure', response.structure),
+      id: response.structure,
+    },
     { label: t('typography'), value: getOptionLabel('typo', response.typo), id: response.typo },
     { label: t('ratio'), value: getOptionLabel('ratio', response.ratio), id: response.ratio },
-    { label: t('palette'), value: getOptionLabel('palette', response.palette), id: response.palette },
+    {
+      label: t('palette'),
+      value: getOptionLabel('palette', response.palette),
+      id: response.palette,
+    },
   ]
 
   return (
@@ -112,14 +125,14 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
       {(response.business_name || response.website_url) && (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
           <div className="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3">
-            <h3 className="font-bold text-white">
-              {t('clientInfo')}
-            </h3>
+            <h3 className="font-bold text-white">{t('clientInfo')}</h3>
           </div>
           <div className="p-6">
             {response.business_name && (
               <div className="mb-3">
-                <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">{t('businessName')}</span>
+                <span className="text-xs text-teal-600 uppercase tracking-wider font-medium">
+                  {t('businessName')}
+                </span>
                 <h3 className="text-xl font-bold text-slate-900">{response.business_name}</h3>
               </div>
             )}
@@ -164,9 +177,13 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             }}
           >
             {copiedSection === 'questionnaire' ? (
-              <><Check size={16} className="mr-2 text-green-400" /> {tCommon('copied')}</>
+              <>
+                <Check size={16} className="mr-2 text-green-400" /> {tCommon('copied')}
+              </>
             ) : (
-              <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
+              <>
+                <Copy size={16} className="mr-2" /> {t('copyJson')}
+              </>
             )}
           </div>
         </button>
@@ -184,9 +201,7 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                     key={item.label}
                     className="bg-slate-50 rounded-lg p-3 border border-slate-100"
                   >
-                    <span className="text-xs text-slate-400 block mb-1">
-                      {item.label}
-                    </span>
+                    <span className="text-xs text-slate-400 block mb-1">{item.label}</span>
                     <span className="font-semibold text-slate-900">{item.value}</span>
                     <span className="text-xs text-slate-400 ml-2">({item.id})</span>
                   </div>
@@ -204,23 +219,20 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
                   {response.moodboard_likes.map((id) => {
                     const inspiration = INSPIRATIONS.find((i) => i.id === id)
                     return (
-                      <div
-                        key={id}
-                        className="bg-slate-50 rounded-lg p-4 border border-slate-100"
-                      >
+                      <div key={id} className="bg-slate-50 rounded-lg p-4 border border-slate-100">
                         <div className="flex items-start gap-3">
                           <span className="text-sm font-bold bg-slate-900 text-white px-3 py-1 rounded-full shrink-0">
                             {inspiration?.label || id}
                           </span>
                           {inspiration?.concept && (
-                            <p className="text-sm text-slate-600 italic">
-                              {inspiration.concept}
-                            </p>
+                            <p className="text-sm text-slate-600 italic">{inspiration.concept}</p>
                           )}
                         </div>
                         {inspiration?.prompt && (
                           <div className="mt-3 bg-white rounded-md p-3 border border-slate-200">
-                            <span className="text-xs text-slate-400 uppercase font-medium block mb-1">Prompt</span>
+                            <span className="text-xs text-slate-400 uppercase font-medium block mb-1">
+                              Prompt
+                            </span>
                             <p className="text-xs text-slate-700 leading-relaxed">
                               {inspiration.prompt}
                             </p>
@@ -282,9 +294,13 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
               }}
             >
               {copiedSection === 'voice' ? (
-                <><Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}</>
+                <>
+                  <Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}
+                </>
               ) : (
-                <><Copy size={16} className="mr-2" /> {t('copyJson')}</>
+                <>
+                  <Copy size={16} className="mr-2" /> {t('copyJson')}
+                </>
               )}
             </div>
           </button>
@@ -293,63 +309,85 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
             <div className="p-6 space-y-4">
               {voiceAnalysis.vision_globale && (
                 <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
-                  <span className="text-xs font-bold text-orange-600 uppercase">{t('globalVision')}</span>
+                  <span className="text-xs font-bold text-orange-600 uppercase">
+                    {t('globalVision')}
+                  </span>
                   <p className="text-slate-800 mt-1">{voiceAnalysis.vision_globale}</p>
                 </div>
               )}
 
               {voiceAnalysis.inspirations && voiceAnalysis.inspirations.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">{t('mentionedInspirations')}</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">
+                    {t('mentionedInspirations')}
+                  </span>
                   <div className="mt-2 space-y-2">
-                    {voiceAnalysis.inspirations.map((insp: { nom?: string; elements_apprecies?: string }, i: number) => (
-                      <div key={i} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                        <span className="font-semibold text-slate-900">{insp.nom}</span>
-                        {insp.elements_apprecies && (
-                          <p className="text-sm text-slate-500 mt-1">{insp.elements_apprecies}</p>
-                        )}
-                      </div>
-                    ))}
+                    {voiceAnalysis.inspirations.map(
+                      (insp: { nom?: string; elements_apprecies?: string }, i: number) => (
+                        <div key={i} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                          <span className="font-semibold text-slate-900">{insp.nom}</span>
+                          {insp.elements_apprecies && (
+                            <p className="text-sm text-slate-500 mt-1">{insp.elements_apprecies}</p>
+                          )}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               )}
 
-              {voiceAnalysis.style_visuel && (voiceAnalysis.style_visuel.ambiance || voiceAnalysis.style_visuel.typographie || (voiceAnalysis.style_visuel.couleurs_souhaitees && voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0)) && (
-                <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">{t('desiredVisualStyle')}</span>
-                  <div className="mt-2 grid grid-cols-2 gap-3">
-                    {voiceAnalysis.style_visuel.ambiance && (
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <span className="text-xs text-slate-400">{t('ambiance')}</span>
-                        <p className="font-medium">{voiceAnalysis.style_visuel.ambiance}</p>
-                      </div>
-                    )}
-                    {voiceAnalysis.style_visuel.typographie && (
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <span className="text-xs text-slate-400">{t('typography')}</span>
-                        <p className="font-medium">{voiceAnalysis.style_visuel.typographie}</p>
-                      </div>
-                    )}
-                    {voiceAnalysis.style_visuel.couleurs_souhaitees && voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0 && (
-                      <div className="bg-slate-50 rounded-lg p-3 col-span-2">
-                        <span className="text-xs text-slate-400">{t('desiredColors')}</span>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c, i) => (
-                            <span key={i} className="bg-white border px-2 py-1 rounded text-sm">{c}</span>
-                          ))}
+              {voiceAnalysis.style_visuel &&
+                (voiceAnalysis.style_visuel.ambiance ||
+                  voiceAnalysis.style_visuel.typographie ||
+                  (voiceAnalysis.style_visuel.couleurs_souhaitees &&
+                    voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0)) && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-500 uppercase">
+                      {t('desiredVisualStyle')}
+                    </span>
+                    <div className="mt-2 grid grid-cols-2 gap-3">
+                      {voiceAnalysis.style_visuel.ambiance && (
+                        <div className="bg-slate-50 rounded-lg p-3">
+                          <span className="text-xs text-slate-400">{t('ambiance')}</span>
+                          <p className="font-medium">{voiceAnalysis.style_visuel.ambiance}</p>
                         </div>
-                      </div>
-                    )}
+                      )}
+                      {voiceAnalysis.style_visuel.typographie && (
+                        <div className="bg-slate-50 rounded-lg p-3">
+                          <span className="text-xs text-slate-400">{t('typography')}</span>
+                          <p className="font-medium">{voiceAnalysis.style_visuel.typographie}</p>
+                        </div>
+                      )}
+                      {voiceAnalysis.style_visuel.couleurs_souhaitees &&
+                        voiceAnalysis.style_visuel.couleurs_souhaitees.length > 0 && (
+                          <div className="bg-slate-50 rounded-lg p-3 col-span-2">
+                            <span className="text-xs text-slate-400">{t('desiredColors')}</span>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {voiceAnalysis.style_visuel.couleurs_souhaitees.map((c, i) => (
+                                <span key={i} className="bg-white border px-2 py-1 rounded text-sm">
+                                  {c}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {voiceAnalysis.fonctionnalites && voiceAnalysis.fonctionnalites.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">{t('requestedFeatures')}</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">
+                    {t('requestedFeatures')}
+                  </span>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {voiceAnalysis.fonctionnalites.map((f, i) => (
-                      <span key={i} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">{f}</span>
+                      <span
+                        key={i}
+                        className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm"
+                      >
+                        {f}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -364,10 +402,17 @@ export function ResponseSummary({ response }: ResponseSummaryProps) {
 
               {voiceAnalysis.keywords && voiceAnalysis.keywords.length > 0 && (
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase">{t('keywords')}</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase">
+                    {t('keywords')}
+                  </span>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {voiceAnalysis.keywords.map((k, i) => (
-                      <span key={i} className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">{k}</span>
+                      <span
+                        key={i}
+                        className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium"
+                      >
+                        {k}
+                      </span>
                     ))}
                   </div>
                 </div>

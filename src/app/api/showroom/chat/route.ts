@@ -17,10 +17,7 @@ export async function POST(request: Request) {
     const { sessionId, messages, designBrief } = await request.json()
 
     if (!sessionId || !messages || messages.length === 0) {
-      return NextResponse.json(
-        { error: 'Session ID and messages are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Session ID and messages are required' }, { status: 400 })
     }
 
     // Get session context from database if brief not provided
@@ -75,9 +72,6 @@ ${contextBrief}`
     return NextResponse.json({ reply })
   } catch (error) {
     console.error('Chat error:', error)
-    return NextResponse.json(
-      { error: 'Failed to generate response' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 })
   }
 }

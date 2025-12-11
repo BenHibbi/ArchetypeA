@@ -28,16 +28,9 @@ export default function QuestionnaireError({
         <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/20 flex items-center justify-center">
           <AlertTriangle className="w-7 h-7 text-red-400" />
         </div>
-        <h1 className="text-xl font-bold text-white mb-2">
-          {t('questionnaireTitle')}
-        </h1>
-        <p className="text-slate-300 text-sm mb-6">
-          {t('questionnaireDescription')}
-        </p>
-        <Button
-          onClick={reset}
-          className="gap-2 bg-teal-500 hover:bg-teal-600"
-        >
+        <h1 className="text-xl font-bold text-white mb-2">{t('questionnaireTitle')}</h1>
+        <p className="text-slate-300 text-sm mb-6">{t('questionnaireDescription')}</p>
+        <Button onClick={reset} className="gap-2 bg-teal-500 hover:bg-teal-600">
           <RefreshCw size={16} />
           {t('retry')}
         </Button>

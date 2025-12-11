@@ -32,7 +32,11 @@ function SkeletonArt({ type }: { type: SkeletonType }) {
       return (
         <div className="p-2 h-full flex items-center">
           <div className="text-[8px] font-black leading-tight text-slate-900">
-            BIG<br />TYPE<br />HERE
+            BIG
+            <br />
+            TYPE
+            <br />
+            HERE
           </div>
         </div>
       )

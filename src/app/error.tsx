@@ -27,12 +27,8 @@ export default function GlobalError({
         <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-100 flex items-center justify-center">
           <AlertTriangle className="w-8 h-8 text-red-600" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          {t('title')}
-        </h1>
-        <p className="text-slate-500 mb-6">
-          {t('description')}
-        </p>
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">{t('title')}</h1>
+        <p className="text-slate-500 mb-6">{t('description')}</p>
         <Button onClick={reset} className="gap-2">
           <RefreshCw size={16} />
           {t('retry')}

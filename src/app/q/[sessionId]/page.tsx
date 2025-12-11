@@ -9,11 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useQuestionnaireStore } from '@/stores/questionnaire-store'
 import { QUESTIONS } from '@/config'
 import { LoadingScreen } from '@/components/shared/loading'
-import {
-  ProgressHeader,
-  IntroScreen,
-  QuestionScreen,
-} from '@/components/questionnaire'
+import { ProgressHeader, IntroScreen, QuestionScreen } from '@/components/questionnaire'
 
 // Dynamic imports for heavy screens to improve initial load
 const ScreenLoader = () => (
@@ -23,22 +19,32 @@ const ScreenLoader = () => (
 )
 
 const MoodboardScreen = dynamic(
-  () => import('@/components/questionnaire/moodboard-screen').then(mod => ({ default: mod.MoodboardScreen })),
+  () =>
+    import('@/components/questionnaire/moodboard-screen').then((mod) => ({
+      default: mod.MoodboardScreen,
+    })),
   { loading: ScreenLoader }
 )
 
 const FeaturesScreen = dynamic(
-  () => import('@/components/questionnaire/features-screen').then(mod => ({ default: mod.FeaturesScreen })),
+  () =>
+    import('@/components/questionnaire/features-screen').then((mod) => ({
+      default: mod.FeaturesScreen,
+    })),
   { loading: ScreenLoader }
 )
 
 const VoiceScreen = dynamic(
-  () => import('@/components/questionnaire/voice-screen').then(mod => ({ default: mod.VoiceScreen })),
+  () =>
+    import('@/components/questionnaire/voice-screen').then((mod) => ({ default: mod.VoiceScreen })),
   { loading: ScreenLoader }
 )
 
 const OutputScreen = dynamic(
-  () => import('@/components/questionnaire/output-screen').then(mod => ({ default: mod.OutputScreen })),
+  () =>
+    import('@/components/questionnaire/output-screen').then((mod) => ({
+      default: mod.OutputScreen,
+    })),
   { loading: ScreenLoader }
 )
 
@@ -183,7 +189,18 @@ export default function QuestionnairePage() {
     return () => {
       if (saveTimeout.current) clearTimeout(saveTimeout.current)
     }
-  }, [step, businessName, websiteUrl, answers, moodboardLikes, features, voiceTranscription, voiceAnalysis, sessionId, isLoading])
+  }, [
+    step,
+    businessName,
+    websiteUrl,
+    answers,
+    moodboardLikes,
+    features,
+    voiceTranscription,
+    voiceAnalysis,
+    sessionId,
+    isLoading,
+  ])
 
   const handleAnswer = (questionId: string, value: string) => {
     setAnswer(questionId, value)
@@ -270,11 +287,7 @@ export default function QuestionnairePage() {
         )}
 
         {step === 7 && (
-          <MoodboardScreen
-            likes={moodboardLikes}
-            onToggle={toggleMoodboard}
-            onConfirm={nextStep}
-          />
+          <MoodboardScreen likes={moodboardLikes} onToggle={toggleMoodboard} onConfirm={nextStep} />
         )}
 
         {step === 8 && (

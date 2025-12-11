@@ -22,9 +22,7 @@ export function MoodboardScreen({ likes, onToggle, onConfirm }: MoodboardScreenP
           Step 7
         </span>
         <h2 className="text-4xl font-bold text-slate-900">{t('title')}</h2>
-        <p className="text-slate-500 text-lg mt-2">
-          {t('subtitle')}
-        </p>
+        <p className="text-slate-500 text-lg mt-2">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 flex-1 overflow-y-auto pb-4">

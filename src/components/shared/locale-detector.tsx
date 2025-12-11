@@ -26,7 +26,7 @@ export function LocaleDetector() {
         const browserLang = navigator.language.toLowerCase()
         const isFrenchBrowser = browserLang.startsWith('fr')
 
-        const detectedLocale: Locale = (isFrance || isFrenchBrowser) ? 'fr' : 'en'
+        const detectedLocale: Locale = isFrance || isFrenchBrowser ? 'fr' : 'en'
 
         // Set cookies
         document.cookie = `NEXT_LOCALE=${detectedLocale};path=/;max-age=31536000`

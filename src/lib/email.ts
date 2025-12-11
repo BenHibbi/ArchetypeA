@@ -159,22 +159,30 @@ export async function notifyAdminOfInterest({
                     <a href="mailto:${clientEmail}" style="font-size: 16px; color: #0f172a; text-decoration: none;">${clientEmail}</a>
                   </td>
                 </tr>
-                ${clientPhone ? `
+                ${
+                  clientPhone
+                    ? `
                 <tr>
                   <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
                     <span style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Téléphone</span><br>
                     <a href="tel:${clientPhone}" style="font-size: 16px; color: #0f172a; text-decoration: none;">${clientPhone}</a>
                   </td>
                 </tr>
-                ` : ''}
-                ${designTitle ? `
+                `
+                    : ''
+                }
+                ${
+                  designTitle
+                    ? `
                 <tr>
                   <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
                     <span style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Design sélectionné</span><br>
                     <span style="font-size: 16px; color: #0f172a;">${designTitle}</span>
                   </td>
                 </tr>
-                ` : ''}
+                `
+                    : ''
+                }
                 <tr>
                   <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
                     <span style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Prix final</span><br>
@@ -183,12 +191,16 @@ export async function notifyAdminOfInterest({
                 </tr>
               </table>
 
-              ${clientMessage ? `
+              ${
+                clientMessage
+                  ? `
               <div style="background-color: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 16px;">
                 <span style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Message du client</span>
                 <p style="margin: 8px 0 0 0; font-size: 14px; color: #0f172a; line-height: 1.5;">${clientMessage}</p>
               </div>
-              ` : ''}
+              `
+                  : ''
+              }
             </td>
           </tr>
         </table>
@@ -211,9 +223,10 @@ export async function sendConfirmationToClient({
   actionType: 'quote_request' | 'signed'
 }) {
   const displayName = businessName || 'cher client'
-  const subject = actionType === 'signed'
-    ? 'Confirmation de votre commande'
-    : 'Votre demande de devis a été reçue'
+  const subject =
+    actionType === 'signed'
+      ? 'Confirmation de votre commande'
+      : 'Votre demande de devis a été reçue'
 
   return getResend().emails.send({
     from: `Archetype <${FROM_EMAIL}>`,
@@ -254,9 +267,10 @@ export async function sendConfirmationToClient({
               </h2>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: #475569;">
-                ${actionType === 'signed'
-                  ? `Bonjour ${displayName}, votre commande a été confirmée avec succès. Notre équipe vous contactera très prochainement pour démarrer votre projet.`
-                  : `Bonjour ${displayName}, nous avons bien reçu votre demande de devis. Nous reviendrons vers vous dans les plus brefs délais.`
+                ${
+                  actionType === 'signed'
+                    ? `Bonjour ${displayName}, votre commande a été confirmée avec succès. Notre équipe vous contactera très prochainement pour démarrer votre projet.`
+                    : `Bonjour ${displayName}, nous avons bien reçu votre demande de devis. Nous reviendrons vers vous dans les plus brefs délais.`
                 }
               </p>
 

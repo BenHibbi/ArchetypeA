@@ -14,7 +14,9 @@ export default function SubscriptionPage() {
   useEffect(() => {
     const fetchUser = async () => {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (user?.email) {
         setUserEmail(user.email)
       }
@@ -71,9 +73,10 @@ export default function SubscriptionPage() {
 
                 <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mb-6">
                   <p className="text-teal-800 text-sm">
-                    <strong>Merci d'être parmi les premiers !</strong> En tant qu'early adopter, vous bénéficiez
-                    d'un accès gratuit pendant la phase de beta. Lorsque nous passerons en version payante,
-                    vous aurez une offre spéciale réservée aux early adopters.
+                    <strong>Merci d'être parmi les premiers !</strong> En tant qu'early adopter,
+                    vous bénéficiez d'un accès gratuit pendant la phase de beta. Lorsque nous
+                    passerons en version payante, vous aurez une offre spéciale réservée aux early
+                    adopters.
                   </p>
                 </div>
 
@@ -147,9 +150,7 @@ export default function SubscriptionPage() {
                 Moyen de paiement
               </h3>
               <div className="bg-slate-50 rounded-xl p-4 text-center">
-                <p className="text-slate-500 text-sm">
-                  Pas de paiement requis pendant la beta
-                </p>
+                <p className="text-slate-500 text-sm">Pas de paiement requis pendant la beta</p>
               </div>
             </div>
 
@@ -169,9 +170,7 @@ export default function SubscriptionPage() {
             {/* Contact */}
             <div className="bg-slate-900 rounded-2xl p-6 text-white">
               <h3 className="font-semibold mb-2">Une question ?</h3>
-              <p className="text-slate-300 text-sm mb-4">
-                Notre équipe est là pour vous aider
-              </p>
+              <p className="text-slate-300 text-sm mb-4">Notre équipe est là pour vous aider</p>
               <a
                 href="mailto:support@archetype.design"
                 className="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 text-sm font-medium transition-colors"

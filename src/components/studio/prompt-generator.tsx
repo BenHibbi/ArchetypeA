@@ -33,7 +33,12 @@ interface PromptGeneratorProps {
   initialBrief?: string | null
 }
 
-export function PromptGenerator({ client, response, sessionId, initialBrief }: PromptGeneratorProps) {
+export function PromptGenerator({
+  client,
+  response,
+  sessionId,
+  initialBrief,
+}: PromptGeneratorProps) {
   const t = useTranslations('studio.prompt')
   const tCommon = useTranslations('common')
   const [copied, setCopied] = useState(false)
@@ -111,14 +116,8 @@ export function PromptGenerator({ client, response, sessionId, initialBrief }: P
       >
         <div className="flex items-center gap-3">
           {briefOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-          {isGenerating ? (
-            <Loader2 size={20} className="animate-spin" />
-          ) : (
-            <Sparkles size={20} />
-          )}
-          <h3 className="font-bold text-lg">
-            {isGenerating ? t('generating') : t('title')}
-          </h3>
+          {isGenerating ? <Loader2 size={20} className="animate-spin" /> : <Sparkles size={20} />}
+          <h3 className="font-bold text-lg">{isGenerating ? t('generating') : t('title')}</h3>
         </div>
         <div className="flex items-center gap-2">
           {generatedBrief && (
@@ -145,9 +144,13 @@ export function PromptGenerator({ client, response, sessionId, initialBrief }: P
                 }}
               >
                 {copied ? (
-                  <><Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}</>
+                  <>
+                    <Check size={16} className="mr-2 text-green-200" /> {tCommon('copied')}
+                  </>
                 ) : (
-                  <><Copy size={16} className="mr-2" /> {t('copyPrompt')}</>
+                  <>
+                    <Copy size={16} className="mr-2" /> {t('copyPrompt')}
+                  </>
                 )}
               </Button>
             </>

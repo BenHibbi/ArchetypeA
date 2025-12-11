@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     // Create a File object for Groq API (requires name and lastModified properties)
     const audioFile = new File([audioBuffer], 'recording.webm', {
       type: 'audio/webm',
-      lastModified: Date.now()
+      lastModified: Date.now(),
     })
 
     // Step 1: Transcribe with Whisper
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
           contenu: {},
           ton_marque: '',
           contraintes: [],
-          keywords: []
+          keywords: [],
         }),
       })
     }
@@ -101,12 +101,12 @@ IMPORTANT:
 - Extrais TOUTES les informations utiles pour un designer
 - Si une catégorie n'a pas d'info, mets une valeur vide (string vide, array vide, ou objet vide)
 - Ne mets que les informations RÉELLEMENT mentionnées, pas d'interprétation
-- Retourne UNIQUEMENT le JSON, pas de texte avant ou après`
+- Retourne UNIQUEMENT le JSON, pas de texte avant ou après`,
         },
         {
           role: 'user',
-          content: `Voici la transcription du message vocal du prospect :\n\n"${transcribedText}"`
-        }
+          content: `Voici la transcription du message vocal du prospect :\n\n"${transcribedText}"`,
+        },
       ],
       temperature: 0.3,
       max_completion_tokens: 2048,
@@ -115,7 +115,10 @@ IMPORTANT:
     let analysis = analysisCompletion.choices[0]?.message?.content || '{}'
 
     // Clean up the response - remove markdown code blocks if present
-    analysis = analysis.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    analysis = analysis
+      .replace(/```json\n?/g, '')
+      .replace(/```\n?/g, '')
+      .trim()
 
     // Validate it's valid JSON
     try {
@@ -130,7 +133,7 @@ IMPORTANT:
         contenu: {},
         ton_marque: '',
         contraintes: [],
-        keywords: []
+        keywords: [],
       })
     }
 
@@ -140,9 +143,6 @@ IMPORTANT:
     })
   } catch (error) {
     console.error('Erreur traitement vocal:', error)
-    return NextResponse.json(
-      { error: 'Erreur lors du traitement' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Erreur lors du traitement' }, { status: 500 })
   }
 }

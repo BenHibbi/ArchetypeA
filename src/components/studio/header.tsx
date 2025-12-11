@@ -20,14 +20,8 @@ export function Header({ title, subtitle }: HeaderProps) {
       </div>
 
       <div className="relative">
-        <Search
-          size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-        />
-        <Input
-          placeholder={t('search')}
-          className="pl-10 w-64 bg-slate-50 border-slate-200"
-        />
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Input placeholder={t('search')} className="pl-10 w-64 bg-slate-50 border-slate-200" />
       </div>
     </header>
   )

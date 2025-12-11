@@ -16,10 +16,7 @@ export async function POST(request: Request) {
     const { sessionId, clientEmail, clientName, businessName } = await request.json()
 
     if (!sessionId || !clientEmail) {
-      return NextResponse.json(
-        { error: 'sessionId and clientEmail are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'sessionId and clientEmail are required' }, { status: 400 })
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -33,17 +30,11 @@ export async function POST(request: Request) {
     })
 
     if (error) {
-      return NextResponse.json(
-        { error: 'Failed to send email' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
   } catch {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

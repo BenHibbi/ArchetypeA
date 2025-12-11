@@ -27,12 +27,8 @@ export default function StudioError({
         <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-100 flex items-center justify-center">
           <AlertTriangle className="w-7 h-7 text-red-600" />
         </div>
-        <h1 className="text-xl font-bold text-slate-900 mb-2">
-          {t('studioTitle')}
-        </h1>
-        <p className="text-slate-500 text-sm mb-6">
-          {t('studioDescription')}
-        </p>
+        <h1 className="text-xl font-bold text-slate-900 mb-2">{t('studioTitle')}</h1>
+        <p className="text-slate-500 text-sm mb-6">{t('studioDescription')}</p>
         <div className="flex gap-3 justify-center">
           <Button variant="outline" onClick={reset} className="gap-2">
             <RefreshCw size={16} />
