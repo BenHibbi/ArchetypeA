@@ -198,11 +198,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                     </code>
                     <CopyButton text={sessionUrl} />
                   </div>
-                  <CopyButton
-                    text={sessionUrl}
-                    variant="orange"
-                    className="gap-2"
-                  >
+                  <CopyButton text={sessionUrl} variant="orange" className="gap-2">
                     <Link2 size={16} />
                     Copier le lien du questionnaire
                   </CopyButton>

@@ -13,7 +13,13 @@ interface CopyButtonProps {
   children?: ReactNode
 }
 
-export function CopyButton({ text, label, variant = 'outline', className, children }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  label,
+  variant = 'outline',
+  className,
+  children,
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -29,7 +35,7 @@ export function CopyButton({ text, label, variant = 'outline', className, childr
       {copied ? (
         <>
           <Check size={14} className={iconOnly ? '' : 'mr-1'} />
-          {children ? 'Lien copié !' : (!iconOnly && 'Copié')}
+          {children ? 'Lien copié !' : !iconOnly && 'Copié'}
         </>
       ) : (
         <>
