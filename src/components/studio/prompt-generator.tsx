@@ -178,7 +178,22 @@ export function PromptGenerator({
             <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto max-h-[500px] whitespace-pre-wrap font-mono">
               {generatedBrief}
             </pre>
-          ) : null}
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Sparkles size={48} className="text-orange-400 mb-4" />
+              <p className="text-slate-600 mb-2 font-medium">{t('noBriefYet')}</p>
+              <p className="text-slate-400 text-sm mb-6 text-center max-w-md">
+                {t('noBriefDescription')}
+              </p>
+              <Button
+                onClick={() => generateBrief()}
+                className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-6"
+              >
+                <Sparkles size={16} className="mr-2" />
+                {t('generateBrief')}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

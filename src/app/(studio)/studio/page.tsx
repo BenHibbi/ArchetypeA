@@ -119,29 +119,29 @@ export default async function DashboardPage() {
           </div>
 
           {recentClients.length > 0 ? (
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <table className="w-full">
+            <div className="bg-white rounded-xl border border-slate-200">
+              <table className="w-full table-fixed">
                 <thead className="bg-slate-50 border-b border-slate-200">
                   <tr>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[22%] text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('client')}
                     </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[20%] text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('email')}
                     </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[16%] text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('website')}
                     </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[12%] text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[10%] text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('date')}
                     </th>
-                    <th className="text-center px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[8%] text-center px-2 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('showroomSent')}
                     </th>
-                    <th className="text-right px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-[12%] text-right px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       {tClients('actions')}
                     </th>
                   </tr>
@@ -164,6 +164,7 @@ export default async function DashboardPage() {
                     const businessName = response?.business_name || client.company_name
                     const websiteUrl = response?.website_url || client.website_url
                     const showroomSent = latestSession?.showroom_status === 'sent'
+                    const sessionUrl = latestSession ? generateSessionUrl(latestSession.id) : ''
 
                     return (
                       <ClickableRow
@@ -171,25 +172,27 @@ export default async function DashboardPage() {
                         href={`/studio/${client.id}`}
                         className="hover:bg-slate-50 cursor-pointer"
                       >
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                              <AvatarFallback className="bg-teal-100 text-teal-700 text-sm font-bold">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-8 w-8 shrink-0">
+                              <AvatarFallback className="bg-teal-100 text-teal-700 text-xs font-bold">
                                 {getInitials(businessName || client.email)}
                               </AvatarFallback>
                             </Avatar>
-                            <div>
-                              <span className="font-medium text-slate-900">
+                            <div className="min-w-0">
+                              <span className="font-medium text-slate-900 text-sm truncate block">
                                 {businessName || client.email}
                               </span>
                               {client.contact_name && (
-                                <p className="text-sm text-slate-500">{client.contact_name}</p>
+                                <p className="text-xs text-slate-500 truncate">{client.contact_name}</p>
                               )}
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-600">{client.email}</td>
-                        <td className="px-6 py-4 text-sm">
+                        <td className="px-4 py-3">
+                          <span className="text-sm text-slate-600 truncate block">{client.email}</span>
+                        </td>
+                        <td className="px-4 py-3">
                           {websiteUrl ? (
                             <a
                               href={
@@ -197,21 +200,21 @@ export default async function DashboardPage() {
                               }
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-teal-600 hover:text-teal-700 hover:underline truncate max-w-[200px] block"
+                              className="text-sm text-teal-600 hover:text-teal-700 hover:underline truncate block"
                             >
                               {websiteUrl.replace(/^https?:\/\//, '')}
                             </a>
                           ) : (
-                            <span className="text-slate-400">-</span>
+                            <span className="text-slate-400 text-sm">-</span>
                           )}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 py-3">
                           <Badge variant={statusVariant}>{tClients(`status.${status}`)}</Badge>
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-500">
+                        <td className="px-4 py-3 text-sm text-slate-500 whitespace-nowrap">
                           {formatDate(client.created_at)}
                         </td>
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-2 py-3 text-center">
                           {showroomSent ? (
                             <div className="inline-flex items-center justify-center w-5 h-5 rounded bg-teal-500 text-white">
                               <Check size={14} />
@@ -220,11 +223,9 @@ export default async function DashboardPage() {
                             <div className="inline-flex items-center justify-center w-5 h-5 rounded border-2 border-slate-200" />
                           )}
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            {latestSession && (
-                              <CopyLinkIcon url={generateSessionUrl(latestSession.id)} />
-                            )}
+                        <td className="px-4 py-3">
+                          <div className="flex items-center justify-end gap-1">
+                            <CopyLinkIcon url={sessionUrl} disabled={!latestSession} />
                             <DeleteClientButton clientId={client.id} />
                           </div>
                         </td>

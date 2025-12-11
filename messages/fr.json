@@ -304,7 +304,10 @@
       "copyPrompt": "Copier le prompt",
       "agentGenerating": "L'agent ANALYST g\u00e9n\u00e8re votre prompt...",
       "mayTakeMoment": "Cela peut prendre quelques secondes",
-      "errorGenerating": "Une erreur est survenue lors de la g\u00e9n\u00e9ration du brief."
+      "errorGenerating": "Une erreur est survenue lors de la g\u00e9n\u00e9ration du brief.",
+      "noBriefYet": "Aucun brief g\u00e9n\u00e9r\u00e9",
+      "noBriefDescription": "Cliquez sur le bouton ci-dessous pour g\u00e9n\u00e9rer un brief design personnalis\u00e9 bas\u00e9 sur les r\u00e9ponses du client.",
+      "generateBrief": "G\u00e9n\u00e9rer le brief"
     },
     "response": {
       "clientInfo": "Informations Client",
