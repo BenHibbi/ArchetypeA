@@ -14,7 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuPortal,
 } from '@/components/ui/dropdown-menu'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 export function TopBar() {
@@ -86,46 +91,55 @@ export function TopBar() {
               <DropdownMenuLabel className="text-xs text-muted-foreground uppercase tracking-wider">
                 {tMenu('myPlan')}
               </DropdownMenuLabel>
-              <DropdownMenuItem className="cursor-pointer">
-                <CreditCard className="mr-2 h-4 w-4" />
-                <div className="flex flex-col">
-                  <span className="font-medium">19,90€{tMenu('perMonth')}</span>
-                  <span className="text-xs text-muted-foreground">{tMenu('plusUsage')}</span>
-                </div>
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/studio/subscription">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Early Adopter</span>
+                    <span className="text-xs text-muted-foreground">Beta gratuite</span>
+                  </div>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
 
-            {/* Help & Support */}
+            {/* Help & Support with sub-menu */}
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="text-xs text-muted-foreground uppercase tracking-wider">
-                {tMenu('helpSupport')}
-              </DropdownMenuLabel>
-              <DropdownMenuItem className="cursor-pointer">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                <span>{tMenu('faq')}</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-
-            {/* Legal */}
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
-                <FileText className="mr-2 h-4 w-4" />
-                <span>{tMenu('legalNotice')}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Scale className="mr-2 h-4 w-4" />
-                <span>{tMenu('termsOfService')}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Scale className="mr-2 h-4 w-4" />
-                <span>{tMenu('termsOfSale')}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Shield className="mr-2 h-4 w-4" />
-                <span>{tMenu('privacyPolicy')}</span>
-              </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="cursor-pointer">
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  <span>{tMenu('helpSupport')}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/legal/mentions-legales">
+                        <FileText className="mr-2 h-4 w-4" />
+                        <span>{tMenu('legalNotice')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/legal/cgu-cgv">
+                        <Scale className="mr-2 h-4 w-4" />
+                        <span>{tMenu('terms')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/legal/confidentialite">
+                        <Shield className="mr-2 h-4 w-4" />
+                        <span>{tMenu('privacyPolicy')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/legal/faq">
+                        <HelpCircle className="mr-2 h-4 w-4" />
+                        <span>{tMenu('faq')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
 

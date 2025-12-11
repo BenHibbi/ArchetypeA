@@ -46,5 +46,39 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // Check approval status for studio routes
+  if (user && request.nextUrl.pathname.startsWith('/studio')) {
+    // Skip check for pending page itself
+    if (!request.nextUrl.pathname.startsWith('/auth/pending')) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('status')
+        .eq('user_id', user.id)
+        .single()
+
+      // If no profile or not approved, redirect to pending page
+      if (!profile || profile.status !== 'approved') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/auth/pending'
+        return NextResponse.redirect(url)
+      }
+    }
+  }
+
+  // If user is approved and tries to access pending page, redirect to studio
+  if (user && request.nextUrl.pathname === '/auth/pending') {
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('status')
+      .eq('user_id', user.id)
+      .single()
+
+    if (profile?.status === 'approved') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/studio'
+      return NextResponse.redirect(url)
+    }
+  }
+
   return supabaseResponse
 }

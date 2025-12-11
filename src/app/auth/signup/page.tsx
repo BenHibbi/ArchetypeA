@@ -50,6 +50,38 @@ export default function SignupPage() {
     }
   }
 
+  const handleMagicLink = async () => {
+    if (!email) {
+      setError('Entrez votre email')
+      return
+    }
+
+    setError(null)
+    setIsLoading(true)
+
+    try {
+      const supabase = createClient()
+
+      const { error: authError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (authError) {
+        setError(authError.message)
+        return
+      }
+
+      setSuccess(true)
+    } catch (err) {
+      setError('Une erreur est survenue')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   if (success) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
@@ -128,6 +160,25 @@ export default function SignupPage() {
               disabled={isLoading}
             >
               {isLoading ? 'Création...' : 'Créer mon compte'}
+            </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-slate-500">ou</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleMagicLink}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Envoi...' : 'Recevoir un lien par email'}
             </Button>
           </form>
 

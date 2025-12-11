@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useQuestionnaireStore } from '@/stores/questionnaire-store'
 import { QUESTIONS } from '@/config'
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/components/questionnaire'
 
 export default function DemoPage() {
+  const router = useRouter()
   const {
     step,
     answers,
@@ -46,7 +48,7 @@ export default function DemoPage() {
 
   const handleRestart = () => {
     reset()
-    setStep(0)
+    router.push('/')
   }
 
   return (

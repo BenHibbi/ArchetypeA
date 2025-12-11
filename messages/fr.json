@@ -339,10 +339,9 @@
       "plusUsage": "+ usage",
       "helpSupport": "Aide & Support",
       "faq": "FAQ",
-      "legalNotice": "Mentions l\u00e9gales",
-      "termsOfService": "CGU",
-      "termsOfSale": "CGV",
-      "privacyPolicy": "Politique de confidentialit\u00e9"
+      "legalNotice": "Mentions légales",
+      "terms": "CGU / CGV",
+      "privacyPolicy": "Politique de confidentialité"
     },
     "notifications": {
       "title": "Notifications",
