@@ -261,7 +261,8 @@
       "clientCount": "{count} client(s)",
       "status": {
         "pending": "En attente",
-        "in_progress": "En cours",
+        "opened": "Ouvert",
+        "in_progress": "Commenc\u00e9",
         "completed": "Compl\u00e9t\u00e9",
         "no_session": "Pas de session"
       },

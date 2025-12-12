@@ -103,6 +103,14 @@ export default function QuestionnairePage() {
           return
         }
 
+        // Track l'ouverture du lien (si pas encore ouvert)
+        if (!session.opened_at) {
+          await supabase
+            .from('sessions')
+            .update({ opened_at: new Date().toISOString() })
+            .eq('id', sessionId)
+        }
+
         // Si déjà complété, charger les réponses
         if (session.status === 'completed') {
           const { data: response } = await supabase

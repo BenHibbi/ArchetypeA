@@ -46,6 +46,7 @@ export interface Database {
           id: string
           client_id: string
           status: string
+          opened_at: string | null
           started_at: string | null
           completed_at: string | null
           created_at: string
@@ -56,6 +57,7 @@ export interface Database {
           id: string
           client_id: string
           status?: string
+          opened_at?: string | null
           started_at?: string | null
           completed_at?: string | null
           created_at?: string
@@ -66,6 +68,7 @@ export interface Database {
           id?: string
           client_id?: string
           status?: string
+          opened_at?: string | null
           started_at?: string | null
           completed_at?: string | null
           showroom_status?: string | null

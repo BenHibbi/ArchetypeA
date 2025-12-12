@@ -24,6 +24,7 @@ interface ClientSession {
   id: string
   status: string | null
   showroom_status: string | null
+  opened_at: string | null
   started_at: string | null
   completed_at: string | null
   created_at: string
@@ -81,6 +82,7 @@ async function getRecentClients(): Promise<ClientWithSessions[]> {
         id,
         status,
         showroom_status,
+        opened_at,
         started_at,
         completed_at,
         created_at,
@@ -149,13 +151,25 @@ export default async function DashboardPage() {
                 <tbody className="divide-y divide-slate-100">
                   {recentClients.map((client) => {
                     const latestSession = client.sessions?.[0]
-                    const status = latestSession?.status || 'no_session'
+
+                    // Déterminer le statut affiché basé sur opened_at, started_at, status
+                    const getDisplayStatus = () => {
+                      if (!latestSession) return 'no_session'
+                      if (latestSession.status === 'completed') return 'completed'
+                      if (latestSession.status === 'in_progress') return 'in_progress'
+                      if (latestSession.opened_at) return 'opened'
+                      return 'pending'
+                    }
+                    const displayStatus = getDisplayStatus()
+
                     const statusVariant =
-                      status === 'completed'
+                      displayStatus === 'completed'
                         ? 'success'
-                        : status === 'in_progress'
+                        : displayStatus === 'in_progress'
                           ? 'warning'
-                          : 'pending'
+                          : displayStatus === 'opened'
+                            ? 'info'
+                            : 'pending'
 
                     // responses peut être un objet ou un array selon Supabase
                     const rawResponses = latestSession?.responses
@@ -213,7 +227,9 @@ export default async function DashboardPage() {
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          <Badge variant={statusVariant}>{tClients(`status.${status}`)}</Badge>
+                          <Badge variant={statusVariant}>
+                            {tClients(`status.${displayStatus}`)}
+                          </Badge>
                         </td>
                         <td className="px-4 py-3 text-sm text-slate-500 whitespace-nowrap">
                           {formatDate(client.created_at)}
